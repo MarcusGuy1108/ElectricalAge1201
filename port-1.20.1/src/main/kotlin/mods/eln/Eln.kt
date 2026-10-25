@@ -2,6 +2,7 @@ package mods.eln
 
 import com.mojang.logging.LogUtils
 import mods.eln.config.JsonConfig
+import mods.eln.sim.Simulator
 import net.minecraftforge.fml.loading.FMLPaths
 import org.slf4j.Logger
 import java.io.File
@@ -11,6 +12,20 @@ import java.io.File
  */
 object Eln {
     const val MODID = "eln"
+
+    const val gateInputCurrent = 0.00005
+    const val gateOutputCurrent = 0.100
+    const val LVU = 50.0
+    const val MVU = 200.0
+    const val HVU = 800.0
+    const val VVU = 3200.0
+    const val CCU = 120_000.0
+    const val SVU = 5.0
+    const val signalVoltageAcceptNegative = -0.5
+    const val signalVoltageAcceptPositive = SVU + 0.5
+    const val SVII = gateInputCurrent / SVU
+    const val SVUinv = 1.0 / SVU
+    const val SVP = gateOutputCurrent * SVU
 
     @JvmField val LOGGER: Logger = LogUtils.getLogger()
     @JvmField val logger: Logger = LOGGER
@@ -25,8 +40,17 @@ object Eln {
     @JvmField var simMetricsPublishIntervalTicks = 20
     @JvmField var debugEnabled = false
 
+    lateinit var simulator: Simulator
+
     internal fun loadConfig() {
         config = JsonConfig(FMLPaths.CONFIGDIR.get().resolve("Eln.cfg").toFile())
         config.loadConfig()
+        config.writeExampleFile()
+        simulator = Simulator(
+            0.05,
+            1 / config.getDoubleOrElse("simulation.electrical.frequency", 20.0),
+            config.getIntOrElse("simulation.electrical.interSystemOverSampling", 50),
+            1 / config.getDoubleOrElse("simulation.thermal.frequency", 400.0)
+        )
     }
 }

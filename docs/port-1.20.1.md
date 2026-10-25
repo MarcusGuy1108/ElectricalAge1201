@@ -30,7 +30,11 @@ cd port-1.20.1
 
 1. [x] Empty mod builds and loads on a 1.20.1 dedicated server.
 2. [x] MNA circuit solver (`sim/mna`) ported; its unit tests pass.
-3. [ ] Rest of the simulation core: thermal loads, processes, watchdogs, `FunctionTable`, the `Simulator` tick.
+3. [x] Rest of the simulation core: thermal loads, processes, watchdogs, `FunctionTable`, the `Simulator` tick
+   (server lifecycle and `ServerTickEvent` wired in `ElnMod`). Still waiting on later layers: the signal gate family
+   (`NbtElectricalGate*`, `SignalLoadSupport`, needs the signal cable), regulators, `ResistorProcess`, stack machines,
+   `NbtBatterySlowProcess`, `MonsterPopFreeProcess`, `CableMelt`, `WorldExplosion`, `ShaftSpeedWatchdog`, and
+   `RoomThermalManager` room heat exchange.
 4. [ ] Node framework: world-attached nodes, saving (`SavedData`), ticking, networking.
 5. [ ] Vertical slice: cable, battery and lamp placed in a world with models, GUI and sync.
 6. [ ] Six-node blocks, transparent-node machines and the remaining content, family by family.

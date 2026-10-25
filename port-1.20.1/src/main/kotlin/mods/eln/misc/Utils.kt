@@ -1,6 +1,9 @@
 package mods.eln.misc
 
 import mods.eln.Eln
+import net.minecraft.world.level.storage.LevelResource
+import net.minecraftforge.server.ServerLifecycleHooks
+import java.io.File
 import java.util.Random
 
 // PORT: partial; the rest of 1.7.10 Utils.kt comes over as the code that needs it is ported.
@@ -34,5 +37,15 @@ object Utils {
     @JvmStatic
     fun println(format: String?, vararg data: Any?) {
         println(String.format(format!!, *data))
+    }
+
+    // 1.20.1 resolves the save folder directly instead of building "saves/<name>/" by hand.
+    fun getMapFile(name: String): File {
+        return ServerLifecycleHooks.getCurrentServer().getWorldPath(LevelResource.ROOT).resolve(name).toFile()
+    }
+
+    @JvmStatic
+    fun mapFileExists(name: String): Boolean {
+        return getMapFile(name).exists()
     }
 }
