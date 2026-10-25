@@ -1,5 +1,8 @@
 package mods.eln.sim;
 
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
+
 public class ThermalLoad {
 
     /**
@@ -43,7 +46,7 @@ public class ThermalLoad {
 
     boolean isSlow;
     private boolean hasSimCoordinate = false;
-    private int simDimension;
+    private ResourceKey<Level> simDimension;
     private int simX;
     private int simY;
     private int simZ;
@@ -136,7 +139,7 @@ public class ThermalLoad {
         isSlow = false;
     }
 
-    public ThermalLoad setSimCoordinate(int dimension, int x, int y, int z) {
+    public ThermalLoad setSimCoordinate(ResourceKey<Level> dimension, int x, int y, int z) {
         this.hasSimCoordinate = true;
         this.simDimension = dimension;
         this.simX = x;
@@ -153,7 +156,7 @@ public class ThermalLoad {
         return hasSimCoordinate;
     }
 
-    public int getSimDimension() {
+    public ResourceKey<Level> getSimDimension() {
         return simDimension;
     }
 

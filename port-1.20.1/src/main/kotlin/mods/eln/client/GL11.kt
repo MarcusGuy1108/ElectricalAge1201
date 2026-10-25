@@ -35,6 +35,7 @@ object GL11 {
     const val GL_ONE_MINUS_SRC_ALPHA = 771
     const val GL_LEQUAL = 515
     const val GL_LESS = 513
+    const val GL_GREATER = 516
     const val GL_CULL_FACE = 2884
     const val GL_LIGHTING = 2896
     const val GL_DEPTH_TEST = 2929
@@ -295,5 +296,7 @@ object GL11 {
     @JvmStatic fun glTexParameteri(target: Int, name: Int, value: Int) {}
     @JvmStatic fun glGetTexParameteri(target: Int, name: Int): Int = 0
     @JvmStatic fun glScissor(x: Int, y: Int, width: Int, height: Int) {}
+    @JvmStatic fun glAlphaFunc(func: Int, ref: Float) {}
+    @JvmStatic fun glGetBoolean(cap: Int): Boolean = glIsEnabled(cap)
     @JvmStatic fun glGetInteger(name: Int): Int = 0
 }

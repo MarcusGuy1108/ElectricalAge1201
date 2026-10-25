@@ -1,17 +1,24 @@
 package mods.eln
 
+import mods.eln.client.ElnClient
 import mods.eln.metrics.MetricsSubsystem
+import mods.eln.generic.GenericItemBlockUsingDamage
 import mods.eln.network.ElnNetwork
+import mods.eln.node.six.SixNodeItem
+import mods.eln.node.six.SixNodeBlockRegistration
+import mods.eln.registration.SixNodeRegistration
 import mods.eln.registry.ElnRegistries
 import mods.eln.node.NodeManager
 import mods.eln.node.NodeServer
 import mods.eln.server.ServerEventListener
+import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.TickEvent
 import net.minecraftforge.event.level.LevelEvent
 import net.minecraftforge.event.server.ServerAboutToStartEvent
 import net.minecraftforge.event.server.ServerStoppedEvent
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.loading.FMLEnvironment
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
 @Mod(Eln.MODID)
@@ -20,7 +27,12 @@ object ElnMod {
         Eln.loadConfig()
         ElnNetwork.register()
         Eln.createCreativeTabs()
+        SixNodeBlockRegistration.BLOCK
+        Eln.sixNodeItem = GenericItemBlockUsingDamage { SixNodeItem(it) }
+        Eln.obj.loadAllElnModels()
+        SixNodeRegistration.registerSix()
         ElnRegistries.register(MOD_BUS)
+        if (FMLEnvironment.dist == Dist.CLIENT) ElnClient.init(MOD_BUS)
         Eln.nodeManager = NodeManager("caca")
         Eln.nodeServer = NodeServer()
         Eln.serverEventListener = ServerEventListener()

@@ -1,0 +1,51 @@
+package mods.eln.sim.process.destruct
+
+import mods.eln.Eln
+import mods.eln.misc.Coordinate
+import mods.eln.node.six.SixNodeElement
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.level.Level
+
+class WorldExplosion : IDestructible {
+    private var origin: Any
+    var coordinate: Coordinate
+    private var strength = 0f
+    var type: String = ""
+
+    // PORT: the ShaftElement, TransparentNodeElement and EnergyConverterElnToOtherNode constructors return with them.
+
+    constructor(e: SixNodeElement) {
+        coordinate = e.coordinate ?: throw RuntimeException("WorldExplosion: Null SixNode Element received")
+        type = e.toString()
+        origin = e
+    }
+
+    fun cableExplosion(): WorldExplosion {
+        strength = 1.5f
+        return this
+    }
+
+    fun machineExplosion(): WorldExplosion {
+        strength = 3f
+        return this
+    }
+
+    override fun destructImpl() {
+        if (Eln.config.getBooleanOrElse("gameplay.hazards.explosionsEnabled", false)) {
+            coordinate.world().explode(
+                null as Entity?,
+                coordinate.x.toDouble(),
+                coordinate.y.toDouble(),
+                coordinate.z.toDouble(),
+                strength,
+                Level.ExplosionInteraction.BLOCK
+            )
+        } else {
+            coordinate.world().removeBlock(coordinate.blockPos, false)
+        }
+    }
+
+    override fun describe(): String {
+        return String.format("%s (%s)", type, coordinate.toString())
+    }
+}

@@ -1,6 +1,7 @@
 package mods.eln.node
 
 import mods.eln.Eln
+import mods.eln.cable.CableRenderDescriptor
 import mods.eln.misc.Coordinate
 import mods.eln.misc.Direction
 import mods.eln.misc.LRDU
@@ -11,6 +12,8 @@ import mods.eln.misc.Utils.println
 import mods.eln.misc.UtilsClient
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.resources.ResourceKey
+import net.minecraft.world.level.Level
 import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientGamePacketListener
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
@@ -229,7 +232,50 @@ abstract class NodeBlockEntity(type: BlockEntityType<*>, pos: BlockPos, state: B
         UtilsClient.sendPacketToServer(bos!!)
     }
 
-    // PORT: getCableRender/getAdjacentCableRender (CableRenderDescriptor lookups) return with the cable renderer.
+    open fun getCableRender(side: Direction, lrdu: LRDU): CableRenderDescriptor? {
+        return null
+    }
+
+    fun getAdjacentCableRender(side: Direction, lrdu: LRDU): CableRenderDescriptor? {
+        val lookupKey = CableRenderLookupKey(level!!.dimension(), blockPos.x, blockPos.y, blockPos.z, side, lrdu)
+        val activeLookups = adjacentCableRenderLookups.get()
+        if (!activeLookups.add(lookupKey)) return null
+
+        try {
+            findWrappedAdjacentCableRender(side, lrdu)?.let { return it }
+            return findDirectAdjacentCableRender(side, lrdu)
+        } finally {
+            activeLookups.remove(lookupKey)
+            if (activeLookups.isEmpty()) {
+                adjacentCableRenderLookups.remove()
+            }
+        }
+    }
+
+    private fun findWrappedAdjacentCableRender(side: Direction, lrdu: LRDU): CableRenderDescriptor? {
+        val emptyBlockCoord = intArrayOf(blockPos.x, blockPos.y, blockPos.z)
+        side.applyTo(emptyBlockCoord, 1)
+        val state = level!!.getBlockState(BlockPos(emptyBlockCoord[0], emptyBlockCoord[1], emptyBlockCoord[2]))
+        if (!NodeBase.isBlockWrappable(state)) return null
+
+        val elementSide = side.applyLRDU(lrdu)
+        val otherBlockCoord = intArrayOf(emptyBlockCoord[0], emptyBlockCoord[1], emptyBlockCoord[2])
+        elementSide.applyTo(otherBlockCoord, 1)
+
+        val tileEntity = level!!.getBlockEntity(BlockPos(otherBlockCoord[0], otherBlockCoord[1], otherBlockCoord[2])) as? NodeBlockEntity
+            ?: return null
+        val otherDirection = elementSide.inverse
+        val otherLRDU = otherDirection.getLRDUGoingTo(side)?.inverse() ?: return null
+        return tileEntity.getCableRender(otherDirection, otherLRDU)
+    }
+
+    private fun findDirectAdjacentCableRender(side: Direction, lrdu: LRDU): CableRenderDescriptor? {
+        val otherBlockCoord = intArrayOf(blockPos.x, blockPos.y, blockPos.z)
+        side.applyTo(otherBlockCoord, 1)
+        val tileEntity = level!!.getBlockEntity(BlockPos(otherBlockCoord[0], otherBlockCoord[1], otherBlockCoord[2])) as? NodeBlockEntity
+            ?: return null
+        return tileEntity.getCableRender(side.inverse, lrdu.inverseIfLR())
+    }
 
     open fun getCableDry(side: Direction?, lrdu: LRDU?): Int {
         return 0
@@ -243,8 +289,21 @@ abstract class NodeBlockEntity(type: BlockEntityType<*>, pos: BlockPos, state: B
 
     open fun clientRefresh(deltaT: Float) {}
 
+    private data class CableRenderLookupKey(
+        val dimension: ResourceKey<Level>,
+        val x: Int,
+        val y: Int,
+        val z: Int,
+        val side: Direction,
+        val lrdu: LRDU
+    )
+
     companion object {
         private const val PUBLISH_TAG = "elnPublish"
+
+        private val adjacentCableRenderLookups = object : ThreadLocal<MutableSet<CableRenderLookupKey>>() {
+            override fun initialValue(): MutableSet<CableRenderLookupKey> = HashSet()
+        }
 
         @JvmField
         val clientList = LinkedBlockingQueue<NodeBlockEntity>()

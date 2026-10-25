@@ -54,6 +54,30 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+// Textures, models and sounds are shared with the 1.7.10 build in ../src/main/resources instead of being copied.
+def legacyAssets = file('../src/main/resources/assets')
+def generatedLang = layout.buildDirectory.dir('generated/lang')
+
+// 1.20.1 reads JSON lang files; convert the 1.7.10 key=value files, keeping their legacy keys.
+tasks.register('convertLegacyLang') {
+    inputs.dir(new File(legacyAssets, 'eln/lang'))
+    outputs.dir(generatedLang)
+    doLast {
+        def outDir = generatedLang.get().dir('assets/eln/lang').asFile
+        outDir.mkdirs()
+        new File(legacyAssets, 'eln/lang').eachFileMatch(~/.*\.lang/) { file ->
+            def entries = new LinkedHashMap<String, String>()
+            file.eachLine('UTF-8') { line ->
+                def split = line.indexOf('=')
+                if (line.startsWith('#') || split <= 0) return
+                entries[line.substring(0, split)] = line.substring(split + 1)
+            }
+            def json = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(entries))
+            new File(outDir, file.name.replace('.lang', '.json').toLowerCase()).setText(json, 'UTF-8')
+        }
+    }
+}
+
 repositories {
     maven {
         name = 'Kotlin for Forge'
@@ -74,6 +98,12 @@ dependencies {
 }
 
 tasks.named('processResources', ProcessResources).configure {
+    dependsOn 'convertLegacyLang'
+    from(legacyAssets) {
+        into 'assets'
+        exclude 'eln/lang/**', 'eln/unused-models/**', 'eln/temp/**'
+    }
+    from(generatedLang)
     var replaceProperties = [
             minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
             forge_version: forge_version, forge_version_range: forge_version_range,

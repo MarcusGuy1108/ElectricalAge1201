@@ -1,12 +1,20 @@
 package mods.eln
 
 import com.mojang.logging.LogUtils
+import mods.eln.cable.CableRenderDescriptor
 import mods.eln.config.JsonConfig
 import mods.eln.generic.GenericCreativeTab
+import mods.eln.generic.GenericItemBlockUsingDamage
+import mods.eln.misc.Obj3DFolder
+import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.node.six.SixNodeBlock
+import mods.eln.node.six.SixNodeDescriptor
+import mods.eln.node.six.SixNodeBlockRegistration
 import mods.eln.node.NodeManager
 import mods.eln.node.NodeServer
 import mods.eln.server.ServerEventListener
 import mods.eln.sim.Simulator
+import mods.eln.sim.ThermalLoadInitializer
 import net.minecraftforge.fml.loading.FMLPaths
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
@@ -43,6 +51,23 @@ object Eln {
     const val SVII = gateInputCurrent / SVU
     const val SVUinv = 1.0 / SVU
     const val SVP = gateOutputCurrent * SVU
+    const val cableHeatingTime = 30.0
+    const val cableWarmLimit = 130.0
+    const val cableThermalConductionTao = 0.5
+
+    @JvmField
+    val cableThermalLoadInitializer = ThermalLoadInitializer(cableWarmLimit, -100.0, cableHeatingTime, cableThermalConductionTao)
+    @JvmField
+    val sixNodeThermalLoadInitializer = ThermalLoadInitializer(cableWarmLimit, -100.0, cableHeatingTime, 1000.0)
+
+    // 1.7.10 code reaches these through Eln.instance; the object is its own instance.
+    @JvmField
+    val instance: Eln = this
+
+    fun LVP(): Double = 1000 * config.getDoubleOrElse("balance.cables.powerFactor", 1.0)
+    fun MVP(): Double = 2000 * config.getDoubleOrElse("balance.cables.powerFactor", 1.0)
+    fun HVP(): Double = 5000 * config.getDoubleOrElse("balance.cables.powerFactor", 1.0)
+    fun VVP(): Double = 15000 * config.getDoubleOrElse("balance.cables.powerFactor", 1.0)
 
     @JvmField val LOGGER: Logger = LogUtils.getLogger()
     @JvmField val logger: Logger = LOGGER
@@ -61,6 +86,25 @@ object Eln {
     lateinit var nodeManager: NodeManager
     lateinit var nodeServer: NodeServer
     lateinit var serverEventListener: ServerEventListener
+
+    lateinit var sixNodeItem: GenericItemBlockUsingDamage<SixNodeDescriptor>
+
+    @JvmField val obj = Obj3DFolder()
+
+    @JvmField var stdCableRenderSignal: CableRenderDescriptor? = null
+    @JvmField var stdCableRender50V: CableRenderDescriptor? = null
+    @JvmField var stdCableRender200V: CableRenderDescriptor? = null
+    @JvmField var stdCableRender800V: CableRenderDescriptor? = null
+    @JvmField var stdCableRender3200V: CableRenderDescriptor? = null
+    @JvmField var stdCableRenderCreative: CableRenderDescriptor? = null
+    @JvmField var signalCableDescriptor: ElectricalCableDescriptor? = null
+    @JvmField var lowVoltageCableDescriptor: ElectricalCableDescriptor? = null
+    @JvmField var meduimVoltageCableDescriptor: ElectricalCableDescriptor? = null
+    @JvmField var highVoltageCableDescriptor: ElectricalCableDescriptor? = null
+    @JvmField var veryHighVoltageCableDescriptor: ElectricalCableDescriptor? = null
+    @JvmField var creativeCableDescriptor: ElectricalCableDescriptor? = null
+    val sixNodeBlock: SixNodeBlock
+        @JvmStatic get() = SixNodeBlockRegistration.BLOCK.get()
 
     lateinit var creativeTabPowerElectronics: GenericCreativeTab
     lateinit var creativeTabCables: GenericCreativeTab

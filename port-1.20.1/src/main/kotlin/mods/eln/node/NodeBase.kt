@@ -418,6 +418,12 @@ abstract class NodeBase {
         const val networkSerializeIFactor = 100.0
         const val networkSerializeTFactor = 10.0
         var teststatic = 0
+        // 1.7.10 signature used by render code; the state at (x, y, z) decides.
+        @JvmStatic
+        fun isBlockWrappable(block: net.minecraft.world.level.block.Block, w: Level?, x: Int, y: Int, z: Int): Boolean {
+            return isBlockWrappable(w?.getBlockState(BlockPos(x, y, z)) ?: block.defaultBlockState())
+        }
+
         // 1.20.1 has one redstone torch block (lit is a state) and separate wall torch blocks.
         @JvmStatic
         fun isBlockWrappable(state: BlockState): Boolean {

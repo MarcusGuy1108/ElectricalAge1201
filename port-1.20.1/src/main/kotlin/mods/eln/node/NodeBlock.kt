@@ -25,7 +25,7 @@ abstract class NodeBlock(
     properties: Properties,
     private val entityFactory: (BlockPos, BlockState) -> BlockEntity,
     var blockItemNbr: Int
-) : BaseEntityBlock(properties.strength(1.0f).lightLevel { it.getValue(LIGHT) }) {
+) : BaseEntityBlock(properties.lightLevel { it.getValue(LIGHT) }) {
 
     init {
         registerDefaultState(stateDefinition.any().setValue(LIGHT, 0))
