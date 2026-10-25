@@ -2,6 +2,7 @@ package mods.eln.gametest
 
 import mods.eln.Eln
 import mods.eln.misc.Direction
+import mods.eln.node.NodeManager
 import mods.eln.node.six.SixNode
 import mods.eln.node.six.SixNodeEntity
 import mods.eln.node.six.SixNodeItem
@@ -10,6 +11,7 @@ import mods.eln.sim.mna.component.Resistor
 import mods.eln.sim.mna.component.VoltageSource
 import mods.eln.sixnode.electricalcable.ElectricalCableElement
 import net.minecraft.core.BlockPos
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.gametest.framework.GameTest
 import net.minecraft.gametest.framework.GameTestHelper
 import net.minecraft.world.level.block.Blocks
@@ -59,6 +61,21 @@ object SixNodeGameTests {
             for (component in listOf(source, feed, drain)) Eln.simulator.removeElectricalComponent(component)
             Eln.simulator.removeElectricalLoad(machine)
         }
+    }
+
+    // Nodes are rebuilt from the world save by their uuid; a missing registration silently dropped every cable on load.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun cableSurvivesSaveAndLoad(helper: GameTestHelper) {
+        val node = placeCable(helper, BlockPos(1, 1, 1))
+        val tag = CompoundTag()
+        node.writeToNBT(tag)
+        val nodeClass = NodeManager.UUIDToClass[node.nodeUuid]
+        helper.assertTrue(nodeClass != null, "no node class registered for uuid ${node.nodeUuid}")
+        val loaded = nodeClass!!.getConstructor().newInstance() as SixNode
+        loaded.readFromNBT(tag)
+        helper.assertTrue(loaded.getElement(Direction.YN) is ElectricalCableElement, "cable element not restored")
+        helper.succeed()
     }
 
     // Breaking the support block must remove the cable on top of it, as 1.7.10 did.

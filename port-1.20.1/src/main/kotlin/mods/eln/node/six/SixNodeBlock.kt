@@ -147,9 +147,11 @@ class SixNodeBlock : NodeBlock(
     }
 
     val nodeUuid: String
-        get() = "s"
+        get() = NODE_UUID
 
     companion object {
+        const val NODE_UUID = "s"
+
         private const val FACE_THICKNESS = 0.2
 
         // Outline slab for each element side, indexed by Direction.int.

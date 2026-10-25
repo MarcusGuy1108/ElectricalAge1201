@@ -16,7 +16,18 @@ cd port-1.20.1
 ./gradlew runServer    # headless dedicated server (accept the EULA in run/eula.txt first)
 ./gradlew runClient
 ./gradlew runGameTestServer   # runs the GameTests in mods.eln.gametest on a headless server, fails the build on failure
+./gradlew runData      # regenerates item models and block states into src/generated/resources
 ```
+
+Rerun `runData` after registering new descriptors and commit `src/generated/resources`. Each descriptor item gets an
+`item/generated` model from its 1.7.10 icon; the voltage level background is a second layer shown only in inventories
+(Forge `separate_transforms`), as the 1.7.10 item renderer did.
+
+Textures, models and sounds are not copied: the build packs `../src/main/resources/assets` with every path lowercased
+and characters outside `[a-z0-9/._-]` replaced by `_`, which 1.20.1 resource locations require. Code that builds a
+path from a legacy name goes through `Utils.resourcePath` / `Utils.resourceLocation`, which apply the same rule.
+`assets/minecraft/atlases/blocks.json` adds the legacy `blocks/`, `items/` and `voltages/` texture folders to the
+block atlas so item models can use them.
 
 Plain JUnit tests cannot bootstrap Minecraft on Forge (its event bus needs the mod launcher), so anything touching
 registries, levels or blocks (for example `Coordinate`, which stores a dimension key) is tested with GameTests.
@@ -47,6 +58,9 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
    first run once a concrete node block is registered in milestone 5. Client-to-server node packets are now rejected
    unless the player is in the node's dimension and within 64 blocks.
 5. [ ] Vertical slice: cable, battery and lamp placed in a world with models, GUI and sync.
+   * [x] Six-node framework and the classic cables: placeable in game, connected rendering, item icons, creative
+     tab, simulation (GameTest feeds 10 V through two placed cables), drop when the support block goes, save/load.
+   * [ ] Transparent-node framework, battery, lamp socket and bulbs.
 6. [ ] Six-node blocks, transparent-node machines and the remaining content, family by family.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
 

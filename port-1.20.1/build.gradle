@@ -47,12 +47,15 @@ minecraft {
 
         data {
             workingDirectory project.file('run-data')
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/'), '--existing', file('build/resources/main/')
         }
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+// The item model generator checks icons against the processed (renamed) shared assets.
+tasks.matching { it.name == 'runData' }.configureEach { dependsOn 'processResources' }
 
 // Textures, models and sounds are shared with the 1.7.10 build in ../src/main/resources instead of being copied.
 def legacyAssets = file('../src/main/resources/assets')
@@ -104,7 +107,8 @@ tasks.named('processResources', ProcessResources).configure {
         exclude 'eln/lang/**', 'eln/unused-models/**', 'eln/temp/**', '**/*.blend'
         // 1.20.1 resource paths must be [a-z0-9/._-]; Utils.resourcePath applies the same mapping in code.
         eachFile { it.path = it.path.toLowerCase().replaceAll('[^a-z0-9/._-]', '_') }
-        filesMatching('eln/sounds.json') { filter { line -> line.toLowerCase() } }
+        // 1.7.10 resolved sound file names against the eln domain; 1.20.1 defaults them to minecraft.
+        filesMatching('eln/sounds.json') { filter { line -> line.toLowerCase().replaceAll('"name": *"', '"name": "eln:') } }
     }
     from(generatedLang)
     var replaceProperties = [

@@ -1,10 +1,13 @@
 package mods.eln
 
 import mods.eln.client.ElnClient
+import mods.eln.datagen.ElnDataGen
 import mods.eln.metrics.MetricsSubsystem
 import mods.eln.generic.GenericItemBlockUsingDamage
 import mods.eln.network.ElnNetwork
 import mods.eln.node.six.SixNodeItem
+import mods.eln.node.six.SixNodeBlock
+import mods.eln.node.six.SixNode
 import mods.eln.node.six.SixNodeBlockRegistration
 import mods.eln.registration.SixNodeRegistration
 import mods.eln.registry.ElnRegistries
@@ -28,10 +31,12 @@ object ElnMod {
         ElnNetwork.register()
         Eln.createCreativeTabs()
         SixNodeBlockRegistration.BLOCK
+        NodeManager.registerUuid(SixNodeBlock.NODE_UUID, SixNode::class.java)
         Eln.sixNodeItem = GenericItemBlockUsingDamage { SixNodeItem(it) }
         Eln.obj.loadAllElnModels()
         SixNodeRegistration.registerSix()
         ElnRegistries.register(MOD_BUS)
+        MOD_BUS.addListener(ElnDataGen::gatherData)
         if (FMLEnvironment.dist == Dist.CLIENT) ElnClient.init(MOD_BUS)
         Eln.nodeManager = NodeManager("caca")
         Eln.nodeServer = NodeServer()

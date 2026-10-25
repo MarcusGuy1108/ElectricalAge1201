@@ -6,8 +6,8 @@ import net.minecraft.world.item.CreativeModeTab
  * Keeps track of descriptor-driven item families so each creative tab can list its descriptors.
  */
 object CreativeTabPopulator {
-    private val blockItems = ArrayList<GenericItemBlockUsingDamage<*>>()
-    private val genericItems = ArrayList<GenericItemUsingDamage<*>>()
+    val blockItems = ArrayList<GenericItemBlockUsingDamage<*>>()
+    val genericItems = ArrayList<GenericItemUsingDamage<*>>()
 
     fun register(item: GenericItemBlockUsingDamage<*>) {
         if (!blockItems.contains(item)) blockItems.add(item)
