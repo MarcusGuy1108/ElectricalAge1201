@@ -20,3 +20,9 @@ If you learn things about making the Gradle build work in the sandbox, document 
 # Sandbox
 
 * When `./gradlew` fails inside the sandbox claiming it “Could not determine a usable wildcard IP”, rerun with `GRADLE_USER_HOME=$PWD/.gradle` and, if needed, request escalation—the build otherwise succeeds once it can write its cache and bind to an IP.
+* The first `port-1.20.1` build downloads and decompiles Minecraft (a few minutes). Maven Central can answer `429 Too Many Requests` during the first dependency download; rerun with `--max-workers=2`, already downloaded files stay cached.
+* `port-1.20.1` needs Java 17; Gradle provisions it through the foojay toolchain resolver when only a newer JDK is installed.
+
+# 1.20.1 port
+
+* The Forge 1.20.1 port is a separate Gradle project in `port-1.20.1/`. See `docs/port-1.20.1.md` for layout, conventions and milestones. Its build files are ours, not upstream's, so they may be changed.
