@@ -1,14 +1,12 @@
 @file:Suppress("NAME_SHADOWING")
 package mods.eln.misc
 
-import com.mojang.blaze3d.vertex.PoseStack
-import com.mojang.math.Axis
+import mods.eln.client.GL11
 import mods.eln.misc.Utils.isTheClass
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.phys.Vec3
-import org.joml.Vector3f
 import net.minecraft.core.Direction as McDirection
 
 /**
@@ -134,7 +132,76 @@ enum class Direction(var int: Int) {
     private val sign: Int
         get() = int % 2 * 2 - 1
 
-    // PORT: renderBlockFace (GL11 immediate mode) returns as VertexConsumer code with the renderers.
+    fun renderBlockFace(x: Int, y: Int, spriteDim: Float) {
+        when (this) {
+            XN -> {
+                GL11.glNormal3f(-1.0f, 0.0f, 0.0f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, 0.5f)
+            }
+            XP -> {
+                GL11.glNormal3f(1.0f, 0.0f, 0.0f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, -0.5f)
+            }
+            YN -> {
+                GL11.glNormal3f(0.0f, -1.0f, 0.0f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, -0.5f)
+            }
+            YP -> {
+                GL11.glNormal3f(0.0f, 1.0f, 0.0f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, -0.5f)
+            }
+            ZN -> {
+                GL11.glNormal3f(0.0f, 0.0f, -1.0f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, -0.5f)
+            }
+            ZP -> {
+                GL11.glNormal3f(0.0f, 0.0f, 1.0f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, 0.5f)
+            }
+        }
+    }
 
     fun right(): Direction {
         return when (this) {
@@ -186,56 +253,56 @@ enum class Direction(var int: Int) {
         return null
     }
 
-    fun glRotateXnRef(pose: PoseStack) {
+    fun glRotateXnRef() {
         //toCheck
         when (this) {
             XN -> {
             }
-            XP ->                 //pose.scale(-1f, 1, -1f);
-                pose.mulPose(Axis.of(Vector3f(0f, 1f, 0f)).rotationDegrees(180f))
+            XP ->                 //GL11.glScalef(-1f, 1, -1f);
+                GL11.glRotatef(180f, 0f, 1f, 0f)
             YN -> {
-                pose.mulPose(Axis.of(Vector3f(0f, 0f, 1f)).rotationDegrees(90f))
-                pose.scale(1f, -1f, -1f)
+                GL11.glRotatef(90f, 0f, 0f, 1f)
+                GL11.glScalef(1f, -1f, -1f)
             }
-            YP -> pose.mulPose(Axis.of(Vector3f(0f, 0f, -1f)).rotationDegrees(90f))
-            ZN -> pose.mulPose(Axis.of(Vector3f(0f, 1f, 0f)).rotationDegrees(270f))
-            ZP -> pose.mulPose(Axis.of(Vector3f(0f, 1f, 0f)).rotationDegrees(90f))
+            YP -> GL11.glRotatef(90f, 0f, 0f, -1f)
+            ZN -> GL11.glRotatef(270f, 0f, 1f, 0f)
+            ZP -> GL11.glRotatef(90f, 0f, 1f, 0f)
         }
     }
 
-    fun glRotateXnRefInv(pose: PoseStack) {
+    fun glRotateXnRefInv() {
         //toCheck
         when (this) {
             XN -> {
             }
-            XP ->                 //pose.scale(-1f, 1, -1f);
-                pose.mulPose(Axis.of(Vector3f(0f, -1f, 0f)).rotationDegrees(180f))
+            XP ->                 //GL11.glScalef(-1f, 1, -1f);
+                GL11.glRotatef(180f, 0f, -1f, 0f)
             YN -> {
-                pose.scale(1f, -1f, -1f)
-                pose.mulPose(Axis.of(Vector3f(0f, 0f, -1f)).rotationDegrees(90f))
+                GL11.glScalef(1f, -1f, -1f)
+                GL11.glRotatef(90f, 0f, 0f, -1f)
             }
-            YP -> pose.mulPose(Axis.of(Vector3f(0f, 0f, 1f)).rotationDegrees(90f))
-            ZN -> pose.mulPose(Axis.of(Vector3f(0f, -1f, 0f)).rotationDegrees(270f))
-            ZP -> pose.mulPose(Axis.of(Vector3f(0f, -1f, 0f)).rotationDegrees(90f))
+            YP -> GL11.glRotatef(90f, 0f, 0f, 1f)
+            ZN -> GL11.glRotatef(270f, 0f, -1f, 0f)
+            ZP -> GL11.glRotatef(90f, 0f, -1f, 0f)
         }
     }
 
-    fun glRotateZnRef(pose: PoseStack) {
+    fun glRotateZnRef() {
         //toCheck
         when (this) {
-            XN -> pose.mulPose(Axis.of(Vector3f(0f, 1f, 0f)).rotationDegrees(90f))
-            XP -> pose.mulPose(Axis.of(Vector3f(0f, -1f, 0f)).rotationDegrees(90f))
+            XN -> GL11.glRotatef(90f, 0f, 1f, 0f)
+            XP -> GL11.glRotatef(90f, 0f, -1f, 0f)
             YN -> {
-                pose.mulPose(Axis.of(Vector3f(1f, 0f, 0f)).rotationDegrees(90f))
-                pose.scale(1f, -1f, 1f)
+                GL11.glRotatef(90f, 1f, 0f, 0f)
+                GL11.glScalef(1f, -1f, 1f)
             }
             YP -> {
-                pose.mulPose(Axis.of(Vector3f(1f, 0f, 0f)).rotationDegrees(90f))
-                pose.scale(1f, 1f, 1f)
+                GL11.glRotatef(90f, 1f, 0f, 0f)
+                GL11.glScalef(1f, 1f, 1f)
             }
             ZN -> {
             }
-            ZP -> pose.mulPose(Axis.of(Vector3f(0f, 1f, 0f)).rotationDegrees(180f))
+            ZP -> GL11.glRotatef(180f, 0f, 1f, 0f)
         }
     }
 
@@ -369,14 +436,14 @@ enum class Direction(var int: Int) {
         }
     }
 
-    fun glTranslate(pose: PoseStack, v: Float) {
+    fun glTranslate(v: Float) {
         when (this) {
-            XN -> pose.translate(-v, 0f, 0f)
-            XP -> pose.translate(v, 0f, 0f)
-            YN -> pose.translate(0f, -v, 0f)
-            YP -> pose.translate(0f, v, 0f)
-            ZN -> pose.translate(0f, 0f, -v)
-            ZP -> pose.translate(0f, 0f, v)
+            XN -> GL11.glTranslatef(-v, 0f, 0f)
+            XP -> GL11.glTranslatef(v, 0f, 0f)
+            YN -> GL11.glTranslatef(0f, -v, 0f)
+            YP -> GL11.glTranslatef(0f, v, 0f)
+            ZN -> GL11.glTranslatef(0f, 0f, -v)
+            ZP -> GL11.glTranslatef(0f, 0f, v)
         }
     }
 
@@ -391,21 +458,21 @@ enum class Direction(var int: Int) {
         }
     }
 
-    fun glRotateZnRefInv(pose: PoseStack) {
+    fun glRotateZnRefInv() {
         when (this) {
-            XN -> pose.mulPose(Axis.of(Vector3f(0f, 1f, 0f)).rotationDegrees(-90f))
-            XP -> pose.mulPose(Axis.of(Vector3f(0f, -1f, 0f)).rotationDegrees(-90f))
+            XN -> GL11.glRotatef(-90f, 0f, 1f, 0f)
+            XP -> GL11.glRotatef(-90f, 0f, -1f, 0f)
             YN -> {
-                pose.mulPose(Axis.of(Vector3f(1f, 0f, 0f)).rotationDegrees(-90f))
-                pose.scale(1f, -1f, 1f)
+                GL11.glRotatef(-90f, 1f, 0f, 0f)
+                GL11.glScalef(1f, -1f, 1f)
             }
             YP -> {
-                pose.mulPose(Axis.of(Vector3f(1f, 0f, 0f)).rotationDegrees(-90f))
-                pose.scale(1f, 1f, 1f)
+                GL11.glRotatef(-90f, 1f, 0f, 0f)
+                GL11.glScalef(1f, 1f, 1f)
             }
             ZN -> {
             }
-            ZP -> pose.mulPose(Axis.of(Vector3f(0f, 1f, 0f)).rotationDegrees(-180f))
+            ZP -> GL11.glRotatef(-180f, 0f, 1f, 0f)
         }
     }
 

@@ -2,6 +2,7 @@ package mods.eln
 
 import mods.eln.metrics.MetricsSubsystem
 import mods.eln.network.ElnNetwork
+import mods.eln.registry.ElnRegistries
 import mods.eln.node.NodeManager
 import mods.eln.node.NodeServer
 import mods.eln.server.ServerEventListener
@@ -11,12 +12,15 @@ import net.minecraftforge.event.level.LevelEvent
 import net.minecraftforge.event.server.ServerAboutToStartEvent
 import net.minecraftforge.event.server.ServerStoppedEvent
 import net.minecraftforge.fml.common.Mod
+import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
 @Mod(Eln.MODID)
 object ElnMod {
     init {
         Eln.loadConfig()
         ElnNetwork.register()
+        Eln.createCreativeTabs()
+        ElnRegistries.register(MOD_BUS)
         Eln.nodeManager = NodeManager("caca")
         Eln.nodeServer = NodeServer()
         Eln.serverEventListener = ServerEventListener()

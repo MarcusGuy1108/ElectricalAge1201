@@ -1,10 +1,8 @@
 package mods.eln.misc
 
-import com.mojang.blaze3d.vertex.PoseStack
-import com.mojang.math.Axis
+import mods.eln.client.GL11
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.phys.Vec3
-import org.joml.Vector3f
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
@@ -84,13 +82,13 @@ enum class LRDU(var dir: Int) {
             }
         }
 
-    fun glRotateOnX(pose: PoseStack) {
+    fun glRotateOnX() {
         when (this) {
             Left -> {
             }
-            Up -> pose.mulPose(Axis.of(Vector3f(1f, 0f, 0f)).rotationDegrees(90f))
-            Right -> pose.mulPose(Axis.of(Vector3f(1f, 0f, 0f)).rotationDegrees(180f))
-            Down -> pose.mulPose(Axis.of(Vector3f(1f, 0f, 0f)).rotationDegrees(270f))
+            Up -> GL11.glRotatef(90f, 1f, 0f, 0f)
+            Right -> GL11.glRotatef(180f, 1f, 0f, 0f)
+            Down -> GL11.glRotatef(270f, 1f, 0f, 0f)
         }
     }
 

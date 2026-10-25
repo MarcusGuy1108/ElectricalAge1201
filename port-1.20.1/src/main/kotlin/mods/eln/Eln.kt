@@ -2,11 +2,14 @@ package mods.eln
 
 import com.mojang.logging.LogUtils
 import mods.eln.config.JsonConfig
+import mods.eln.generic.GenericCreativeTab
 import mods.eln.node.NodeManager
 import mods.eln.node.NodeServer
 import mods.eln.server.ServerEventListener
 import mods.eln.sim.Simulator
 import net.minecraftforge.fml.loading.FMLPaths
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
 import org.slf4j.Logger
 import java.io.File
 
@@ -58,6 +61,31 @@ object Eln {
     lateinit var nodeManager: NodeManager
     lateinit var nodeServer: NodeServer
     lateinit var serverEventListener: ServerEventListener
+
+    lateinit var creativeTabPowerElectronics: GenericCreativeTab
+    lateinit var creativeTabCables: GenericCreativeTab
+    lateinit var creativeTabPowerDistribution: GenericCreativeTab
+    lateinit var creativeTabSignalProcessing: GenericCreativeTab
+    lateinit var creativeTabLighting: GenericCreativeTab
+    lateinit var creativeTabToolsArmor: GenericCreativeTab
+    lateinit var creativeTabOresMaterials: GenericCreativeTab
+    lateinit var creativeTabMachines: GenericCreativeTab
+    lateinit var creativeTabCreative: GenericCreativeTab
+    lateinit var creativeTabOther: GenericCreativeTab
+
+    // Same labels and icons as 1.7.10, so the "itemGroup.<label>" lang keys still apply.
+    internal fun createCreativeTabs() {
+        creativeTabPowerElectronics = GenericCreativeTab("ElnPowerElectronics") { ItemStack(Items.REDSTONE) }
+        creativeTabCables = GenericCreativeTab("ElnCables") { ItemStack(Items.STRING) }
+        creativeTabPowerDistribution = GenericCreativeTab("ElnPowerDistribution") { ItemStack(Items.STRING) }
+        creativeTabSignalProcessing = GenericCreativeTab("ElnSignalProcessing") { ItemStack(Items.COMPARATOR) }
+        creativeTabLighting = GenericCreativeTab("ElnLighting") { ItemStack(Items.REDSTONE_LAMP) }
+        creativeTabToolsArmor = GenericCreativeTab("ElnToolsArmor") { ItemStack(Items.IRON_PICKAXE) }
+        creativeTabOresMaterials = GenericCreativeTab("ElnOresMaterials") { ItemStack(Items.IRON_INGOT) }
+        creativeTabMachines = GenericCreativeTab("ElnMachines") { ItemStack(Items.DISPENSER) }
+        creativeTabCreative = GenericCreativeTab("ElnCreative") { ItemStack(Items.NETHER_STAR) }
+        creativeTabOther = creativeTabOresMaterials
+    }
 
     internal fun loadConfig() {
         config = JsonConfig(FMLPaths.CONFIGDIR.get().resolve("Eln.cfg").toFile())
