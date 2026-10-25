@@ -4,6 +4,8 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import mods.eln.item.lampitem.BoilerplateLampData
+import mods.eln.item.lampitem.LampLists
 import mods.eln.Eln
 import mods.eln.metrics.MetricsSubsystem
 import mods.eln.misc.Utils
@@ -238,7 +240,8 @@ class JsonConfig @JvmOverloads constructor(
     fun loadConfig() {
         load()
 
-        // PORT: LampLists, TurbineBladeLists and ClutchPlateItem config loading returns with those items.
+        LampLists.loadAllLampConfigs()
+        // PORT: TurbineBladeLists and ClutchPlateItem config loading returns with those items.
 
         val analyticsEnabled = getBooleanOrElse("analytics.enabled", true)
         if (analyticsEnabled) {
@@ -449,7 +452,11 @@ class JsonConfig @JvmOverloads constructor(
         val canonicalPath = path.trim()
         val existing = values[canonicalPath] ?: throw IllegalArgumentException("Unknown config path '$canonicalPath'")
 
-        // PORT: lamp nominal life validation returns with BoilerplateLampData.
+        // Prevent propagation of invalid lamp life values to the config file
+        if (canonicalPath.startsWith("lighting.lamps") && canonicalPath.contains("nominalLifeInHours")) {
+            val formattedValue = parseRawValue(rawValue, 0.0) as Double // Second argument can be any double
+            if (!BoilerplateLampData.isValidNominalLife(formattedValue)) return "lighting.lamps"
+        }
 
         values[canonicalPath] = parseRawValue(rawValue, existing)
         save()
@@ -477,7 +484,11 @@ class JsonConfig @JvmOverloads constructor(
             throw IllegalArgumentException("No config paths matched '$canonicalPattern'")
         }
 
-        // PORT: lamp nominal life validation returns with BoilerplateLampData.
+        // Prevent propagation of invalid lamp life values to the config file
+        if (canonicalPattern.startsWith("lighting.lamps") && canonicalPattern.contains("nominalLifeInHours")) {
+            val formattedValue = parseRawValue(rawValue, 0.0) as Double // Second argument can be any double
+            if (!BoilerplateLampData.isValidNominalLife(formattedValue)) return listOf("lighting.lamps")
+        }
 
         matchedPaths.forEach { path ->
             val existing = values.getValue(path)
@@ -823,7 +834,13 @@ class JsonConfig @JvmOverloads constructor(
         for (spec in specs) {
             defaults[joinPath(spec.path)] = spec.defaultValue
         }
-        // PORT: lamp, turbine blade and clutch plate defaults return with those items.
+        if (includeDefaultSpecs) {
+            for (lamp in LampLists.lampTechnologyList) {
+                defaults[lamp.nominalLifePath] = lamp.nominalLifeInHours
+                defaults[lamp.infiniteLifePath] = lamp.infiniteLifeEnabled
+            }
+        }
+        // PORT: turbine blade and clutch plate defaults return with those items.
         return defaults
     }
 
@@ -885,7 +902,11 @@ class JsonConfig @JvmOverloads constructor(
             val path = joinPath(spec.path)
             spec.comment?.let { pathComments[path] = it }
         }
-        // PORT: lamp, turbine blade and clutch plate comments return with those items.
+        for (lamp in LampLists.lampTechnologyList) {
+            pathComments["lighting.lamps.${lamp.lampType}.nominalLifeHours"] = "Nominal lamp lifetime in hours for ${lamp.lampType} bulbs."
+            pathComments["lighting.lamps.${lamp.lampType}.infiniteLifeEnabled"] = "Disable bulb wear-out for ${lamp.lampType} bulbs."
+        }
+        // PORT: turbine blade and clutch plate comments return with those items.
     }
 
     private fun legacyKeysFor(spec: ConfigSpec): List<LegacyKey> = when (joinPath(spec.path)) {

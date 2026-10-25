@@ -1,5 +1,6 @@
 package mods.eln.datagen
 
+import mods.eln.lightblock.LightBlock
 import mods.eln.Eln
 import mods.eln.generic.CreativeTabPopulator
 import mods.eln.misc.Utils
@@ -76,12 +77,14 @@ class ElnItemModels(output: PackOutput, files: ExistingFileHelper) : ItemModelPr
     }
 }
 
-/** Node blocks are drawn by block entity renderers; their block model only supplies the breaking particle. */
+/** Node blocks are drawn by block entity renderers; their block models only supply the breaking particle. */
 class ElnBlockStates(output: PackOutput, files: ExistingFileHelper) : BlockStateProvider(output, Eln.MODID, files) {
     override fun registerStatesAndModels() {
         simpleBlock(
             SixNodeBlockRegistration.BLOCK.get(),
             models().getBuilder("six_node").texture("particle", mcLoc("block/stone"))
         )
+        // Invisible; the model only exists so the block state resolves.
+        simpleBlock(LightBlock.BLOCK.get(), models().getBuilder("light").texture("particle", mcLoc("block/glass")))
     }
 }

@@ -1,5 +1,12 @@
 package mods.eln.registration
 
+import mods.eln.sixnode.lampsocket.objrender.LampSocketSuspendedObjRender
+import mods.eln.sixnode.lampsocket.objrender.LampSocketStandardObjRender
+import mods.eln.sixnode.lampsocket.LampSocketDescriptor
+import mods.eln.sixnode.electricalsource.ElectricalSourceDescriptor
+import mods.eln.node.six.SixNodeDescriptor
+import mods.eln.misc.Direction
+import mods.eln.item.lampitem.LampLists
 import mods.eln.Eln
 import mods.eln.cable.CableRenderDescriptor
 import mods.eln.generic.GenericCreativeTab
@@ -65,14 +72,14 @@ object SixNodeRegistration {
         Eln.sixNodeItem.setCreativeTabForGroup(116, Eln.creativeTabMachines)
         Eln.sixNodeItem.setCreativeTabForGroup(125, Eln.creativeTabToolsArmor)
         // PORT: registerGround(2)
-        // PORT: registerElectricalSource(3)
+        registerElectricalSource(3)
         registerElectricalCable(32)
         // PORT: registerCurrentCables(33)
         // PORT: registerUtilityCables(34, 35, 36, 37)
         // PORT: registerThermalCable(48)
         // PORT: registerCurrentRelays(126)
         // PORT: registerConduit(127)
-        // PORT: registerLampSocket(64)
+        registerLampSocket(64)
         // PORT: registerPowerSocket(67)
         // PORT: registerLampSupply(65)
 
@@ -204,4 +211,225 @@ object SixNodeRegistration {
         // PORT: Signal Bus Cable (subId 20, ElectricalSignalBusCableElement) returns with the signal bus.
     }
 
+
+    private fun registerElectricalSource(id: Int) {
+        var subId: Int
+
+        run {
+            subId = 0
+            val name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Source")
+            val desc = ElectricalSourceDescriptor(name, Eln.obj.getObj("voltagesource"), false).creative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 1
+            val name = I18N.TR_NAME(I18N.Type.NONE, "Signal Source")
+            val desc =
+                ElectricalSourceDescriptor(name, Eln.obj.getObj("signalsource"), true).creative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        // PORT: Current Source (subId 2) returns with CurrentSourceDescriptor.
+    }
+
+    private fun registerLampSocket(id: Int) {
+        var subId: Int
+        var completeId: Int
+        var descriptor: SixNodeDescriptor
+
+        run {
+            subId = 0
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Classic Lamp Socket"),
+                LampSocketStandardObjRender(Eln.obj.getObj("ClassicLampSocket"), false),
+                4,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("farming")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 1
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Spot Lamp Socket"),
+                LampSocketStandardObjRender(Eln.obj.getObj("ClassicLampSocket"), false),
+                10,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("farming")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            descriptor.enableProjectionRotation = true
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 4
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Robust Lamp Socket"),
+                LampSocketStandardObjRender(Eln.obj.getObj("RobustLamp"), true),
+                3,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("farming")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            descriptor.initialRenderAngleOffset = -90.0
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 5
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Flat Lamp Socket"),
+                LampSocketStandardObjRender(Eln.obj.getObj("FlatLamp"), true),
+                3,
+                arrayOf(
+                    LampLists.getLampData("fluorescent")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 6
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Simple Lamp Socket"),
+                LampSocketStandardObjRender(Eln.obj.getObj("SimpleLamp"), true),
+                3,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("farming")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 7
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Fluorescent Lamp Socket"),
+                LampSocketStandardObjRender(Eln.obj.getObj("FluorescentLamp"), true),
+                4,
+                arrayOf(
+                    LampLists.getLampData("fluorescent")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            descriptor.renderSideCables = false
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 9
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Sconce Lamp Socket"),
+                LampSocketStandardObjRender(Eln.obj.getObj("SconceLamp"), true),
+                3,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("farming")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            descriptor.paintable = true
+            descriptor.initialRenderAngleOffset = -90.0
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 12
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Suspended Lamp Socket"),
+                LampSocketSuspendedObjRender(Eln.obj.getObj("RobustLampSuspended"), true, 3, true),
+                3,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("farming")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            descriptor.setPlaceDirection(Direction.YP)
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 13
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Long Suspended Lamp Socket"),
+                LampSocketSuspendedObjRender(Eln.obj.getObj("RobustLampSuspended"), true, 7, true),
+                4,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("farming")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            descriptor.setPlaceDirection(Direction.YP)
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 17
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Suspended Lamp Socket (No Swing)"),
+                LampSocketSuspendedObjRender(Eln.obj.getObj("RobustLampSuspended"), true, 3, false),
+                3,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("farming")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            descriptor.setPlaceDirection(Direction.YP)
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 18
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Long Suspended Lamp Socket (No Swing)"),
+                LampSocketSuspendedObjRender(Eln.obj.getObj("RobustLampSuspended"), true, 7, false),
+                4,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("farming")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            descriptor.setPlaceDirection(Direction.YP)
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        // PORT: Streetlight (subId 8, needs ghost blocks) and the 120V/240V Emergency Lamps (subIds 15, 16) return with
+        // mods.eln.ghost and EmergencyLampDescriptor.
+    }
 }

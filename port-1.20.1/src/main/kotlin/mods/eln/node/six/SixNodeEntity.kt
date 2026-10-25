@@ -1,6 +1,9 @@
 @file:Suppress("NAME_SHADOWING")
 package mods.eln.node.six
 
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.client.gui.screens.Screen
+import net.minecraft.world.entity.player.Player
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.block.state.BlockState
 
@@ -94,7 +97,14 @@ class SixNodeEntity(pos: BlockPos, state: BlockState) : NodeBlockEntity(SixNodeB
         return elementRenderList[direction.int] != null
     }
 
-    // PORT: newContainer/newGuiDraw return with the GUI layer.
+    override fun newContainer(side: Direction, player: Player): AbstractContainerMenu? {
+        val n = node as SixNode? ?: return null
+        return n.newContainer(side, player)
+    }
+
+    override fun newGuiDraw(side: Direction, player: Player): Screen? {
+        return elementRenderList[side.int]?.newGuiDraw(side, player)
+    }
 
 
 

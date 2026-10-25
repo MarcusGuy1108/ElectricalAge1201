@@ -1,5 +1,10 @@
 package mods.eln
 
+import mods.eln.registration.ItemRegistration
+import mods.eln.item.lampitem.LampLists
+import mods.eln.lightblock.LightBlock
+import mods.eln.generic.GenericItemUsingDamage
+import mods.eln.gui.ElnMenus
 import mods.eln.client.ElnClient
 import mods.eln.datagen.ElnDataGen
 import mods.eln.metrics.MetricsSubsystem
@@ -33,9 +38,14 @@ object ElnMod {
         SixNodeBlockRegistration.BLOCK
         NodeManager.registerUuid(SixNodeBlock.NODE_UUID, SixNode::class.java)
         Eln.sixNodeItem = GenericItemBlockUsingDamage { SixNodeItem(it) }
+        Eln.sharedItem = GenericItemUsingDamage()
+        LightBlock.BLOCK
         Eln.obj.loadAllElnModels()
+        LampLists.translateLampTypes() // Lamp sockets list the translated lamp types, so before registration.
+        ItemRegistration.registerItem()
         SixNodeRegistration.registerSix()
         ElnRegistries.register(MOD_BUS)
+        ElnMenus.MENUS.register(MOD_BUS)
         MOD_BUS.addListener(ElnDataGen::gatherData)
         if (FMLEnvironment.dist == Dist.CLIENT) ElnClient.init(MOD_BUS)
         Eln.nodeManager = NodeManager("caca")

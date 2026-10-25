@@ -1,5 +1,7 @@
 package mods.eln
 
+import mods.eln.misc.Direction
+import mods.eln.gui.ElnMenus
 import mods.eln.misc.Coordinate
 import mods.eln.misc.Utils
 import mods.eln.misc.Utils.println
@@ -29,13 +31,21 @@ object PacketHandler {
                 Eln.packetNodeSingleSerialized -> packetNodeSingleSerialized(stream, player)
                 Eln.packetPublishForNode -> packetForNode(stream, player)
                 Eln.packetForClientNode -> packetForClientNode(stream, player)
-                // PORT: packetPlayerKey, packetOpenLocalGui, packetPlaySound, packetDestroyUuid,
+                Eln.packetOpenLocalGui -> packetOpenLocalGui(stream, player)
+                // PORT: packetPlayerKey, packetPlaySound, packetDestroyUuid,
                 // packetClientToServerConnection, packetServerToClientInfo and packetFalstadImport return with
                 // the key handler, GUIs, sounds, client UUID manager, shared config and Falstad import.
             }
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+    // Client: the server asked to open a GUI without a container (1.7.10 GuiHandler.nodeBaseOpen + side).
+    private fun packetOpenLocalGui(stream: DataInputStream, player: Player) {
+        if (!player.level().isClientSide) return
+        val side = Direction.fromInt(stream.readInt()) ?: return
+        ElnMenus.openLocalGui(side, BlockPos(stream.readInt(), stream.readInt(), stream.readInt()))
     }
 
     private fun packetForNode(stream: DataInputStream, player: Player) {

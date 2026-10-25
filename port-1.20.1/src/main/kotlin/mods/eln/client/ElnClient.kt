@@ -1,6 +1,11 @@
 package mods.eln.client
 
+import mods.eln.gui.ElnMenus
 import mods.eln.node.NodeBlockEntity
+import net.minecraft.client.gui.screens.MenuScreens
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
 import mods.eln.node.six.SixNodeBlockRegistration
 import mods.eln.node.six.SixNodeRender
 import net.minecraftforge.client.event.EntityRenderersEvent
@@ -16,11 +21,20 @@ object ElnClient {
 
     fun init(modBus: IEventBus) {
         modBus.addListener(::registerRenderers)
+        modBus.addListener(::clientSetup)
         MinecraftForge.EVENT_BUS.addListener(::onRenderTick)
     }
 
     private fun registerRenderers(event: EntityRenderersEvent.RegisterRenderers) {
         event.registerBlockEntityRenderer(SixNodeBlockRegistration.ENTITY.get()) { SixNodeRender() }
+    }
+
+    private fun clientSetup(event: FMLClientSetupEvent) {
+        event.enqueueWork {
+            MenuScreens.register(ElnMenus.NODE.get(), MenuScreens.ScreenConstructor<AbstractContainerMenu, AbstractContainerScreen<AbstractContainerMenu>> { menu, inventory, _ ->
+                ElnMenus.createScreen(menu, inventory)
+            })
+        }
     }
 
     // 1.7.10 FrameTime: let client node entities animate once per frame with the frame duration.

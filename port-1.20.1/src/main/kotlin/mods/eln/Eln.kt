@@ -1,5 +1,9 @@
 package mods.eln
 
+import mods.eln.sim.mna.component.Resistor
+import mods.eln.sim.nbt.NbtElectricalLoad
+import mods.eln.generic.GenericItemUsingDamageDescriptor
+import mods.eln.generic.GenericItemUsingDamage
 import com.mojang.logging.LogUtils
 import mods.eln.cable.CableRenderDescriptor
 import mods.eln.config.JsonConfig
@@ -87,7 +91,18 @@ object Eln {
     lateinit var nodeServer: NodeServer
     lateinit var serverEventListener: ServerEventListener
 
+    @JvmStatic
+    fun applySmallRs(aLoad: NbtElectricalLoad) {
+        lowVoltageCableDescriptor!!.applyTo(aLoad)
+    }
+
+    @JvmStatic
+    fun applySmallRs(r: Resistor) {
+        lowVoltageCableDescriptor!!.applyTo(r)
+    }
+
     lateinit var sixNodeItem: GenericItemBlockUsingDamage<SixNodeDescriptor>
+    lateinit var sharedItem: GenericItemUsingDamage<GenericItemUsingDamageDescriptor>
 
     @JvmField val obj = Obj3DFolder()
 

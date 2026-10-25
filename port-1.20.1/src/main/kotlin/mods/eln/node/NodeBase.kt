@@ -1,6 +1,7 @@
 @file:Suppress("NAME_SHADOWING")
 package mods.eln.node
 
+import mods.eln.gui.ElnMenus
 import mods.eln.Eln
 import mods.eln.misc.Coordinate
 import mods.eln.misc.Direction
@@ -143,7 +144,11 @@ abstract class NodeBase {
 
     open fun onBlockActivated(entityPlayer: Player, side: Direction, vx: Float, vy: Float, vz: Float): Boolean {
         // PORT: multimeter, thermometer, all-meter and config copy tool handling returns with those items (uses
-        // multiMeterString/thermoMeterString/readConfigTool/writeConfigTool below); GUI opening returns with menus.
+        // multiMeterString/thermoMeterString/readConfigTool/writeConfigTool below).
+        if (hasGui(side) && entityPlayer is ServerPlayer) {
+            ElnMenus.openNodeGui(entityPlayer, coordinate, side)
+            return true
+        }
         return false
     }
 

@@ -1,5 +1,15 @@
 package mods.eln.gametest
 
+import java.io.DataOutputStream
+import java.io.DataInputStream
+import java.io.ByteArrayOutputStream
+import java.io.ByteArrayInputStream
+import net.minecraft.world.item.ItemStack
+import mods.eln.sixnode.lampsocket.LampSocketRender
+import mods.eln.sixnode.lampsocket.LampSocketElement
+import mods.eln.sixnode.lampsocket.LampSocketContainer
+import mods.eln.sixnode.electricalsource.ElectricalSourceElement
+import mods.eln.node.NodeBlock
 import mods.eln.Eln
 import mods.eln.misc.Direction
 import mods.eln.node.NodeManager
@@ -23,8 +33,11 @@ import kotlin.math.abs
 @PrefixGameTestTemplate(false)
 object SixNodeGameTests {
     private fun placeCable(helper: GameTestHelper, relative: BlockPos): SixNode {
+        return placeOnFloor(helper, relative, Eln.lowVoltageCableDescriptor!!.newItemStack())
+    }
+
+    private fun placeOnFloor(helper: GameTestHelper, relative: BlockPos, stack: ItemStack): SixNode {
         helper.setBlock(relative.below(), Blocks.STONE)
-        val stack = Eln.lowVoltageCableDescriptor!!.newItemStack()
         val item = stack.item as SixNodeItem
         val pos = helper.absolutePos(relative)
         helper.assertTrue(item.placeBlockAt(stack, helper.makeMockPlayer(), helper.level, pos, Direction.YN), "cable not placed at $relative")
@@ -76,6 +89,36 @@ object SixNodeGameTests {
         loaded.readFromNBT(tag)
         helper.assertTrue(loaded.getElement(Direction.YN) is ElectricalCableElement, "cable element not restored")
         helper.succeed()
+    }
+
+    // The 1.7.10 lighting circuit: a 12 V source feeds a lamp socket through a cable; the socket's 12 V bulb lights it.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun sourcePowersLampSocket(helper: GameTestHelper) {
+        val sourceNode = placeOnFloor(helper, BlockPos(0, 1, 1), Eln.sixNodeItem.getDescriptor(3 shl 6)!!.newItemStack())
+        placeCable(helper, BlockPos(1, 1, 1))
+        val lampNode = placeOnFloor(helper, BlockPos(2, 1, 1), Eln.sixNodeItem.getDescriptor(64 shl 6)!!.newItemStack())
+        val source = sourceNode.getElement(Direction.YN) as ElectricalSourceElement
+        val socket = lampNode.getElement(Direction.YN) as LampSocketElement
+
+        // What the source GUI sends when 12 is typed in.
+        val bytes = ByteArrayOutputStream()
+        DataOutputStream(bytes).apply {
+            writeByte(ElectricalSourceElement.setVoltageId)
+            writeFloat(12f)
+        }
+        source.networkUnserialize(DataInputStream(ByteArrayInputStream(bytes.toByteArray())))
+
+        // What the lamp socket GUI does: bulb and cable in their slots, "Powered by cable".
+        socket.inventory.setItem(LampSocketContainer.LAMP_SLOT_ID, Eln.sharedItem.getDescriptor(4 shl 6)!!.newItemStack())
+        socket.inventory.setItem(LampSocketContainer.CABLE_SLOT_ID, Eln.lowVoltageCableDescriptor!!.newItemStack())
+        socket.poweredByLampSupply = false
+        socket.inventoryChange(socket.inventory)
+
+        helper.succeedWhen {
+            helper.assertTrue(lampNode.lightValue >= LampSocketRender.MIN_LIGHT_ON_VALUE, "lamp light ${lampNode.lightValue}, ${socket.electricalLoad.voltage} V")
+            helper.assertTrue(helper.getBlockState(BlockPos(2, 1, 1)).getValue(NodeBlock.LIGHT) == lampNode.lightValue, "block light not synced")
+        }
     }
 
     // Breaking the support block must remove the cable on top of it, as 1.7.10 did.

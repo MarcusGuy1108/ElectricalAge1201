@@ -1,5 +1,9 @@
 package mods.eln.misc
 
+import java.io.IOException
+import net.minecraft.world.item.Item
+import mods.eln.generic.IDescriptorItem
+import mods.eln.generic.GenericItem
 import mods.eln.Eln
 import mods.eln.client.GL11
 import mods.eln.network.ElnNetwork
@@ -594,5 +598,29 @@ object Utils {
     @JvmStatic
     fun mapFileExists(name: String): Boolean {
         return getMapFile(name).exists()
+    }
+
+    // 1.7.10 wrote the item id and damage; 1.20.1 items carry their descriptor, so the (session-stable) raw id is enough.
+    @JvmStatic
+    @Throws(IOException::class)
+    fun serialiseItemStack(stream: DataOutputStream, stack: ItemStack?) {
+        stream.writeInt(if (stack == null || stack.isEmpty) -1 else Item.getId(stack.item))
+    }
+
+    @JvmStatic
+    @Throws(IOException::class)
+    fun unserialiseItemStack(stream: DataInputStream): ItemStack? {
+        val id = stream.readInt()
+        return if (id == -1) null else ItemStack(Item.byId(id))
+    }
+
+    // The descriptor behind an Eln item stack, or the item itself for other items.
+    @JvmStatic
+    fun getItemObject(stack: ItemStack?): Any? {
+        if (stack == null || stack.isEmpty) return null
+        val i = stack.item
+        if (i is GenericItem) return i.descriptor
+        if (i is IDescriptorItem) return i.descriptor
+        return i
     }
 }

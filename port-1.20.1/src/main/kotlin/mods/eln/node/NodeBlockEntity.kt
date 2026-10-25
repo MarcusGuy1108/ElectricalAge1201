@@ -19,6 +19,8 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
+import net.minecraft.client.gui.screens.Screen
+import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
@@ -82,7 +84,15 @@ abstract class NodeBlockEntity(type: BlockEntityType<*>, pos: BlockPos, state: B
             return internalNode
         }
 
-    // PORT: newContainer/newGuiDraw return as menu and screen factories with the GUI layer.
+    // Server: the element's container, opened as a menu by ElnMenus.openNodeGui.
+    open fun newContainer(side: Direction, player: Player): AbstractContainerMenu? {
+        return null
+    }
+
+    // Client: the GUI screen. Debugging tip: if a GUI does not open, check the descriptor's render class.
+    open fun newGuiDraw(side: Direction, player: Player): Screen? {
+        return null
+    }
 
     override fun getRenderBoundingBox(): AABB {
         return if (cameraDrawOptimisation()) localRenderBoundingBox() else unoptimizedRenderBoundingBox()

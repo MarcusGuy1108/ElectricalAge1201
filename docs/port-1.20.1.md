@@ -39,6 +39,12 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
   1.7.10 file stay readable. New code is Kotlin.
 * `mods.eln.Eln` holds the global state that 1.7.10 kept as static fields on the `Eln` class. The Forge entry
   point is `mods.eln.ElnMod`, so unit tests can use `Eln` without starting Forge.
+* GUIs keep the 1.7.10 `mods.eln.gui` classes. `GuiScreenEln`/`GuiContainerEln` publish the frame's `GuiGraphics` in
+  `GuiDraw`, and the widgets draw through it (`Gui` is a stand-in for the 1.7.10 base class). Node GUIs open through
+  one menu type, `eln:node` (`ElnMenus`): the server builds the element's container, the client builds the render's
+  GUI around its own copy, and `BasicContainer.withContainerId` hands both the window id. A node without a container
+  gets the 1.7.10 `packetOpenLocalGui` instead. An access transformer makes `Slot.x/y` writable because Eln GUIs place
+  the player inventory after the container is built.
 * Anything left out because its dependencies are not ported yet is marked with a `// PORT:` comment saying what
   brings it back. `grep -rn "PORT:" port-1.20.1/src` lists the open items.
 
@@ -60,7 +66,11 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
 5. [ ] Vertical slice: cable, battery and lamp placed in a world with models, GUI and sync.
    * [x] Six-node framework and the classic cables: placeable in game, connected rendering, item icons, creative
      tab, simulation (GameTest feeds 10 V through two placed cables), drop when the support block goes, save/load.
-   * [ ] Transparent-node framework, battery, lamp socket and bulbs.
+   * [x] GUI layer, Electrical Source, lamp sockets (all but the streetlight and emergency lamps), light bulbs and the
+     light block. A GameTest lights a 12 V lamp from a placed source through a cable; in game the source voltage is
+     set in its GUI and the socket takes its bulb and cable through its GUI. Lamp supplies are not ported, so sockets
+     must be switched to "Powered by cable".
+   * [ ] Transparent-node framework and the battery.
 6. [ ] Six-node blocks, transparent-node machines and the remaining content, family by family.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
 
