@@ -25,6 +25,19 @@ object Utils {
     }
 
     @JvmStatic
+    fun isTheClass(o: Any, c: Class<*>): Boolean {
+        if (o.javaClass == c) return true
+        var classIterator: Class<*>? = o.javaClass.superclass
+        while (classIterator != null) {
+            if (classIterator == c) {
+                return true
+            }
+            classIterator = classIterator.superclass
+        }
+        return false
+    }
+
+    @JvmStatic
     fun println(str: String?) {
         if (Eln.config.getBooleanOrElse("debug.logging.enabled", false)) Eln.logger.info(str)
     }
