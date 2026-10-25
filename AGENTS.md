@@ -22,6 +22,8 @@ If you learn things about making the Gradle build work in the sandbox, document 
 * When `./gradlew` fails inside the sandbox claiming it “Could not determine a usable wildcard IP”, rerun with `GRADLE_USER_HOME=$PWD/.gradle` and, if needed, request escalation—the build otherwise succeeds once it can write its cache and bind to an IP.
 * The first `port-1.20.1` build downloads and decompiles Minecraft (a few minutes). Maven Central can answer `429 Too Many Requests` during the first dependency download; rerun with `--max-workers=2`, already downloaded files stay cached.
 * `port-1.20.1` needs Java 17; Gradle provisions it through the foojay toolchain resolver when only a newer JDK is installed.
+* To look up a 1.20.1 class or method signature, run `javap -cp <jar> <class>` on `~/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-<forge>_mapped_official_1.20.1/*.jar` (no decompiled sources are generated).
+* `pkill -f <pattern>` kills the calling shell when the pattern appears in its own command line; stop dev servers with `kill $(pgrep -x java)` instead.
 
 # 1.20.1 port
 

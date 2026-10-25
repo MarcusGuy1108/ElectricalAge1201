@@ -1,0 +1,138 @@
+package mods.eln.server
+
+import mods.eln.node.NodeManager
+import mods.eln.misc.Utils
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.NbtIo
+import net.minecraft.resources.ResourceKey
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.dimension.DimensionType
+import net.minecraft.world.level.storage.LevelResource
+import net.minecraftforge.event.level.LevelEvent
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.nio.file.AtomicMoveNotSupportedException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
+
+/**
+ * Loads and saves Electrical Age world data (nodes and friends) next to each dimension's own data folder, with the
+ * same temp file + backup rotation 1.7.10 used. The handlers are registered on the Forge event bus by ElnMod.
+ */
+class ServerEventListener {
+    // PORT: lightning tracking (getLightningClosestTo) and the TreeCapitation tick return with the items using them.
+
+    fun clear() {
+    }
+
+    private val loadedWorlds = HashSet<ResourceKey<Level>>()
+
+    fun onWorldLoad(e: LevelEvent.Load) {
+        val level = e.level as? ServerLevel ?: return
+        loadedWorlds.add(level.dimension())
+        val fileNames = FileNames(level)
+        val dimension = level.dimension()
+        if (!Files.exists(fileNames.worldSave) && !Files.exists(fileNames.backupSave)) return
+        try {
+            readSave(fileNames.worldSave, dimension)
+        } catch (ex: Exception) {
+            try {
+                ex.printStackTrace()
+                println("Using BACKUP Electrical Age save: " + fileNames.backupSave)
+                readSave(fileNames.backupSave, dimension)
+            } catch (ex2: Exception) {
+                ex2.printStackTrace()
+                println("Failed to read backup save!")
+            }
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun readSave(worldSave: Path, dimension: ResourceKey<Level>) {
+        val inputStream = ByteArrayInputStream(Files.readAllBytes(worldSave))
+        val nbt = NbtIo.readCompressed(inputStream)
+        readFromEaWorldNBT(nbt, dimension)
+    }
+
+    fun onWorldUnload(e: LevelEvent.Unload) {
+        val level = e.level as? ServerLevel ?: return
+        loadedWorlds.remove(level.dimension())
+        try {
+            NodeManager.instance!!.unload(level.dimension())
+            // PORT: ghostManager.unload and RoomThermalManager.unloadDimension return with those systems.
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
+    fun onWorldSave(e: LevelEvent.Save) {
+        val level = e.level as? ServerLevel ?: return
+        if (!loadedWorlds.contains(level.dimension())) {
+            return
+        }
+        try {
+            val nbt = CompoundTag()
+            writeToEaWorldNBT(nbt, level.dimension())
+            val fileNames = FileNames(level)
+
+            // Write a new save to a temporary file.
+            val bytes = ByteArrayOutputStream(512 * 1024)
+            NbtIo.writeCompressed(nbt, bytes)
+            Files.createDirectories(fileNames.worldSave.parent)
+            Files.write(fileNames.tempSave, bytes.toByteArray())
+
+            // Replace backup save with old save, and old save with new one.
+            if (Files.exists(fileNames.worldSave)) replaceFile(fileNames.worldSave, fileNames.backupSave)
+            replaceFile(fileNames.tempSave, fileNames.worldSave)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun replaceFile(from: Path, to: Path) {
+        try {
+            Files.move(from, to, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
+        } catch (e: AtomicMoveNotSupportedException) {
+            Files.move(from, to, StandardCopyOption.REPLACE_EXISTING)
+        }
+    }
+
+    // 1.20.1 gives every dimension its own storage folder, so the file no longer needs the dimension in its name.
+    private class FileNames(level: ServerLevel) {
+        val worldSave: Path
+        val tempSave: Path
+        val backupSave: Path
+
+        init {
+            val root = level.server.getWorldPath(LevelResource.ROOT)
+            val saveName = DimensionType.getStorageFolder(level.dimension(), root).resolve("data/electricalAgeWorld.dat")
+            worldSave = saveName
+            tempSave = saveName.resolveSibling("electricalAgeWorld.dat.tmp")
+            backupSave = saveName.resolveSibling("electricalAgeWorld.dat.bak")
+        }
+    }
+
+    companion object {
+        fun readFromEaWorldNBT(nbt: CompoundTag, @Suppress("UNUSED_PARAMETER") dim: ResourceKey<Level>) {
+            try {
+                NodeManager.instance!!.loadFromNbt(nbt.getCompound("nodes"))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            // PORT: ghostManager, MqttManager and RoomThermalManager world data return with those systems.
+        }
+
+        fun writeToEaWorldNBT(nbt: CompoundTag?, dim: ResourceKey<Level>) {
+            try {
+                NodeManager.instance!!.saveToNbt(Utils.newNbtTagCompund(nbt, "nodes"), dim)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            // PORT: ghostManager, MqttManager and RoomThermalManager world data return with those systems.
+        }
+    }
+}

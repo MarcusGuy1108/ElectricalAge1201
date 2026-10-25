@@ -2,6 +2,9 @@ package mods.eln
 
 import com.mojang.logging.LogUtils
 import mods.eln.config.JsonConfig
+import mods.eln.node.NodeManager
+import mods.eln.node.NodeServer
+import mods.eln.server.ServerEventListener
 import mods.eln.sim.Simulator
 import net.minecraftforge.fml.loading.FMLPaths
 import org.slf4j.Logger
@@ -12,6 +15,17 @@ import java.io.File
  */
 object Eln {
     const val MODID = "eln"
+
+    const val packetPlayerKey: Byte = 14
+    const val packetNodeSingleSerialized: Byte = 15
+    const val packetPublishForNode: Byte = 16
+    const val packetOpenLocalGui: Byte = 17
+    const val packetForClientNode: Byte = 18
+    const val packetPlaySound: Byte = 19
+    const val packetDestroyUuid: Byte = 20
+    const val packetClientToServerConnection: Byte = 21
+    const val packetServerToClientInfo: Byte = 22
+    const val packetFalstadImport: Byte = 23
 
     const val gateInputCurrent = 0.00005
     const val gateOutputCurrent = 0.100
@@ -41,6 +55,9 @@ object Eln {
     @JvmField var debugEnabled = false
 
     lateinit var simulator: Simulator
+    lateinit var nodeManager: NodeManager
+    lateinit var nodeServer: NodeServer
+    lateinit var serverEventListener: ServerEventListener
 
     internal fun loadConfig() {
         config = JsonConfig(FMLPaths.CONFIGDIR.get().resolve("Eln.cfg").toFile())

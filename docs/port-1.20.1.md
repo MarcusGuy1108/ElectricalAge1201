@@ -15,7 +15,12 @@ cd port-1.20.1
 ./gradlew build        # compile + unit tests
 ./gradlew runServer    # headless dedicated server (accept the EULA in run/eula.txt first)
 ./gradlew runClient
+./gradlew runGameTestServer   # runs the GameTests in mods.eln.gametest on a headless server, fails the build on failure
 ```
+
+Plain JUnit tests cannot bootstrap Minecraft on Forge (its event bus needs the mod launcher), so anything touching
+registries, levels or blocks (for example `Coordinate`, which stores a dimension key) is tested with GameTests.
+GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
 
 ## Conventions
 
@@ -35,7 +40,12 @@ cd port-1.20.1
    (`NbtElectricalGate*`, `SignalLoadSupport`, needs the signal cable), regulators, `ResistorProcess`, stack machines,
    `NbtBatterySlowProcess`, `MonsterPopFreeProcess`, `CableMelt`, `WorldExplosion`, `ShaftSpeedWatchdog`, and
    `RoomThermalManager` room heat exchange.
-4. [ ] Node framework: world-attached nodes, saving (`SavedData`), ticking, networking.
+4. [x] Node framework: `NodeBase`, `NodeManager`, node connections, per-dimension save files
+   (`<dimension folder>/data/electricalAgeWorld.dat` with `.tmp`/`.bak` rotation), `NodeServer` publishing, and the
+   network channel that carries Eln's byte-stream packets. GameTests cover connecting two nodes through the simulator
+   and a save/load round trip. `NodeBlock`/`NodeBlockEntity` are ported (light level is a block state property) but
+   first run once a concrete node block is registered in milestone 5. Client-to-server node packets are now rejected
+   unless the player is in the node's dimension and within 64 blocks.
 5. [ ] Vertical slice: cable, battery and lamp placed in a world with models, GUI and sync.
 6. [ ] Six-node blocks, transparent-node machines and the remaining content, family by family.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
