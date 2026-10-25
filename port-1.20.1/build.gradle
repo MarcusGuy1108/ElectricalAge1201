@@ -101,7 +101,10 @@ tasks.named('processResources', ProcessResources).configure {
     dependsOn 'convertLegacyLang'
     from(legacyAssets) {
         into 'assets'
-        exclude 'eln/lang/**', 'eln/unused-models/**', 'eln/temp/**'
+        exclude 'eln/lang/**', 'eln/unused-models/**', 'eln/temp/**', '**/*.blend'
+        // 1.20.1 resource paths must be [a-z0-9/._-]; Utils.resourcePath applies the same mapping in code.
+        eachFile { it.path = it.path.toLowerCase().replaceAll('[^a-z0-9/._-]', '_') }
+        filesMatching('eln/sounds.json') { filter { line -> line.toLowerCase() } }
     }
     from(generatedLang)
     var replaceProperties = [

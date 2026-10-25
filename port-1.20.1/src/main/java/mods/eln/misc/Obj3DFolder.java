@@ -57,7 +57,7 @@ public class Obj3DFolder {
             if (nameToObjHash.containsKey(tag)) {
                 Utils.println("Double load of model " + tag);
             }
-            nameToObjHash.put(tag, obj);    // name of the file, without extension
+            nameToObjHash.put(Utils.resourcePath(tag), obj);    // name of the file, without extension
             Utils.println(String.format(" - model '%s' loaded", modelPath));
         } else {
             Utils.println(String.format(" - unable to load model '%s'", modelPath));
@@ -65,7 +65,7 @@ public class Obj3DFolder {
     }
 
     public Obj3D getObj(String obj3DName) {
-        Obj3D obj = nameToObjHash.get(obj3DName);
+        Obj3D obj = nameToObjHash.get(Utils.resourcePath(obj3DName));
         if (obj == null) {
             if (missingObjNamesWarned.add(obj3DName)) {
                 Utils.println(String.format("Missing model '%s', using fallback empty model", obj3DName));

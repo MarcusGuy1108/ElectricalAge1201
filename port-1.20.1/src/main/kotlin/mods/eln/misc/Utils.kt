@@ -521,6 +521,21 @@ object Utils {
         }
     }
 
+    /**
+     * 1.20.1 resource paths must match [a-z0-9/._-]; the build copies the 1.7.10 assets under this same mapping
+     * (see processResources in build.gradle), so code must map names the same way before making a ResourceLocation.
+     */
+    @JvmStatic
+    fun resourcePath(path: String): String = path.lowercase().replace(Regex("[^a-z0-9/._-]"), "_")
+
+    // "namespace:path" (namespace defaults to minecraft) with the path mapped by [resourcePath].
+    @JvmStatic
+    fun resourceLocation(id: String): ResourceLocation {
+        val split = id.indexOf(':')
+        return if (split < 0) ResourceLocation("minecraft", resourcePath(id))
+        else ResourceLocation(id.substring(0, split).lowercase(), resourcePath(id.substring(split + 1)))
+    }
+
     @JvmStatic
     fun fatal() {
         try {

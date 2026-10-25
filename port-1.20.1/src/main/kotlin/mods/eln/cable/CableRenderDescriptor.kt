@@ -1,5 +1,6 @@
 package mods.eln.cable
 
+import mods.eln.misc.Utils
 import mods.eln.misc.UtilsClient.bindTexture
 import net.minecraft.resources.ResourceLocation
 
@@ -8,7 +9,7 @@ class CableRenderDescriptor(modName: String?, cableTexture: String?, var widthPi
     var height: Float = heightPixel / 16
     var widthDiv2: Float = width / 2
     @JvmField
-    var cableTexture = ResourceLocation(modName, cableTexture)
+    var cableTexture = ResourceLocation(modName, Utils.resourcePath(cableTexture!!))
 
     fun bindCableTexture() {
         bindTexture(cableTexture)

@@ -26,7 +26,7 @@ public class Obj3D {
     private String dirPath;
 
     public void bindTexture(String texFilename) {
-        ResourceLocation textureResource = new ResourceLocation("eln", "model/" + dirPath + "/" + texFilename);
+        ResourceLocation textureResource = new ResourceLocation("eln", Utils.resourcePath("model/" + dirPath + "/" + texFilename));
         UtilsClient.bindTexture(textureResource);
     }
 
@@ -357,7 +357,7 @@ public class Obj3D {
     }
 
     public ResourceLocation getModelResourceLocation(String name) {
-        return new ResourceLocation("eln", "model/" + dirPath + "/" + name);
+        return new ResourceLocation("eln", Utils.resourcePath("model/" + dirPath + "/" + name));
     }
 
     /**
@@ -378,7 +378,7 @@ public class Obj3D {
             }
         }
 
-        final String path = "assets/eln/" + filePath;
+        final String path = "assets/eln/" + Utils.resourcePath(filePath);
         try {
             InputStream in = getClass().getClassLoader().getResourceAsStream(path);
             reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));

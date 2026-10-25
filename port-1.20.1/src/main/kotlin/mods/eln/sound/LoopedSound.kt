@@ -3,7 +3,7 @@ package mods.eln.sound
 import mods.eln.misc.Coordinate
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance
 import net.minecraft.client.resources.sounds.SoundInstance
-import net.minecraft.resources.ResourceLocation
+import mods.eln.misc.Utils
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundSource
 
@@ -15,7 +15,7 @@ abstract class LoopedSound(
     val coord: Coordinate,
     attentuationType: SoundInstance.Attenuation = SoundInstance.Attenuation.LINEAR
 ) : AbstractTickableSoundInstance(
-    SoundEvent.createVariableRangeEvent(ResourceLocation(sample)), SoundSource.BLOCKS, SoundInstance.createUnseededRandom()
+    SoundEvent.createVariableRangeEvent(Utils.resourceLocation(sample)), SoundSource.BLOCKS, SoundInstance.createUnseededRandom()
 ) {
     var active = true
 

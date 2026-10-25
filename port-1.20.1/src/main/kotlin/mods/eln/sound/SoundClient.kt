@@ -6,7 +6,7 @@ import mods.eln.misc.Utils.traceRay
 import net.minecraft.client.Minecraft
 import net.minecraft.client.resources.sounds.SimpleSoundInstance
 import net.minecraft.client.resources.sounds.SoundInstance
-import net.minecraft.resources.ResourceLocation
+import mods.eln.misc.Utils
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundSource
 import kotlin.math.pow
@@ -30,7 +30,7 @@ object SoundClient {
         if (p.volume <= 0) return
         // Played 2 blocks from the player towards the source, as 1.7.10 did, so its own attenuation stays out of the way.
         val sound = SimpleSoundInstance(
-            SoundEvent.createVariableRangeEvent(ResourceLocation(p.track!!)), SoundSource.BLOCKS, p.volume, p.pitch,
+            SoundEvent.createVariableRangeEvent(Utils.resourceLocation(p.track!!)), SoundSource.BLOCKS, p.volume, p.pitch,
             SoundInstance.createUnseededRandom(),
             player.x + 2 * (p.x - player.x) / distance,
             player.y + 2 * (p.y - player.y) / distance,
