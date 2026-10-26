@@ -117,9 +117,9 @@ class ServerEventListener {
     }
 
     companion object {
-        fun readFromEaWorldNBT(nbt: CompoundTag, @Suppress("UNUSED_PARAMETER") dim: ResourceKey<Level>) {
+        fun readFromEaWorldNBT(nbt: CompoundTag, dim: ResourceKey<Level>) {
             try {
-                NodeManager.instance!!.loadFromNbt(nbt.getCompound("nodes"))
+                NodeManager.instance!!.loadFromNbt(nbt.getCompound("nodes"), dim)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

@@ -1,5 +1,8 @@
 package mods.eln.gametest
 
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.ResourceKey
+import net.minecraft.core.registries.Registries
 import mods.eln.Eln
 import mods.eln.misc.Coordinate
 import mods.eln.misc.Direction
@@ -138,7 +141,7 @@ object NodeGameTests {
             val tag = nbt.getCompound(key)
             if (Coordinate(tag, "c") == coordinate) saved.put(key, tag)
         }
-        Eln.nodeManager.loadFromNbt(saved)
+        Eln.nodeManager.loadFromNbt(saved, helper.level.dimension())
         val loaded = Eln.nodeManager.getNodeFromCoordonate(coordinate)
         try {
             helper.assertTrue(loaded is TestNode, "loaded ${loaded?.javaClass?.simpleName}")
@@ -146,6 +149,29 @@ object NodeGameTests {
             helper.succeed()
         } finally {
             (loaded as? TestNode)?.let { removeNode(it) }
+        }
+    }
+
+    // A saved node that cannot be loaded (here an unknown type) must be written back by the next save, not dropped.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun unloadableNodesStayInTheSave(helper: GameTestHelper) {
+        val dimension = ResourceKey.create(Registries.DIMENSION, ResourceLocation(Eln.MODID, "unloadable_node_test"))
+        val tag = CompoundTag()
+        tag.putString("tag", "no such node type")
+        Coordinate(1, 2, 3, dimension).writeToNBT(tag, "c")
+        tag.putInt("payload", 1234)
+        val saved = CompoundTag()
+        saved.put("n0", tag)
+        try {
+            Eln.nodeManager.loadFromNbt(saved, dimension)
+            val written = CompoundTag()
+            Eln.nodeManager.saveToNbt(written, dimension)
+            helper.assertTrue(written.allKeys.size == 1, "saved ${written.allKeys.size} nodes")
+            helper.assertTrue(written.getCompound(written.allKeys.first()).getInt("payload") == 1234, "node data changed")
+            helper.succeed()
+        } finally {
+            Eln.nodeManager.unload(dimension)
         }
     }
 }

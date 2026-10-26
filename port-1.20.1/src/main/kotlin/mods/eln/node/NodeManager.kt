@@ -49,19 +49,27 @@ class NodeManager(@Suppress("UNUSED_PARAMETER") par1Str: String?) {
     val randomNode: NodeBase?
         get() = if (nodes.isEmpty()) null else nodes[rand.nextInt(nodes.size)]
 
-    fun loadFromNbt(nbt: CompoundTag?) {
+    // Saved nodes that failed to load, per dimension. 1.7.10 dropped them, so the next save erased them for good; they
+    // are written back unchanged instead, so a bug or a not yet ported node type never destroys a world's machines.
+    private val unloadableTags = HashMap<ResourceKey<Level>, MutableList<CompoundTag>>()
+
+    fun loadFromNbt(nbt: CompoundTag?, dim: ResourceKey<Level>) {
         val addedNode: MutableList<NodeBase> = ArrayList()
         for (o in getTags(nbt!!)) {
             val tag = o
             val nodeClass = UUIDToClass[tag.getString("tag")]
+            var node: NodeBase? = null
             try {
-                val node = nodeClass!!.getConstructor().newInstance() as NodeBase
+                node = nodeClass!!.getConstructor().newInstance() as NodeBase
                 node.readFromNBT(tag)
                 addNode(node)
-                addedNode.add(node)
                 node.initializeFromNBT()
+                addedNode.add(node)
             } catch (e: Exception) {
                 e.printStackTrace()
+                if (node != null && nodeArray[node.coordinate] === node) removeNode(node)
+                println("Electrical Age could not load a saved node (type '${tag.getString("tag")}'); it is kept in the save.")
+                unloadableTags.getOrPut(dim) { ArrayList() }.add(tag.copy())
             }
         }
         for (n in addedNode) {
@@ -85,14 +93,21 @@ class NodeManager(@Suppress("UNUSED_PARAMETER") par1Str: String?) {
                 e.printStackTrace()
             }
         }
+        for (tag in unloadableTags[dim].orEmpty()) {
+            // A node placed since then at the same spot replaces the unloadable one.
+            if (nodeArray.containsKey(Coordinate(if (tag.contains("node")) tag.getCompound("node") else tag, "c"))) continue
+            nbt.put("n" + nodeCounter++, tag)
+        }
     }
 
     fun clear() {
         nodes.clear()
         nodeArray.clear()
+        unloadableTags.clear()
     }
 
     fun unload(dimensionId: ResourceKey<Level>) {
+        unloadableTags.remove(dimensionId)
         val i = nodes.iterator()
         while (i.hasNext()) {
             val n = i.next()
