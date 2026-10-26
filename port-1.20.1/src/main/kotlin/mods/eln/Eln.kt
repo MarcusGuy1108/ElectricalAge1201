@@ -1,5 +1,8 @@
 package mods.eln
 
+import net.minecraftforge.fml.loading.FMLEnvironment
+import mods.eln.ghost.GhostBlock
+import mods.eln.ghost.GhostManager
 import mods.eln.sixnode.electricaldatalogger.DataLogsPrintDescriptor
 import mods.eln.misc.WindProcess
 import mods.eln.item.BrushDescriptor
@@ -161,6 +164,13 @@ object Eln {
     @JvmField var brushSubNames: List<String> = emptyList()
 
     @JvmStatic lateinit var wind: WindProcess
+
+    // True in a development (deobfuscated) run, like 1.7.10's fml.deobfuscatedEnvironment.
+    val isDevelopmentRun: Boolean
+        @JvmStatic get() = !FMLEnvironment.production
+    @JvmField val ghostManager = GhostManager()
+    val ghostBlock: GhostBlock
+        @JvmStatic get() = GhostBlock.BLOCK.get()
     lateinit var transparentNodeItem: GenericItemBlockUsingDamage<TransparentNodeDescriptor>
     val transparentNodeBlock: TransparentNodeBlock
         @JvmStatic get() = TransparentNodeBlock.BLOCK.get()

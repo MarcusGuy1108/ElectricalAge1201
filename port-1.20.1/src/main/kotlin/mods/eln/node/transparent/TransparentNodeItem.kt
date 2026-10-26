@@ -63,7 +63,7 @@ class TransparentNodeItem(override val descriptor: TransparentNodeDescriptor) : 
             addChatMessage(player, error)
             return false
         }
-        // PORT: ghost group plotting (multiblock machines) returns with mods.eln.ghost.
+        descriptor.getGhostGroupFront(front)?.plot(coord, coord, descriptor.ghostGroupUuid)
         val node = TransparentNode()
         node.onBlockPlacedBy(coord, front, player, stack)
         world.setBlock(placePos, TransparentNodeBlock.BLOCK.get().defaultBlockState(), 3)

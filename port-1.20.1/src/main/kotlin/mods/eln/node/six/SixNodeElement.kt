@@ -1,5 +1,6 @@
 package mods.eln.node.six
 
+import mods.eln.ghost.GhostObserver
 import mods.eln.sound.SoundCommand
 import mods.eln.sound.IPlayer
 import mods.eln.sim.SignalLoadSupport
@@ -38,7 +39,7 @@ import java.io.DataOutputStream
 import java.io.IOException
 import java.util.*
 
-abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, descriptor: SixNodeDescriptor) : IPlayer, INodeElement {
+abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, descriptor: SixNodeDescriptor) : GhostObserver, IPlayer, INodeElement {
     @JvmField
     var slowProcessList = ArrayList<IProcess>(4)
     @JvmField
@@ -78,7 +79,8 @@ abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, d
     open val coordinate: Coordinate?
         get() = sixNode!!.coordinate
 
-    // PORT: ghostObserverCoordonate/ghostDestroyed/ghostBlockActivated (GhostObserver) return with mods.eln.ghost.
+    override val ghostObserverCoordonate: Coordinate?
+        get() = coordinate
 
     protected fun onBlockActivatedRotate(entityPlayer: Player?): Boolean {
         if (isPlayerUsingWrench(entityPlayer)) {
@@ -234,6 +236,10 @@ abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, d
         if (useUuid()) {
             stop(uuid)
         }
+        if (sixNodeElementDescriptor.hasGhostGroup()) {
+            Eln.ghostManager.removeObserver(sixNode!!.coordinate)
+            sixNodeElementDescriptor.getGhostGroup(side, front)!!.erase(sixNode!!.coordinate)
+        }
         sixNode!!.dropInventory(inventory)
         if (mustDropItem(entityPlayer)) sixNode!!.dropItem(dropItemStack)
     }
@@ -338,6 +344,22 @@ abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, d
 
 
 
+    override fun ghostDestroyed(UUID: Int) {
+        if (UUID == sixNodeElementDescriptor.ghostGroupUuid) {
+            selfDestroy()
+        }
+    }
+
+    override fun ghostBlockActivated(UUID: Int, entityPlayer: Player, side: Direction, vx: Float, vy: Float, vz: Float): Boolean {
+        if (UUID == sixNodeElementDescriptor.ghostGroupUuid) {
+            // A click inside a ghost volume should never leak through to normal item use,
+            // otherwise players can place/paint blocks "inside" multiblock bounds.
+            sixNode!!.onBlockActivated(entityPlayer, this.side, vx, vy, vz)
+            return true
+        }
+        return false
+    }
+
     private fun selfDestroy() {
         println("SixNodeElement.selfDestroy deleting side=$side at ${sixNode!!.coordinate}")
         sixNode!!.deleteSubBlock(null, side)
@@ -369,5 +391,6 @@ abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, d
 
     init {
         itemStackDamageId = sixNode.sideElementIdList[side.int]
+        if (descriptor.hasGhostGroup()) Eln.ghostManager.addObserver(this)
     }
 }

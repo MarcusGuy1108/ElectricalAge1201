@@ -1,6 +1,8 @@
 @file:Suppress("NAME_SHADOWING")
 package mods.eln.node
 
+import mods.eln.node.six.SixNodeBlock
+import mods.eln.ghost.GhostBlock
 import mods.eln.compat.*
 import mods.eln.gui.ElnMenus
 import mods.eln.Eln
@@ -454,8 +456,8 @@ abstract class NodeBase {
         fun isBlockWrappable(state: BlockState): Boolean {
             if (state.canBeReplaced()) return true
             if (state.isAir) return true
-            // PORT: Eln.sixNodeBlock and GhostBlock count as wrappable again once those blocks exist.
             val block = state.block
+            if (block is SixNodeBlock || block is GhostBlock) return true
             if (block === Blocks.TORCH || block === Blocks.WALL_TORCH) return true
             if (block === Blocks.REDSTONE_TORCH || block === Blocks.REDSTONE_WALL_TORCH) return true
             return block === Blocks.REDSTONE_WIRE

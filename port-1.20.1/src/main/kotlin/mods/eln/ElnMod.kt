@@ -1,5 +1,6 @@
 package mods.eln
 
+import mods.eln.ghost.GhostBlock
 import mods.eln.lightblock.LightBlockEntity
 import mods.eln.sixnode.wirelesssignal.tx.WirelessSignalTxElement
 import mods.eln.sixnode.lampsupply.LampSupplyElement
@@ -51,6 +52,7 @@ object ElnMod {
         Eln.transparentNodeItem = GenericItemBlockUsingDamage { TransparentNodeItem(it) }
         Eln.sharedItem = GenericItemUsingDamage()
         LightBlock.BLOCK
+        GhostBlock.BLOCK
         Eln.obj.loadAllElnModels()
         LampLists.translateLampTypes() // Lamp sockets list the translated lamp types, so before registration.
         // Same order as 1.7.10: items such as heating corps refer to the cable descriptors.
@@ -86,6 +88,7 @@ object ElnMod {
         bus.addListener(Eln.serverEventListener::onWorldUnload)
         bus.addListener { _: ServerStoppedEvent ->
             Eln.nodeManager.clear()
+            Eln.ghostManager.clear()
             Eln.serverEventListener.clear()
             Eln.nodeServer.stop()
             Eln.simulator.stop()

@@ -1,5 +1,6 @@
 package mods.eln.node.transparent
 
+import mods.eln.ghost.GhostGroup
 import mods.eln.generic.GenericItemBlockUsingDamageDescriptor
 import mods.eln.i18n.I18N.tr
 import mods.eln.misc.Coordinate
@@ -21,7 +22,8 @@ open class TransparentNodeDescriptor @JvmOverloads constructor(
     // Public (was protected) so the item model generator can draw the voltage background.
     @JvmField
     var voltageLevelColor = VoltageLevelColor.None
-    // PORT: ghostGroup (multiblock ghost blocks) returns with mods.eln.ghost.
+    @JvmField
+    var ghostGroup: GhostGroup? = null
 
     // PORT: the IItemRenderer drawing is replaced by generated item models (voltage background + icon).
 
@@ -68,8 +70,8 @@ open class TransparentNodeDescriptor @JvmOverloads constructor(
             val wall = solid(Direction.XN) || solid(Direction.XP) || solid(Direction.ZN) || solid(Direction.ZP)
             if (!wall) return tr("You can't place this block at this side")
         }
-        // PORT: the "Not enough space for this block" ghost group check returns with mods.eln.ghost.
-        return null
+        val ghostGroup = getGhostGroupFront(front)
+        return if (ghostGroup != null && !ghostGroup.canBePloted(coord!!)) tr("Not enough space for this block") else null
     }
 
     open fun getFrontFromPlace(side: Direction, entityLiving: LivingEntity?): Direction? {
@@ -82,6 +84,10 @@ open class TransparentNodeDescriptor @JvmOverloads constructor(
             null -> TODO()
         }
         return front
+    }
+
+    fun getGhostGroupFront(front: Direction?): GhostGroup? {
+        return if (ghostGroup == null) null else ghostGroup!!.newRotate(front)
     }
 
     val ghostGroupUuid: Int

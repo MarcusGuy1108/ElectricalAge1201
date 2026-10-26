@@ -1,5 +1,7 @@
 package mods.eln.gametest
 
+import mods.eln.node.transparent.TransparentNodeBlock
+import mods.eln.ghost.GhostBlock
 import mods.eln.Eln
 import mods.eln.misc.Direction
 import mods.eln.node.transparent.TransparentNode
@@ -48,6 +50,25 @@ object TransparentNodeGameTests {
 
         helper.succeedWhen {
             helper.assertTrue(lampNode.lightValue >= LampSocketRender.MIN_LIGHT_ON_VALUE, "lamp light ${lampNode.lightValue}, ${socket.electricalLoad.voltage} V, battery ${battery.batteryProcess.u} V front=${battery.front} batteryConn=${battery.node!!.nodeConnectionList.size} lampConn=${lampNode.nodeConnectionList.size} cable=$cablePos lamp=$lampPos")
+        }
+    }
+
+    // The 2x3 solar panel fills the rest of its footprint with ghost blocks; breaking one removes the whole panel.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun solarPanelGhostBlocks(helper: GameTestHelper) {
+        val pos = BlockPos(1, 1, 1)
+        for (x in 0..2) for (z in 0..2) helper.setBlock(BlockPos(x, 0, z), Blocks.STONE)
+        val stack = Eln.transparentNodeItem.getDescriptor((48 shl 6) + 3)!!.newItemStack()
+        val item = stack.item as TransparentNodeItem
+        helper.assertTrue(item.placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(pos), Direction.YP), "panel not placed")
+        val ghosts = BlockPos.betweenClosed(BlockPos(0, 1, 0), BlockPos(2, 1, 2)).map { it.immutable() }
+            .filter { helper.getBlockState(it).block is GhostBlock }
+        helper.assertTrue(ghosts.size == 5, "${ghosts.size} ghost blocks")
+        helper.destroyBlock(ghosts.first())
+        helper.succeedWhen {
+            helper.assertBlockNotPresent(TransparentNodeBlock.BLOCK.get(), pos)
+            helper.assertTrue(ghosts.none { helper.getBlockState(it).block is GhostBlock }, "ghost blocks left behind")
         }
     }
 }

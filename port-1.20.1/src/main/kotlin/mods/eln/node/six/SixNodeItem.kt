@@ -90,7 +90,7 @@ class SixNodeItem(override val descriptor: SixNodeDescriptor) : Item(Properties(
                 return false
             }
             if (block.getIfOtherBlockIsSolid(world, x, y, z, direction)) {
-                // PORT: ghost group plotting (multiblock six-node parts) returns with mods.eln.ghost.
+                descriptor.getGhostGroup(direction, LRDU.Up)?.plot(coord, coord, descriptor.ghostGroupUuid)
                 val sixNode = SixNode()
                 sixNode.onBlockPlacedBy(Coordinate(x, y, z, world), direction, player, stack)
                 sixNode.createSubBlock(stack, direction, player)

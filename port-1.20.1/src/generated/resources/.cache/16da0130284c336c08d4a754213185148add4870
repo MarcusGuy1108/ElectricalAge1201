@@ -1,7 +1,9 @@
-// 1.20.1	2026-10-26T00:04:25.994793429	Block States: eln
+// 1.20.1	2026-10-26T11:35:07.742667967	Block States: eln
+fee5dd0658be4f0c311a6d0c2373527c40f70a40 assets/eln/blockstates/ghost.json
 b0c553882fd7a9262b77e012937cf85e8b68adfe assets/eln/blockstates/light.json
 3c8aae2643a6c01c8773cc77c7e9bcbf271d4216 assets/eln/blockstates/six_node.json
 67649de6d596af8fb1a5c95f39248983f6f4cedb assets/eln/blockstates/transparent_node.json
+85c701d80e4572b606201f6720ff1e39979eaa78 assets/eln/models/block/ghost.json
 5a30b1bc2eb56f34cd04ab7b7394e52a11788f15 assets/eln/models/block/light.json
 8c18f15a5f0e87b3484813530f2ad53cdd944603 assets/eln/models/block/six_node.json
 85c701d80e4572b606201f6720ff1e39979eaa78 assets/eln/models/block/transparent_node.json

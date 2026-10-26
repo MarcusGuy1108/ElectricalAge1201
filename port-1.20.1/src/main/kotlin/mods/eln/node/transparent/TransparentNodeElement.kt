@@ -1,5 +1,6 @@
 package mods.eln.node.transparent
 
+import mods.eln.ghost.GhostObserver
 import mods.eln.sim.SignalLoadSupport
 import mods.eln.compat.*
 import mods.eln.Eln
@@ -38,7 +39,7 @@ import java.io.DataOutputStream
 import java.io.IOException
 import java.util.*
 
-abstract class TransparentNodeElement(@JvmField var node: TransparentNode?, @JvmField var transparentNodeDescriptor: TransparentNodeDescriptor) : IPlayer, INodeElement {
+abstract class TransparentNodeElement(@JvmField var node: TransparentNode?, @JvmField var transparentNodeDescriptor: TransparentNodeDescriptor) : GhostObserver, IPlayer, INodeElement {
     @JvmField
     var slowProcessList = ArrayList<IProcess>(4)
     var slowPreProcessList = ArrayList<IProcess>(4)
@@ -232,7 +233,10 @@ abstract class TransparentNodeElement(@JvmField var node: TransparentNode?, @Jvm
 
     open fun onBreakElement() {
         if (useUuid()) stop(uuid)
-        // PORT: ghost group removal returns with mods.eln.ghost.
+        if (transparentNodeDescriptor.ghostGroup != null) {
+            Eln.ghostManager.removeObserver(node!!.coordinate)
+            Eln.ghostManager.removeGhostAndBlockWithObserver(node!!.coordinate)
+        }
         node!!.dropInventory(inventory)
         node!!.dropElement(node!!.removedByPlayer)
     }
@@ -370,7 +374,19 @@ abstract class TransparentNodeElement(@JvmField var node: TransparentNode?, @Jvm
 
     open fun getLightOpacity(): Float = 0f
 
-    // PORT: ghostDestroyed/ghostBlockActivated (GhostObserver) return with mods.eln.ghost.
+    override val ghostObserverCoordonate = node!!.coordinate
+
+    override fun ghostDestroyed(UUID: Int) {
+        if (UUID == transparentNodeDescriptor.ghostGroupUuid) {
+            selfDestroy()
+        }
+    }
+
+    override fun ghostBlockActivated(UUID: Int, entityPlayer: Player, side: Direction, vx: Float, vy: Float, vz: Float): Boolean {
+        return if (UUID == transparentNodeDescriptor.ghostGroupUuid) {
+            node!!.onBlockActivated(entityPlayer, side, vx, vy, vz)
+        } else false
+    }
 
     fun world(): Level {
         return node!!.coordinate.world()
@@ -413,4 +429,8 @@ abstract class TransparentNodeElement(@JvmField var node: TransparentNode?, @Jvm
         const val unserializeNulldId: Byte = -128
     }
 
+
+    init {
+        if (transparentNodeDescriptor.ghostGroup != null) Eln.ghostManager.addObserver(this)
+    }
 }

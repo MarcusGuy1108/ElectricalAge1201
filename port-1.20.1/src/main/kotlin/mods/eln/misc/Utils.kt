@@ -1,5 +1,10 @@
 package mods.eln.misc
 
+import net.minecraft.world.item.crafting.RecipeType
+import net.minecraftforge.common.ForgeHooks
+import net.minecraft.world.level.block.LiquidBlock
+import net.minecraft.tags.FluidTags
+import net.minecraft.world.phys.Vec3
 import mods.eln.misc.Obj3D
 import net.minecraft.world.phys.AABB
 import java.io.IOException
@@ -603,6 +608,61 @@ object Utils {
     @JvmStatic
     fun mapFileExists(name: String): Boolean {
         return getMapFile(name).exists()
+    }
+
+    @JvmStatic
+    fun renderDoubleSubsystemWaila(subSystemA: SubSystem?, subSystemB: SubSystem?): String {
+        val leftSubSystemSize = subSystemA?.component?.size ?: -1
+        val rightSubSystemSize = subSystemB?.component?.size ?: -1
+        val textColorLeft = when {
+            leftSubSystemSize <= 0 -> "null"
+            leftSubSystemSize <= 8 -> "§a"
+            leftSubSystemSize <= 15 -> "§6"
+            else -> "§c"
+        }
+        val textColorRight = when {
+            rightSubSystemSize <= 0 -> "null"
+            rightSubSystemSize <= 8 -> "§a"
+            rightSubSystemSize <= 15 -> "§6"
+            else -> "§c"
+        }
+        return "$textColorLeft$leftSubSystemSize §r| $textColorRight$rightSubSystemSize"
+    }
+
+    @JvmStatic
+    fun getVec05(c: Coordinate): Vec3 {
+        return Vec3(c.x + (if (c.x < 0) -1 else 1) * 0.5, c.y + (if (c.y < 0) -1 else 1) * 0.5, c.z + (if (c.z < 0) -1 else 1) * 0.5)
+    }
+
+    @JvmStatic
+    fun isWater(waterCoord: Coordinate): Boolean {
+        return waterCoord.world().getFluidState(waterCoord.blockPos).`is`(FluidTags.WATER)
+    }
+
+    // The 1.7.10 water metadata: 0 for a source, 1-7 as the flow thins, 8+ falling. 0 for anything that isn't water.
+    @JvmStatic
+    fun waterLevel(waterCoord: Coordinate): Int {
+        val state = waterCoord.world().getBlockState(waterCoord.blockPos)
+        return if (state.block is LiquidBlock && isWater(waterCoord)) state.getValue(LiquidBlock.LEVEL) else 0
+    }
+
+    @JvmStatic
+    fun getWeatherNoLoad(dim: ResourceKey<Level>): Double {
+        val world = ServerLifecycleHooks.getCurrentServer()?.getLevel(dim) ?: return 0.0
+        if (world.isThundering) return 1.0
+        return if (world.isRaining) 0.5 else 0.0
+    }
+
+    const val burnTimeToEnergyFactor = 1.0
+
+    @JvmStatic
+    val coalEnergyReference: Double
+        get() = burnTimeToEnergyFactor * 80000.0
+
+    @JvmStatic
+    fun getItemEnergie(stack: ItemStack?): Double {
+        if (stack == null || stack.isEmpty) return 0.0
+        return burnTimeToEnergyFactor * 80000.0 / 1600 * ForgeHooks.getBurnTime(stack, RecipeType.SMELTING)
     }
 
     @JvmStatic

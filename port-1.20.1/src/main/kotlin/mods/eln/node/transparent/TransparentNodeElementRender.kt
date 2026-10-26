@@ -1,6 +1,8 @@
 @file:Suppress("NAME_SHADOWING")
 package mods.eln.node.transparent
 
+import mods.eln.misc.Utils
+import net.minecraft.world.item.ItemStack
 import mods.eln.compat.*
 import mods.eln.cable.CableRender
 import mods.eln.cable.CableRenderDescriptor
@@ -31,6 +33,15 @@ abstract class TransparentNodeElementRender(var tileEntity: TransparentNodeEntit
     var front: Direction? = null
     var grounded = false
     // PORT: unserializeItemStackToEntityItem/drawEntityItem (machines showing their items) return with item rendering.
+
+    // 1.7.10 kept a fake EntityItem per displayed stack; 1.20.1 keeps the stack and draws it directly.
+    protected fun unserializeItemStackToEntityItem(stream: DataInputStream, @Suppress("UNUSED_PARAMETER") old: ItemStack?): ItemStack? {
+        return Utils.unserialiseItemStack(stream)
+    }
+
+    fun drawEntityItem(stack: ItemStack?, x: Double, y: Double, z: Double, roty: Float, scale: Float) {
+        UtilsClient.drawEntityItem(stack, x, y, z, roty, scale)
+    }
 
     fun glCableTransform(inverse: Direction) {
         inverse.glTranslate(0.5f)

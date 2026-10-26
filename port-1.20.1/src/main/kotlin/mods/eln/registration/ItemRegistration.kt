@@ -1,5 +1,8 @@
 package mods.eln.registration
 
+import mods.eln.item.SolarTrackerDescriptor
+import mods.eln.item.CaseItemDescriptor
+import mods.eln.item.DielectricItem
 import mods.eln.item.MachineBoosterDescriptor
 import mods.eln.item.EntitySensorFilterDescriptor
 import mods.eln.sixnode.electricaldatalogger.DataLogsPrintDescriptor
@@ -73,7 +76,7 @@ object ItemRegistration {
         registerIngot(8)
         registerDust(9)
         registerElectricalMotor(10)
-        // PORT: registerSolarTracker(11)
+        registerSolarTracker(11)
         registerMeter(14)
         // PORT: registerElectricalDrill(15)
         // PORT: registerOreScanner(16)
@@ -1026,6 +1029,19 @@ object ItemRegistration {
         }
     }
 
+    private fun registerSolarTracker(id: Int) {
+        var subId: Int
+        var completId: Int
+
+        var element: SolarTrackerDescriptor
+        run {
+            subId = 0
+            completId = subId + (id shl 6)
+            element = SolarTrackerDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Solar Tracker"))
+            Eln.sharedItem.addElement(completId, element)
+        }
+    }
+
     private fun registerMiscItem(id: Int) {
         var subId: Int
         var name: String?
@@ -1255,9 +1271,15 @@ object ItemRegistration {
             Eln.wrenchDescriptor = desc
         }
 
-        // PORT: Dielectric returns with DielectricItem.
+        run {
+            subId = 52
+            name = I18N.TR_NAME(I18N.Type.NONE, "Dielectric")
+            val desc = DielectricItem(name, Eln.LVU).inOresAndMaterialsTab()
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
 
-        // PORT: Casing returns with CaseItemDescriptor.
+        val casingDesc = CaseItemDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Casing")).inOresAndMaterialsTab()
+        Eln.sharedItem.addElement(53 + (id shl 6), casingDesc)
         // PORT: Iron Clutch Plate returns with ClutchPlateItem.
         // PORT: Clutch Pin returns with ClutchPinItem.
         // PORT: Gold Clutch Plate returns with ClutchPlateItem.

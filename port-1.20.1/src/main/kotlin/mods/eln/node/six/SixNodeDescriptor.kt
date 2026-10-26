@@ -1,5 +1,6 @@
 package mods.eln.node.six
 
+import mods.eln.ghost.GhostGroup
 import mods.eln.generic.GenericItemBlockUsingDamageDescriptor
 import mods.eln.i18n.I18N.tr
 import mods.eln.misc.Coordinate
@@ -50,9 +51,14 @@ open class SixNodeDescriptor : GenericItemBlockUsingDamageDescriptor {
         return true
     }
 
-    // PORT: ghostGroup/getGhostGroup (multiblock ghost blocks) return with mods.eln.ghost.
+    var ghostGroup: GhostGroup? = null
+
     fun hasGhostGroup(): Boolean {
-        return false
+        return ghostGroup != null
+    }
+
+    fun getGhostGroup(side: Direction?, front: LRDU?): GhostGroup? {
+        return if (ghostGroup == null) null else ghostGroup!!.newRotate(side, front)
     }
 
     val ghostGroupUuid: Int
@@ -79,7 +85,8 @@ open class SixNodeDescriptor : GenericItemBlockUsingDamageDescriptor {
             }
             if (!ok) return tr("You can't place this block at this side")
         }
-        return null
+        val ghostGroup = getGhostGroup(direction, front)
+        return if (ghostGroup != null && !ghostGroup.canBePloted(coord!!)) tr("Not enough space for this block") else null
     }
 
     open fun getFrontFromPlace(side: Direction, player: Player): LRDU? {

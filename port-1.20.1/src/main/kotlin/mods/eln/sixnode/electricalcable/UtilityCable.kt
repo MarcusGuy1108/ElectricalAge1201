@@ -343,7 +343,10 @@ class UtilityCableElement(
         if (useUuid()) {
             stop(getUuid())
         }
-        // PORT: ghost group removal returns with mods.eln.ghost.
+        if (sixNodeElementDescriptor.hasGhostGroup()) {
+            Eln.ghostManager.removeObserver(sixNode!!.coordinate)
+            sixNodeElementDescriptor.getGhostGroup(side, front)!!.erase(sixNode!!.coordinate)
+        }
         sixNode!!.dropInventory(inventory)
         if (Utils.mustDropItem(entityPlayer)) {
             // PORT: cut cables drop a wire scrap again once WireScrapDescriptor is ported.

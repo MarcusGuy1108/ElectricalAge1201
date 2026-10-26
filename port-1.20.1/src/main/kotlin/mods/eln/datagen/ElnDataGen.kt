@@ -1,5 +1,6 @@
 package mods.eln.datagen
 
+import mods.eln.ghost.GhostBlock
 import mods.eln.misc.OreDictionaryTags
 import java.util.concurrent.CompletableFuture
 import net.minecraftforge.common.data.BlockTagsProvider
@@ -109,6 +110,7 @@ class ElnBlockStates(output: PackOutput, files: ExistingFileHelper) : BlockState
         )
         // Invisible; the model only exists so the block state resolves.
         simpleBlock(LightBlock.BLOCK.get(), models().getBuilder("light").texture("particle", mcLoc("block/glass")))
+        simpleBlock(GhostBlock.BLOCK.get(), models().getBuilder("ghost").texture("particle", mcLoc("block/iron_block")))
     }
 }
 

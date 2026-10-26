@@ -1,5 +1,6 @@
 package mods.eln.server
 
+import mods.eln.Eln
 import net.minecraftforge.event.entity.EntityJoinLevelEvent
 import net.minecraftforge.event.TickEvent
 import net.minecraft.world.entity.LightningBolt
@@ -92,7 +93,8 @@ class ServerEventListener {
         loadedWorlds.remove(level.dimension())
         try {
             NodeManager.instance!!.unload(level.dimension())
-            // PORT: ghostManager.unload and RoomThermalManager.unloadDimension return with those systems.
+            Eln.ghostManager.unload(level.dimension())
+            // PORT: RoomThermalManager.unloadDimension returns with that system.
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -153,7 +155,12 @@ class ServerEventListener {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            // PORT: ghostManager, MqttManager and RoomThermalManager world data return with those systems.
+            try {
+                Eln.ghostManager.loadFromNBT(nbt.getCompound("ghost"))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            // PORT: MqttManager and RoomThermalManager world data return with those systems.
         }
 
         fun writeToEaWorldNBT(nbt: CompoundTag?, dim: ResourceKey<Level>) {
@@ -162,7 +169,12 @@ class ServerEventListener {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            // PORT: ghostManager, MqttManager and RoomThermalManager world data return with those systems.
+            try {
+                Eln.ghostManager.saveToNBT(Utils.newNbtTagCompund(nbt, "ghost"), dim)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            // PORT: MqttManager and RoomThermalManager world data return with those systems.
         }
     }
 }

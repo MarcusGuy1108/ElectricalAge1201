@@ -90,6 +90,13 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      the machine booster), the hub, the current source, conduit and the tree resin collector (finds trunks and
      leaves through the `logs`/`leaves` block tags). A GameTest switches a lamp through a breaker. The MQTT energy
      meter and the breaker's current-limit overlay on its item icon are not ported.
+   * [x] Multiblock ghost blocks (`mods.eln.ghost`): an invisible `eln:ghost` block whose `type` state replaces the
+     1.7.10 cube/floor/ladder metadata, saved with the node data per dimension. A GameTest places a 2x3 solar panel
+     and breaks one of its ghost blocks. Cube ghosts are full blocks; 1.7.10 asked the machine for its collision boxes.
+   * [x] Power capacitors and inductors, DC-DC converters (fixed, variable, one-way, legacy), solar panels and the
+     solar tracker, wind and water turbines, the heat furnace, the heat turbines and thermal dissipators. The fuel
+     generator and fuel heat furnace wait for fluid handling on nodes; the shaft network (steam/gas turbines,
+     generators, motors, flywheels) is next.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
 
 ## References
