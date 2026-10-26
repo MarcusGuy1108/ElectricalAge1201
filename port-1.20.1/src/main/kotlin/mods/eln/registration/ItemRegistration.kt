@@ -1,5 +1,7 @@
 package mods.eln.registration
 
+import mods.eln.item.EntitySensorFilterDescriptor
+import mods.eln.sixnode.electricaldatalogger.DataLogsPrintDescriptor
 import mods.eln.item.BrushDescriptor
 import mods.eln.Eln
 import mods.eln.Eln.instance
@@ -1198,7 +1200,14 @@ object ItemRegistration {
             ).inOresAndMaterialsTab()
             Eln.sharedItem.addElement(subId + (id shl 6), desc)
         }
-        // PORT: Data Logger Print returns with DataLogsPrintDescriptor.
+        run {
+            subId = 32
+            name = I18N.TR_NAME(I18N.Type.NONE, "Data Logger Print")
+            val desc = DataLogsPrintDescriptor(name)
+            Eln.dataLogsPrintDescriptor = desc
+            desc.setDefaultIcon("empty-texture")
+            Eln.sharedItem.addWithoutRegistry(subId + (id shl 6), desc)
+        }
 
         run {
             subId = 33
@@ -1210,9 +1219,24 @@ object ItemRegistration {
             Eln.sharedItem.addElement(subId + (id shl 6), desc)
         }
 
-        // PORT: Player Filter returns with EntitySensorFilterDescriptor.
-        // PORT: Monster Filter returns with EntitySensorFilterDescriptor.
-        // PORT: Animal Filter returns with EntitySensorFilterDescriptor.
+        run {
+            subId = 40
+            name = I18N.TR_NAME(I18N.Type.NONE, "Player Filter")
+            val desc = EntitySensorFilterDescriptor(name, net.minecraft.world.entity.player.Player::class.java, 0f, 1f, 0f)
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 41
+            name = I18N.TR_NAME(I18N.Type.NONE, "Monster Filter")
+            val desc = EntitySensorFilterDescriptor(name, net.minecraft.world.entity.monster.Enemy::class.java, 1f, 0f, 0f)
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 42
+            name = I18N.TR_NAME(I18N.Type.NONE, "Animal Filter")
+            val desc = EntitySensorFilterDescriptor(name, net.minecraft.world.entity.animal.Animal::class.java, .3f, .3f, 1f)
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
 
         run {
             subId = 48

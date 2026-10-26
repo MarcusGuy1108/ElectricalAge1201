@@ -1,5 +1,7 @@
 package mods.eln.client
 
+import net.minecraft.client.gui.Font
+import net.minecraft.client.Minecraft
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.math.Axis
@@ -195,6 +197,16 @@ object GL11 {
         val s = attribStack.removeLastOrNull() ?: return
         red = s[0]; green = s[1]; blue = s[2]; alpha = s[3]
         lighting = s[4] != 0f; texture2d = s[5] != 0f; blend = s[6] != 0f
+    }
+
+    // Text in the current pose, as 1.7.10 FontRenderer.drawString did inside fixed-function renders.
+    @JvmStatic
+    fun drawString(text: String, x: Int, y: Int, color: Int) {
+        if (!live { drawString(text, x, y, color) }) return
+        Minecraft.getInstance().font.drawInBatch(
+            text, x.toFloat(), y.toFloat(), color or (0xFF shl 24), false, pose!!.last().pose(), buffers!!,
+            Font.DisplayMode.NORMAL, 0, lightOverride ?: packedLight
+        )
     }
 
     @JvmStatic fun glBegin(primitive: Int) { if (live { glBegin(primitive) }) { mode = primitive; vertices.clear() } }

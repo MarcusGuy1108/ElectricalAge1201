@@ -1,5 +1,9 @@
 package mods.eln
 
+import mods.eln.lightblock.LightBlockEntity
+import mods.eln.sixnode.wirelesssignal.tx.WirelessSignalTxElement
+import mods.eln.sixnode.lampsupply.LampSupplyElement
+import mods.eln.misc.WindProcess
 import mods.eln.registration.TransparentNodeRegistration
 import mods.eln.node.transparent.TransparentNodeItem
 import mods.eln.node.transparent.TransparentNode
@@ -62,7 +66,15 @@ object ElnMod {
         Eln.serverEventListener = ServerEventListener()
 
         val bus = MinecraftForge.EVENT_BUS
-        bus.addListener { _: ServerAboutToStartEvent -> Eln.simulator.init() }
+        bus.addListener { _: ServerAboutToStartEvent ->
+            LightBlockEntity.observers.clear()
+            WirelessSignalTxElement.channelMap.clear()
+            LampSupplyElement.channelMap.clear()
+            Eln.simulator.init()
+            // shortcut: the wind state starts fresh each server start; 1.7.10 kept it in a SaveConfig world data entry.
+            Eln.wind = WindProcess()
+            Eln.simulator.addSlowProcess(Eln.wind)
+        }
         bus.addListener { event: TickEvent.ServerTickEvent ->
             Eln.simulator.tick(event)
             Eln.nodeServer.tick(event)

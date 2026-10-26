@@ -262,7 +262,7 @@ class UtilityCableDescriptor(
 
     override fun getItemStackLimit(stack: ItemStack): Int = 1
 
-    override fun addInformation(itemStack: ItemStack, entityPlayer: Player, list: MutableList<String>, par4: Boolean) {
+    override fun addInformation(itemStack: ItemStack, entityPlayer: Player?, list: MutableList<String>, par4: Boolean) {
         super.addInformation(itemStack, entityPlayer, list, par4)
         list.add(tr("Conductor: %1$ %2$", material.label, sizeLabel))
         list.add(tr("Equivalent area: %1$ mm2", metricSizeLabel))

@@ -1,5 +1,7 @@
 package mods.eln.gui
 
+import net.minecraft.client.renderer.LightTexture
+import net.minecraft.client.renderer.texture.OverlayTexture
 import mods.eln.client.GL11
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Font
@@ -40,6 +42,19 @@ object GuiDraw {
     fun drawString(font: Font, text: String?, x: Int, y: Int, color: Int, shadow: Boolean) {
         if (text == null) return
         graphics?.drawString(font, text, x, y, color, shadow)
+    }
+
+    // Runs 1.7.10 GL11 drawing code (graphs, models) in screen space.
+    @JvmStatic
+    fun withGl(draw: Runnable) {
+        val g = graphics ?: return
+        GL11.beginRender(g.pose(), g.bufferSource(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY)
+        try {
+            draw.run()
+        } finally {
+            GL11.endRender()
+            g.flush()
+        }
     }
 
     @JvmStatic

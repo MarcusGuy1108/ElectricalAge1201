@@ -143,4 +143,6 @@ tasks.named('jar', Jar).configure {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    // Ported batches can carry hundreds of API errors; show all of them, not javac's default 100.
+    options.compilerArgs += ['-Xmaxerrs', '2000']
 }

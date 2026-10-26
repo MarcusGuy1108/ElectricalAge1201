@@ -1,5 +1,7 @@
 package mods.eln
 
+import mods.eln.sixnode.electricaldatalogger.DataLogsPrintDescriptor
+import mods.eln.misc.WindProcess
 import mods.eln.item.BrushDescriptor
 import mods.eln.sixnode.currentcable.CurrentCableDescriptor
 import mods.eln.item.ArithmeticLogicUnit
@@ -155,8 +157,10 @@ object Eln {
     @JvmField var wrenchDescriptor: GenericItemUsingDamageDescriptor? = null
     @JvmField var configCopyToolElement: GenericItemUsingDamageDescriptor? = null
     @JvmField var whiteDesc: BrushDescriptor? = null
+    lateinit var dataLogsPrintDescriptor: DataLogsPrintDescriptor
     @JvmField var brushSubNames: List<String> = emptyList()
 
+    @JvmStatic lateinit var wind: WindProcess
     lateinit var transparentNodeItem: GenericItemBlockUsingDamage<TransparentNodeDescriptor>
     val transparentNodeBlock: TransparentNodeBlock
         @JvmStatic get() = TransparentNodeBlock.BLOCK.get()

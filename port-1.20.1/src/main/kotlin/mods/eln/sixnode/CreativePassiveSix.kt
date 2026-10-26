@@ -81,7 +81,7 @@ class CreativePowerResistorDescriptor(name: String, obj: Obj3D) :
         resistorCables?.draw()
     }
 
-    override fun addInformation(itemStack: ItemStack, entityPlayer: Player, list: MutableList<String>, par4: Boolean) {
+    override fun addInformation(itemStack: ItemStack, entityPlayer: Player?, list: MutableList<String>, par4: Boolean) {
         super.addInformation(itemStack, entityPlayer, list, par4)
         Collections.addAll(list, *tr("Creative resistor with direct value entry.").split("\n").toTypedArray())
     }
@@ -230,7 +230,7 @@ class CreativePowerCapacitorDescriptor(name: String, obj: Obj3D) :
         capacitorCore?.draw()
     }
 
-    override fun addInformation(itemStack: ItemStack, entityPlayer: Player, list: MutableList<String>, par4: Boolean) {
+    override fun addInformation(itemStack: ItemStack, entityPlayer: Player?, list: MutableList<String>, par4: Boolean) {
         super.addInformation(itemStack, entityPlayer, list, par4)
         Collections.addAll(list, *tr("Creative capacitor with direct value entry.").split("\n").toTypedArray())
     }
@@ -365,7 +365,7 @@ class CreativePowerInductorDescriptor(name: String, obj: Obj3D) :
         inductorCore?.draw()
     }
 
-    override fun addInformation(itemStack: ItemStack, entityPlayer: Player, list: MutableList<String>, par4: Boolean) {
+    override fun addInformation(itemStack: ItemStack, entityPlayer: Player?, list: MutableList<String>, par4: Boolean) {
         super.addInformation(itemStack, entityPlayer, list, par4)
         Collections.addAll(list, *tr("Creative inductor with direct value entry.").split("\n").toTypedArray())
     }

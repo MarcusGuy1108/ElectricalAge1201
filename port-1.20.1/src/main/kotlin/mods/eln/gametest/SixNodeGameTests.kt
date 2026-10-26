@@ -1,5 +1,6 @@
 package mods.eln.gametest
 
+import mods.eln.sixnode.logicgate.LogicGateElement
 import mods.eln.sixnode.electricalcable.UtilityCableDescriptor
 import mods.eln.sixnode.electricalswitch.ElectricalSwitchElement
 import mods.eln.misc.LRDU
@@ -153,6 +154,19 @@ object SixNodeGameTests {
         val (_, lampNode) = sourceThroughToLamp(helper, utility.newItemStack())
         helper.succeedWhen {
             helper.assertTrue(lampNode.lightValue >= LampSocketRender.MIN_LIGHT_ON_VALUE, "lamp light ${lampNode.lightValue} through ${utility.name}")
+        }
+    }
+
+    // An unconnected NOT gate drives its output high and an unconnected AND gate keeps it low.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun logicGatesDriveTheirOutput(helper: GameTestHelper) {
+        val not = placeOnFloor(helper, BlockPos(0, 1, 1), Eln.sixNodeItem.getDescriptor(118 shl 6)!!.newItemStack()).getElement(Direction.YN) as LogicGateElement
+        val and = placeOnFloor(helper, BlockPos(2, 1, 1), Eln.sixNodeItem.getDescriptor((118 shl 6) + 1)!!.newItemStack()).getElement(Direction.YN) as LogicGateElement
+        helper.succeedWhen {
+            val notOut = not.getElectricalLoad(not.front, 0)!!.voltage
+            val andOut = and.getElectricalLoad(and.front, 0)!!.voltage
+            helper.assertTrue(notOut > Eln.SVU * 0.9 && andOut < Eln.SVU * 0.1, "NOT output $notOut V, AND output $andOut V")
         }
     }
 

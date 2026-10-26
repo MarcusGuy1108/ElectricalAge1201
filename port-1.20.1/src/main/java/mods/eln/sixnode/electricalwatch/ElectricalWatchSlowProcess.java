@@ -1,0 +1,65 @@
+package mods.eln.sixnode.electricalwatch;
+
+import mods.eln.compat.LegacyCompat;
+
+import mods.eln.generic.GenericItemUsingDamageDescriptor;
+import mods.eln.item.electricalitem.BatteryItem;
+import mods.eln.misc.INBTTReady;
+import mods.eln.sim.IProcess;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+
+public class ElectricalWatchSlowProcess implements IProcess, INBTTReady {
+
+    ElectricalWatchElement element;
+
+    boolean upToDate = false;
+    long oldDate = 1379;
+
+    public ElectricalWatchSlowProcess(ElectricalWatchElement element) {
+        this.element = element;
+    }
+
+    double getBatteryLevel() {
+        ItemStack batteryStack = LegacyCompat.getStackInSlot(element.getInventory(), ElectricalWatchContainer.batteryId);
+        BatteryItem battery = (BatteryItem) GenericItemUsingDamageDescriptor.getDescriptor(batteryStack, BatteryItem.class);
+        if (battery != null) {
+            return battery.getEnergy(batteryStack) / battery.getEnergyMax(batteryStack);
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public void process(double time) {
+        ItemStack batteryStack = LegacyCompat.getStackInSlot(element.getInventory(), ElectricalWatchContainer.batteryId);
+        BatteryItem battery = (BatteryItem) GenericItemUsingDamageDescriptor.getDescriptor(batteryStack, BatteryItem.class);
+        double energy;
+        if (battery == null || (energy = battery.getEnergy(batteryStack)) < element.descriptor.powerConsumtion * time * 4) {
+            if (upToDate) {
+                upToDate = false;
+                oldDate = element.sixNode.coordinate.world().getDayTime();
+                if (battery != null && batteryStack != null) battery.setEnergy(batteryStack, 0);
+                element.needPublish();
+            }
+        } else {
+            if (!upToDate) {
+                upToDate = true;
+                element.needPublish();
+            }
+            battery.setEnergy(batteryStack, energy - element.descriptor.powerConsumtion * time);
+        }
+    }
+
+    @Override
+    public void readFromNBT(CompoundTag nbt, String str) {
+        upToDate = nbt.getBoolean(str + "upToDate");
+        oldDate = nbt.getLong(str + "oldDate");
+    }
+
+    @Override
+    public void writeToNBT(CompoundTag nbt, String str) {
+        nbt.putBoolean(str + "upToDate", upToDate);
+        nbt.putLong(str + "oldDate", oldDate);
+    }
+}

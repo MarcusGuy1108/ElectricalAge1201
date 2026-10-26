@@ -605,6 +605,52 @@ object Utils {
         return getMapFile(name).exists()
     }
 
+    @JvmStatic
+    fun getWind(dimension: ResourceKey<Level>, y: Int): Double {
+        val world = ServerLifecycleHooks.getCurrentServer()?.getLevel(dimension) ?: return 0.0.coerceAtLeast(Eln.wind.getWind(y))
+        val factor = 1f + world.getRainLevel(0f) * 0.2f + world.getThunderLevel(0f) * 0.2f
+        return 0.0.coerceAtLeast(Eln.wind.getWind(y) * factor + world.getRainLevel(0f) + world.getThunderLevel(0f) * 2f)
+    }
+
+    @JvmStatic
+    @Throws(IOException::class)
+    fun readMapFile(name: String): String = getMapFile(name).readText()
+
+    @JvmStatic
+    fun getWorldTime(world: Level): Double = world.dayTime / 23999.0
+
+    // The block states every metre along the ray, skipping unloaded positions.
+    @JvmStatic
+    fun traceRay(world: Level, x: Double, y: Double, z: Double, tx: Double, ty: Double, tz: Double): List<BlockState> {
+        val norm = sqrt((tx - x) * (tx - x) + (ty - y) * (ty - y) + (tz - z) * (tz - z))
+        val normInv = 1 / (norm + 0.000000001)
+        val dx = (tx - x) * normInv
+        val dy = (ty - y) * normInv
+        val dz = (tz - z) * normInv
+        val blocks = ArrayList<BlockState>()
+        var d = 0.0
+        while (d < norm) {
+            val pos = BlockPos.containing(x + dx * d, y + dy * d, z + dz * d)
+            if (world.isLoaded(pos)) blocks.add(world.getBlockState(pos))
+            d += 1.0
+        }
+        return blocks
+    }
+
+    // The redstone signal reaching a node: into its block, and from every neighbour toward the side it is mounted on.
+    @JvmStatic
+    fun getRedstoneLevelAround(coord: Coordinate, side: Direction): Int {
+        val world = coord.world()
+        val pos = coord.blockPos
+        var level = world.getBestNeighborSignal(pos)
+        val toward = side.inverse.toForge()
+        for (neighbour in net.minecraft.core.Direction.values()) {
+            if (level >= 15) return 15
+            level = level.coerceAtLeast(world.getSignal(pos.relative(neighbour), toward))
+        }
+        return level
+    }
+
     // 1.7.10 wrote the item id and damage; 1.20.1 items carry their descriptor, so the (session-stable) raw id is enough.
     @JvmStatic
     @Throws(IOException::class)

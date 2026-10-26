@@ -80,6 +80,12 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
    * [x] Utility cables (copper/aluminium, single and multi-conductor, with length-tracked spools), current cables,
      current relays and molten metal piles. As in 1.7.10 the classic voltage cables are hidden from the creative tab
      but stay loadable. A GameTest lights a lamp through a utility cable. Wire scrap and ghost blocks are not ported.
+   * [x] Signal processing: voltage/current and thermal sensors, VU meters, alarms, light/weather/humidity/wind/
+     temperature/proximity sensors, fire detectors, the scanner (reads tanks and inventories through Forge
+     capabilities), redstone input/output, timer, math chip (signal equation), watches, digital display, tutorial
+     sign, logic gates, analog chips and regulator chips; plus the thermal cable and the data loggers. A GameTest
+     checks NOT and AND gate outputs. MQTT and Modbus controllers, the wiki operator page and the wind state save
+     (wind restarts on each server start) are not ported.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
 
 ## References

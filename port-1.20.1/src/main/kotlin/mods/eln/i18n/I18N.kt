@@ -76,7 +76,9 @@ object I18N {
         fun isWhitespacesInFileReplaced(): Boolean = replaceWhitespacesInFile
     }
 
-    // PORT: getCurrentLanguage returns once a caller needs it (1.20.1 only knows the language on the client).
+    // shortcut: the server has no language of its own, so it answers en_US; read the client's locale for per-player text.
+    @JvmStatic
+    fun getCurrentLanguage(): String = "en_US"
 
     internal fun encodeLangKey(key: String): String {
         return encodeLangKey(key, true)!!
