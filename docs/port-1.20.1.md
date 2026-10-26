@@ -31,7 +31,9 @@ block atlas so item models can use them.
 
 Plain JUnit tests cannot bootstrap Minecraft on Forge (its event bus needs the mod launcher), so anything touching
 registries, levels or blocks (for example `Coordinate`, which stores a dimension key) is tested with GameTests.
-GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
+GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template. `SmokeGameTests` places every registered
+machine and six-node in turn (in its own batch), runs each for a few ticks and breaks it again, so a crash in any
+element's setup, simulation or removal fails the run.
 
 ## Conventions
 
