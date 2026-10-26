@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": [
+      {
+        "tag": "forge:ingots/steel"
+      },
+      {
+        "tag": "forge:ingots/alloy"
+      }
+    ]
+  },
+  "pattern": [
+    "s",
+    "s"
+  ],
+  "result": {
+    "count": 4,
+    "item": "eln:clutch_pin"
+  },
+  "show_notification": true
+}

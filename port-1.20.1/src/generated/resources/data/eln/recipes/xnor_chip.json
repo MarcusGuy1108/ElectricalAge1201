@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_basic"
+    },
+    "c": {
+      "item": "eln:copper_cable"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " rr",
+    "rCc",
+    " rr"
+  ],
+  "result": {
+    "item": "eln:xnor_chip"
+  },
+  "show_notification": true
+}

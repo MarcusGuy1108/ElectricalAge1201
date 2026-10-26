@@ -11,6 +11,8 @@ class RecipesList {
     val recipes = ArrayList<Recipe>()
     val machines = ArrayList<ItemStack>()
     fun addRecipe(recipe: Recipe) {
+        // Recipes naming content that is not ported (or a missing mod material) come through with empty stacks.
+        if (recipe.input.isEmpty || recipe.output.any { it.isEmpty }) return
         recipes.add(recipe)
         recipe.setMachineList(machines)
     }

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "tag": "forge:plates/lead"
+    },
+    "t": {
+      "tag": "forge:dusts/eln_tungsten"
+    }
+  },
+  "pattern": [
+    " t ",
+    "tLt",
+    " t "
+  ],
+  "result": {
+    "item": "eln:lead_clutch_plate",
+    "nbt": "{}"
+  },
+  "show_notification": true
+}

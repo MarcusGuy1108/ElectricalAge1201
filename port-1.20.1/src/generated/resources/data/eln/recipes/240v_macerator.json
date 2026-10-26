@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_advanced"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "I": {
+      "tag": "forge:ingots/alloy"
+    },
+    "M": {
+      "item": "eln:advanced_machine_block"
+    },
+    "c": {
+      "item": "eln:advanced_electrical_motor"
+    }
+  },
+  "pattern": [
+    "ICI",
+    "DMD",
+    "IcI"
+  ],
+  "result": {
+    "item": "eln:240v_macerator"
+  },
+  "show_notification": true
+}

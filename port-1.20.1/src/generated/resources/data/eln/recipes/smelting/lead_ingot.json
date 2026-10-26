@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.3,
+  "ingredient": {
+    "item": "eln:lead_ore"
+  },
+  "result": {
+    "item": "eln:lead_ingot"
+  }
+}

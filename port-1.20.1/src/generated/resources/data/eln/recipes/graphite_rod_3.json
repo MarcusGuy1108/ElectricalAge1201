@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "eln:4x_graphite_rods"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "eln:graphite_rod"
+  }
+}

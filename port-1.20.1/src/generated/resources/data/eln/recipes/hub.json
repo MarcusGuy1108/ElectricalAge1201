@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "eln:iron_cable"
+    },
+    "c": {
+      "item": "eln:copper_cable"
+    }
+  },
+  "pattern": [
+    "I I",
+    " c ",
+    "I I"
+  ],
+  "result": {
+    "item": "eln:hub"
+  },
+  "show_notification": true
+}

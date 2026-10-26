@@ -1,5 +1,6 @@
 package mods.eln
 
+import mods.eln.ore.ElnOre
 import mods.eln.transparentnode.electricalfurnace.ElectricalFurnaceDescriptor
 import mods.eln.misc.RecipesList
 import mods.eln.fluid.FuelRegistry
@@ -167,6 +168,23 @@ object Eln {
     @JvmField var brushSubNames: List<String> = emptyList()
 
     @JvmStatic lateinit var wind: WindProcess
+
+    /**
+     * A stack of the Eln item named [name] (descriptor name, ore dictionary name or ore name, as 1.7.10 found them
+     * through GameRegistry.findItemStack). Empty when no such item is registered, e.g. content not ported yet.
+     */
+    @JvmStatic
+    fun findItemStack(name: String, stackSize: Int): ItemStack {
+        for (family in listOf(sixNodeItem.subItemList.values, transparentNodeItem.subItemList.values)) {
+            family.firstOrNull { it.name == name }?.let { return it.newItemStack(stackSize) }
+        }
+        for (family in listOf(sharedItem.subItemList.values, sharedItemStackOne.subItemList.values)) {
+            family.firstOrNull { it.name == name }?.let { return it.newItemStack(stackSize) }
+        }
+        oreDictionary[name]?.firstOrNull()?.let { return it.newItemStack(stackSize) }
+        ElnOre.values().firstOrNull { it.legacyName == name }?.let { return ItemStack(it.block.get(), stackSize) }
+        return ItemStack.EMPTY
+    }
 
     // True in a development (deobfuscated) run, like 1.7.10's fml.deobfuscatedEnvironment.
     val isDevelopmentRun: Boolean

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
+    },
+    "c": {
+      "item": "eln:iron_cable"
+    }
+  },
+  "pattern": [
+    "cPc",
+    "III"
+  ],
+  "result": {
+    "item": "eln:power_capacitor"
+  },
+  "show_notification": true
+}

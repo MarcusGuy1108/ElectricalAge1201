@@ -7,11 +7,23 @@ import net.minecraft.resources.ResourceLocation
 object OreDictionaryTags {
     private val FORGE_PREFIXES = listOf("ingot", "dust", "ore", "plate", "gem", "nugget", "block", "gear", "rod", "wire")
 
+    // Ore dictionary names whose 1.20.1 tag does not follow the prefix pattern.
+    private val SPECIAL = mapOf(
+        "plankWood" to ResourceLocation("minecraft", "planks"),
+        "logWood" to ResourceLocation("minecraft", "logs"),
+        "treeSapling" to ResourceLocation("minecraft", "saplings"),
+        "treeLeaves" to ResourceLocation("minecraft", "leaves"),
+        "stickWood" to ResourceLocation("forge", "rods/wooden"),
+        "materialString" to ResourceLocation("forge", "string"),
+    )
+
     @JvmStatic
     fun tagFor(oreName: String): ResourceLocation {
+        SPECIAL[oreName]?.let { return it }
         val prefix = FORGE_PREFIXES.firstOrNull { oreName.startsWith(it) && oreName.length > it.length && oreName[it.length].isUpperCase() }
         return if (prefix != null) {
-            ResourceLocation("forge", prefix + "s/" + snake(oreName.substring(prefix.length)))
+            // Forge 1.20.1 calls block tags storage_blocks (forge:storage_blocks/iron).
+            ResourceLocation("forge", (if (prefix == "block") "storage_block" else prefix) + "s/" + snake(oreName.substring(prefix.length)))
         } else {
             ResourceLocation(Eln.MODID, snake(oreName))
         }

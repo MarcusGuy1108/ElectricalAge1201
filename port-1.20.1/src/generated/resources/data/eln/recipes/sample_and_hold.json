@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_advanced"
+    },
+    "c": {
+      "item": "eln:copper_cable"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " rr",
+    "cCc",
+    " c "
+  ],
+  "result": {
+    "item": "eln:sample_and_hold"
+  },
+  "show_notification": true
+}

@@ -113,6 +113,14 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      absolute height ranges; the 1.7.10 config switches still apply through the `eln:config_enabled` placement
      modifier (cinnabar stays off by default). Veins use one size, the middle of the 1.7.10 random range, and only
      replace stone, not deepslate. GameTests check that the features load and that a vein replaces stone.
+   * [x] Recipes: `CraftingRecipes` (the 1.7.10 recipe code) runs twice. In `runData` its crafting and smelting
+     recipes become JSON under `data/eln/recipes`; ore dictionary names become tags (`OreDictionaryTags`), 1.7.10
+     dye and wool metadata become the matching 1.20.1 items, and one-item shaped recipes become shapeless. At
+     server start it fills the machine recipe lists (macerator, compressor, plate machine, magnetizer, arc
+     furnace). Recipes that name content not ported yet are left out and listed in the data run's log, so
+     re-running `runData` after porting more content picks them up. Where 1.7.10 used the first material present
+     (`firstExistingOre`), the recipe accepts any of them. A GameTest checks a crafting, a smelting and a macerator
+     recipe.
 
 ## References
 

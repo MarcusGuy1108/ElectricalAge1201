@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "eln:medium_voltage_cable"
+    },
+    "r": {
+      "item": "eln:rubber"
+    }
+  },
+  "pattern": [
+    "rcr"
+  ],
+  "result": {
+    "count": 4,
+    "item": "eln:lead_fuse_for_medium_voltage_cables"
+  },
+  "show_notification": true
+}

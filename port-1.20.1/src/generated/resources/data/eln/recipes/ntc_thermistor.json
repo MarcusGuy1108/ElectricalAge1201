@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "eln:copper_cable"
+    },
+    "s": {
+      "tag": "forge:dusts/silicon"
+    }
+  },
+  "pattern": [
+    "   ",
+    "csc",
+    "   "
+  ],
+  "result": {
+    "item": "eln:ntc_thermistor"
+  },
+  "show_notification": true
+}

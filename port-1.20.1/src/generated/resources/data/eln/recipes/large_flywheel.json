@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "eln:advanced_machine_block"
+    },
+    "P": [
+      {
+        "tag": "forge:storage_blocks/lead"
+      },
+      {
+        "tag": "forge:ingots/lead"
+      }
+    ],
+    "R": {
+      "item": "eln:reinforced_shaft"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "RMR",
+    "PPP"
+  ],
+  "result": {
+    "item": "eln:large_flywheel"
+  },
+  "show_notification": true
+}

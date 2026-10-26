@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "eln:robust_lamp_socket"
+    }
+  },
+  "pattern": [
+    "I",
+    "S"
+  ],
+  "result": {
+    "count": 4,
+    "item": "eln:suspended_lamp_socket_no_swing"
+  },
+  "show_notification": true
+}

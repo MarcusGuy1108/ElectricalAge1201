@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:cyan_dye"
+    },
+    {
+      "item": "eln:white_brush"
+    }
+  ],
+  "result": {
+    "item": "eln:cyan_brush",
+    "nbt": "{life:32}"
+  }
+}

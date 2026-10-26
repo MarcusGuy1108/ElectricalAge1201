@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "eln:item_rubber"
+    },
+    "C": {
+      "item": "eln:copper_6_awg_cable_600v"
+    },
+    "I": {
+      "item": "eln:copper_cable"
+    }
+  },
+  "pattern": [
+    "AAI",
+    "AIA",
+    "CAC"
+  ],
+  "result": {
+    "item": "eln:50a_switch"
+  },
+  "show_notification": true
+}

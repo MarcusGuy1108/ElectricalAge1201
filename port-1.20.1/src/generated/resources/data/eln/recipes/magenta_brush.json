@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:magenta_dye"
+    },
+    {
+      "item": "eln:white_brush"
+    }
+  ],
+  "result": {
+    "item": "eln:magenta_brush",
+    "nbt": "{life:32}"
+  }
+}

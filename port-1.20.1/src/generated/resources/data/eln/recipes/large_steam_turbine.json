@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "eln:advanced_machine_block"
+    },
+    "M": {
+      "item": "eln:copper_thermal_cable"
+    },
+    "R": {
+      "item": "eln:reinforced_shaft"
+    },
+    "S": [
+      {
+        "tag": "forge:ingots/aluminum"
+      },
+      {
+        "tag": "forge:ingots/steel"
+      },
+      {
+        "tag": "forge:ingots/iron"
+      }
+    ],
+    "T": {
+      "item": "eln:turbine_blade_set"
+    }
+  },
+  "pattern": [
+    "TTT",
+    "RMR",
+    "SAS"
+  ],
+  "result": {
+    "item": "eln:large_steam_turbine"
+  },
+  "show_notification": true
+}

@@ -1,5 +1,8 @@
 package mods.eln.registration
 
+import mods.eln.sixnode.wirelesssignal.WirelessSignalAnalyserItemDescriptor
+import mods.eln.item.OverHeatingProtectionDescriptor
+import mods.eln.item.OverVoltageProtectionDescriptor
 import mods.eln.mechanical.ClutchPinItem
 import mods.eln.mechanical.ClutchPlateItem
 import mods.eln.item.SolarTrackerDescriptor
@@ -72,7 +75,7 @@ object ItemRegistration {
         registerHeatingCorp(1)
         registerRegulatorItem(3)
         registerLampItem(4)
-        // PORT: registerProtection(5)
+        registerProtection(5)
         registerCombustionChamber(6)
         registerFerromagneticCore(7)
         registerIngot(8)
@@ -813,7 +816,12 @@ object ItemRegistration {
             Eln.sharedItem.addElement(completId, element)
             Eln.allMeterElement = element
         }
-        // PORT: Wireless Analyser returns with WirelessSignalAnalyserItemDescriptor.
+        run {
+            subId = 8
+            completId = subId + (id shl 6)
+            element = WirelessSignalAnalyserItemDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Wireless Analyser"))
+            Eln.sharedItem.addElement(completId, element)
+        }
         run {
             subId = 16
             completId = subId + (id shl 6)
@@ -1106,6 +1114,34 @@ object ItemRegistration {
                 25000 * fuelHeatFurnacePowerFactor, 0, 1f
             )
         )
+    }
+
+    private fun registerProtection(id: Int) {
+        var subId: Int
+        var completId: Int
+
+        run {
+            subId = 0
+            completId = subId + (id shl 6)
+            val element = OverHeatingProtectionDescriptor(
+                I18N.TR_NAME(
+                    I18N.Type.NONE,
+                    "Overheating Protection"
+                )
+            )
+            Eln.sharedItem.addElement(completId, element)
+        }
+        run {
+            subId = 1
+            completId = subId + (id shl 6)
+            val element = OverVoltageProtectionDescriptor(
+                I18N.TR_NAME(
+                    I18N.Type.NONE,
+                    "Overvoltage Protection"
+                )
+            )
+            Eln.sharedItem.addElement(completId, element)
+        }
     }
 
     private fun registerMiscItem(id: Int) {

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:plates/coal"
+    },
+    "t": {
+      "tag": "forge:dusts/eln_tungsten"
+    }
+  },
+  "pattern": [
+    " t ",
+    "tCt",
+    " t "
+  ],
+  "result": {
+    "item": "eln:coal_clutch_plate",
+    "nbt": "{}"
+  },
+  "show_notification": true
+}

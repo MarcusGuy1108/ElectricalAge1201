@@ -218,8 +218,23 @@ object NodeGameTests {
         for (pos in area) helper.setBlock(pos, Blocks.STONE)
         val vein = helper.level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
             .get(ResourceLocation(Eln.MODID, ElnOre.COPPER.id))!!
-        vein.place(helper.level, helper.level.chunkSource.generator, helper.level.random, helper.absolutePos(BlockPos(1, 1, 1)))
-        helper.assertTrue(area.any { helper.getBlockState(it).`is`(ElnOre.COPPER.block.get()) }, "no copper ore placed")
+        // A vein spreads randomly and may miss this small cube, so it gets a few tries.
+        val placed = (1..20).any {
+            vein.place(helper.level, helper.level.chunkSource.generator, helper.level.random, helper.absolutePos(BlockPos(1, 1, 1)))
+            area.any { helper.getBlockState(it).`is`(ElnOre.COPPER.block.get()) }
+        }
+        helper.assertTrue(placed, "no copper ore placed")
+        helper.succeed()
+    }
+
+    // Crafting recipes are generated data; the machine recipe lists fill when the server starts.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun recipesLoad(helper: GameTestHelper) {
+        val recipes = helper.level.recipeManager
+        helper.assertTrue(recipes.byKey(ResourceLocation(Eln.MODID, "low_voltage_cable")).isPresent, "no low voltage cable recipe")
+        helper.assertTrue(recipes.byKey(ResourceLocation(Eln.MODID, "smelting/copper_ingot")).isPresent, "no copper smelting recipe")
+        helper.assertTrue(Eln.maceratorRecipes.getRecipe(ItemStack(ElnOre.COPPER.block.get())) != null, "no macerator recipe for copper ore")
         helper.succeed()
     }
 }

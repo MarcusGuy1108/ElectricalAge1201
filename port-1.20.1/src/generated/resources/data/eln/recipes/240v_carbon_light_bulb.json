@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "minecraft:coal"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "S": {
+      "item": "eln:medium_voltage_cable"
+    }
+  },
+  "pattern": [
+    " G ",
+    "GFG",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "item": "eln:240v_carbon_light_bulb",
+    "nbt": "{life:12.0d}"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "S": {
+      "item": "minecraft:cobblestone"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "CCC",
+    "SSS"
+  ],
+  "result": {
+    "count": 12,
+    "item": "eln:copper_thermal_cable"
+  },
+  "show_notification": true
+}

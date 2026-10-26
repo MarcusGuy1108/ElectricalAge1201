@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T15:31:53.835947154	Item Models: eln
+// 1.20.1	2026-10-26T15:43:55.376429808	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -415,6 +415,8 @@ e1028c7ee9a2e70ddd1e8636308523071c3ad8b9 assets/eln/models/item/opamp.json
 ca800194c602c1a382dfc946c34fd18bf8ab7aa2 assets/eln/models/item/or_chip.json
 e59e2192146d25123b3133223da7b9fc9dbc2bd4 assets/eln/models/item/orange_brush.json
 07d469589c7e0604b0d8c3fe1574a4f0207f31a2 assets/eln/models/item/oscillator_chip.json
+00b852b7f534bf34630b8b7bb20e7f199740f7cc assets/eln/models/item/overheating_protection.json
+20e0d7b151c9646307ce9731410913cb752d494c assets/eln/models/item/overvoltage_protection.json
 bfa587bc1ebf00a0d08fc0f5a7e7623d27fb77d9 assets/eln/models/item/pal_chip.json
 f9cfb3d62f824eb011bd4320a07200881c7e44ec assets/eln/models/item/pid_regulator.json
 f58b6f8178f88b33bb5432f830909438630de9a7 assets/eln/models/item/pink_brush.json
@@ -514,6 +516,7 @@ c106d6b37fbf4f33f1d19a85f560bcb455fcb8df assets/eln/models/item/voltage_to_redst
 55df2626fa39473c3d2e41053a898e90743da475 assets/eln/models/item/water_turbine.json
 60944bc528cfdef884a10a20c275b5170f74722b assets/eln/models/item/white_brush.json
 59a073a8c7a269b6905f0ad54e6dee18ea78db93 assets/eln/models/item/wind_turbine.json
+e3df4f3d4661e531c3e37c6395ec4147bafe1afa assets/eln/models/item/wireless_analyser.json
 f9d4233c04570efcc8c5c0ab9b6ee699388262c9 assets/eln/models/item/wireless_button.json
 397a5b428a982d0eb0ff73acc431395ad7edecba assets/eln/models/item/wireless_signal_receiver.json
 91e6871333d94f70c26763cbd11bfd4f2b77a6c1 assets/eln/models/item/wireless_signal_repeater.json

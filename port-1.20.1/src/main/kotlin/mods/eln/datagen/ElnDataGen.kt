@@ -1,5 +1,9 @@
 package mods.eln.datagen
 
+import java.util.function.Consumer
+import net.minecraft.data.recipes.FinishedRecipe
+import net.minecraft.data.recipes.RecipeProvider
+import mods.eln.craft.CraftingRecipes
 import net.minecraftforge.common.Tags
 import net.minecraft.tags.BlockTags
 import mods.eln.ore.ElnOre
@@ -46,6 +50,9 @@ object ElnDataGen {
         event.generator.addProvider(event.includeServer(), ElnItemTags(output, event.lookupProvider, blockTags.contentsGetter(), event.existingFileHelper))
         event.generator.addProvider(event.includeServer(), ElnWorldGen(output, event.lookupProvider))
         event.generator.addProvider(event.includeServer(), elnLootTables(output))
+        event.generator.addProvider(event.includeServer(), object : RecipeProvider(output) {
+            override fun buildRecipes(consumer: Consumer<FinishedRecipe>) = CraftingRecipes.generate(consumer)
+        })
     }
 }
 

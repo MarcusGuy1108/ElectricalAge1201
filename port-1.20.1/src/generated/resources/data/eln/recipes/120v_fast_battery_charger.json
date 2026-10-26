@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_basic"
+    },
+    "I": {
+      "item": "eln:iron_cable"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "c": {
+      "item": "eln:copper_12_2_cable_600v"
+    }
+  },
+  "pattern": [
+    "RIR",
+    "ICI",
+    "RcR"
+  ],
+  "result": {
+    "item": "eln:120v_fast_battery_charger"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:ingots/alloy"
+    },
+    "C": {
+      "item": "eln:advanced_machine_block"
+    },
+    "T": {
+      "tag": "forge:ingots/eln_tungsten"
+    }
+  },
+  "pattern": [
+    "TAT",
+    "ACA",
+    "TAT"
+  ],
+  "result": {
+    "item": "eln:tungsten_turbine_blade",
+    "nbt": "{condition:1.0d}"
+  },
+  "show_notification": true
+}

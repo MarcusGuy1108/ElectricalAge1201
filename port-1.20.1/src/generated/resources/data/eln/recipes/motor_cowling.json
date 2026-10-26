@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "eln:advanced_machine_block"
+    },
+    "I": {
+      "item": "eln:iron_plate"
+    },
+    "M": {
+      "item": "eln:machine_block"
+    },
+    "S": [
+      {
+        "tag": "forge:ingots/steel"
+      },
+      {
+        "tag": "forge:ingots/aluminum"
+      },
+      {
+        "tag": "forge:ingots/alloy"
+      }
+    ]
+  },
+  "pattern": [
+    "ISI",
+    "MAM",
+    "ISI"
+  ],
+  "result": {
+    "item": "eln:motor_cowling"
+  },
+  "show_notification": true
+}

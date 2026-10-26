@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:storage_blocks/iron"
+    },
+    "c": {
+      "item": "eln:machine_block"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "pattern": [
+    "iBi",
+    " c "
+  ],
+  "result": {
+    "item": "eln:fixed_shaft"
+  },
+  "show_notification": true
+}

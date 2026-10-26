@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "eln:iron_cable"
+    },
+    "S": {
+      "item": "eln:robust_lamp_socket"
+    }
+  },
+  "pattern": [
+    "I",
+    "S"
+  ],
+  "result": {
+    "count": 2,
+    "item": "eln:suspended_lamp_socket"
+  },
+  "show_notification": true
+}

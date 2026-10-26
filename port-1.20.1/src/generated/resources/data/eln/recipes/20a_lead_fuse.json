@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "eln:copper_12_awg_cable_600v"
+    },
+    "r": {
+      "item": "eln:rubber"
+    }
+  },
+  "pattern": [
+    "rcr"
+  ],
+  "result": {
+    "count": 4,
+    "item": "eln:20a_lead_fuse"
+  },
+  "show_notification": true
+}

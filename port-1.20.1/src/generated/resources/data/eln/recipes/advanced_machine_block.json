@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:plates/alloy"
+    },
+    "c": {
+      "item": "eln:copper_cable"
+    },
+    "r": {
+      "item": "eln:tree_resin"
+    }
+  },
+  "pattern": [
+    "rCr",
+    "CcC",
+    "rCr"
+  ],
+  "result": {
+    "item": "eln:advanced_machine_block"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_advanced"
+    },
+    "I": {
+      "item": "eln:iron_cable"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "c": {
+      "item": "eln:copper_10_2_cable_600v"
+    }
+  },
+  "pattern": [
+    "RIR",
+    "ICI",
+    "RcR"
+  ],
+  "result": {
+    "item": "eln:240v_battery_charger"
+  },
+  "show_notification": true
+}

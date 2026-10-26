@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_basic"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "c": {
+      "item": "eln:signal_cable"
+    }
+  },
+  "pattern": [
+    "IcI",
+    "cCc",
+    "IcI"
+  ],
+  "result": {
+    "item": "eln:signal_processor"
+  },
+  "show_notification": true
+}

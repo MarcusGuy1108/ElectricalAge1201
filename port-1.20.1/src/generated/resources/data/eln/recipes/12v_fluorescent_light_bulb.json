@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "S": {
+      "item": "eln:copper_cable"
+    }
+  },
+  "pattern": [
+    " G ",
+    "GFG",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "item": "eln:12v_fluorescent_light_bulb",
+    "nbt": "{life:168.0d}"
+  },
+  "show_notification": true
+}

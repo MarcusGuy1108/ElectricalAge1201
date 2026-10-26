@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "tag": "eln:circuit_advanced"
+    },
+    "m": {
+      "item": "eln:electrical_motor"
+    }
+  },
+  "pattern": [
+    "m",
+    "c",
+    "m"
+  ],
+  "result": {
+    "item": "eln:machine_booster"
+  },
+  "show_notification": true
+}

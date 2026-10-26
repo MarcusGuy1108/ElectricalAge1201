@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_advanced"
+    },
+    "c": {
+      "item": "eln:copper_cable"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "rrr",
+    "cCc",
+    "rcr"
+  ],
+  "result": {
+    "item": "eln:pid_regulator"
+  },
+  "show_notification": true
+}

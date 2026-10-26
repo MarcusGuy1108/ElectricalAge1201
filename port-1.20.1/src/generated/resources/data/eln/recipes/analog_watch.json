@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "eln:iron_cable"
+    },
+    "c": {
+      "item": "eln:iron_cable"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "crc",
+    "III"
+  ],
+  "result": {
+    "item": "eln:analog_watch"
+  },
+  "show_notification": true
+}

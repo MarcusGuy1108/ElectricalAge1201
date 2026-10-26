@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "tag": "forge:ingots/eln_tungsten"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "S": {
+      "item": "eln:low_voltage_cable"
+    }
+  },
+  "pattern": [
+    " G ",
+    "GFG",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "item": "eln:120v_incandescent_light_bulb",
+    "nbt": "{life:24.0d}"
+  },
+  "show_notification": true
+}

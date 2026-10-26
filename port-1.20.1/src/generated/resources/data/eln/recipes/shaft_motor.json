@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "eln:very_high_voltage_cable"
+    },
+    "M": {
+      "item": "eln:advanced_machine_block"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "m": {
+      "item": "eln:advanced_electrical_motor"
+    }
+  },
+  "pattern": [
+    "imi",
+    " ME"
+  ],
+  "result": {
+    "item": "eln:shaft_motor"
+  },
+  "show_notification": true
+}

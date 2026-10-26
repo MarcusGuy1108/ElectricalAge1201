@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "g": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "pattern": [
+    " g",
+    "gc",
+    " g"
+  ],
+  "result": {
+    "item": "eln:animal_filter"
+  },
+  "show_notification": true
+}

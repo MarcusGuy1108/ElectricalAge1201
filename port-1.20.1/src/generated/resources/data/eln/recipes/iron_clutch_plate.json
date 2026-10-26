@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "forge:plates/iron"
+    },
+    "t": {
+      "tag": "forge:dusts/eln_tungsten"
+    }
+  },
+  "pattern": [
+    " t ",
+    "tIt",
+    " t "
+  ],
+  "result": {
+    "item": "eln:iron_clutch_plate",
+    "nbt": "{}"
+  },
+  "show_notification": true
+}

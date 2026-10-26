@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": [
+      {
+        "tag": "forge:storage_blocks/aluminum"
+      },
+      {
+        "tag": "forge:storage_blocks/iron"
+      }
+    ],
+    "M": {
+      "item": "eln:advanced_machine_block"
+    },
+    "a": [
+      {
+        "tag": "forge:ingots/aluminum"
+      },
+      {
+        "tag": "forge:ingots/iron"
+      }
+    ]
+  },
+  "pattern": [
+    " a ",
+    "aAa",
+    " M "
+  ],
+  "result": {
+    "item": "eln:steam_turbine"
+  },
+  "show_notification": true
+}

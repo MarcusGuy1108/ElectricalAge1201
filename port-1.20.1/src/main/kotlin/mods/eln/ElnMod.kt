@@ -1,5 +1,6 @@
 package mods.eln
 
+import mods.eln.craft.CraftingRecipes
 import mods.eln.ore.ElnOre
 import net.minecraft.world.item.Item
 import mods.eln.generic.GenericItem
@@ -78,6 +79,7 @@ object ElnMod {
             WirelessSignalTxElement.channelMap.clear()
             LampSupplyElement.channelMap.clear()
             Eln.simulator.init()
+            CraftingRecipes.registerMachineRecipes()
             // shortcut: the wind state starts fresh each server start; 1.7.10 kept it in a SaveConfig world data entry.
             Eln.wind = WindProcess()
             Eln.simulator.addSlowProcess(Eln.wind)

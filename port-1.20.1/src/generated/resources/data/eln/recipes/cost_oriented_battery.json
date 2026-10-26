@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "eln:low_voltage_cable"
+    },
+    "P": {
+      "tag": "forge:ingots/lead"
+    }
+  },
+  "pattern": [
+    "C C",
+    "PPP",
+    "PPP"
+  ],
+  "result": {
+    "item": "eln:cost_oriented_battery"
+  },
+  "show_notification": true
+}

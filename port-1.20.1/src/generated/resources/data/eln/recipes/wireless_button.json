@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_basic"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "a": {
+      "item": "eln:signal_antenna"
+    },
+    "r": {
+      "tag": "eln:item_rubber"
+    }
+  },
+  "pattern": [
+    " a ",
+    "rCr",
+    " R "
+  ],
+  "result": {
+    "count": 3,
+    "item": "eln:wireless_button"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "eln:alloy_plate"
+    },
+    "C": {
+      "item": "eln:medium_voltage_cable"
+    },
+    "R": {
+      "tag": "eln:item_rubber"
+    },
+    "U": {
+      "item": "eln:copper_plate"
+    }
+  },
+  "pattern": [
+    "RUR",
+    "ACA"
+  ],
+  "result": {
+    "count": 16,
+    "item": "eln:240v_type_e_socket"
+  },
+  "show_notification": true
+}

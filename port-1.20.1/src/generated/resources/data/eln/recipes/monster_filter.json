@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "minecraft:red_dye"
+    },
+    "g": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "pattern": [
+    " g",
+    "gc",
+    " g"
+  ],
+  "result": {
+    "item": "eln:monster_filter"
+  },
+  "show_notification": true
+}

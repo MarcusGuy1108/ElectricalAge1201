@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "i": {
+      "item": "eln:iron_cable"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "   ",
+    "rrr",
+    "iii"
+  ],
+  "result": {
+    "item": "eln:digital_display"
+  },
+  "show_notification": true
+}
