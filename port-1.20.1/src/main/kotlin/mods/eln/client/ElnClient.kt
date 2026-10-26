@@ -1,5 +1,7 @@
 package mods.eln.client
 
+import net.minecraftforge.fml.loading.FMLEnvironment
+import mods.eln.debug.ClientSmokeCommands
 import mods.eln.sixnode.tutorialsign.TutorialSignOverlay
 import net.minecraftforge.client.event.RenderGuiEvent
 import mods.eln.node.transparent.TransparentNodeRender
@@ -29,6 +31,10 @@ object ElnClient {
         MinecraftForge.EVENT_BUS.addListener(::onRenderTick)
         val tutorialSignOverlay = TutorialSignOverlay()
         MinecraftForge.EVENT_BUS.addListener { event: RenderGuiEvent.Post -> tutorialSignOverlay.render(event) }
+        if (!FMLEnvironment.production) {
+            MinecraftForge.EVENT_BUS.addListener(ClientSmokeCommands::registerClient)
+            MinecraftForge.EVENT_BUS.addListener(ClientSmokeCommands::onClientTick)
+        }
     }
 
     private fun registerRenderers(event: EntityRenderersEvent.RegisterRenderers) {

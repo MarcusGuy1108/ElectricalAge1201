@@ -33,7 +33,9 @@ Plain JUnit tests cannot bootstrap Minecraft on Forge (its event bus needs the m
 registries, levels or blocks (for example `Coordinate`, which stores a dimension key) is tested with GameTests.
 GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template. `SmokeGameTests` places every registered
 machine and six-node in turn (in its own batch), runs each for a few ticks and breaks it again, so a crash in any
-element's setup, simulation or removal fails the run.
+element's setup, simulation or removal fails the run. Renders and GUIs only run on the client: in a dev client,
+`/elnsmoke` lays every node out in a grid next to the player and `/elnsmokegui` then opens every loaded node's GUI in
+turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
 
 ## Conventions
 
