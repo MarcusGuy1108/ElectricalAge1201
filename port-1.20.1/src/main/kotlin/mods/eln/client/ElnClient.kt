@@ -1,5 +1,7 @@
 package mods.eln.client
 
+import mods.eln.node.transparent.TransparentNodeRender
+import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.gui.ElnMenus
 import mods.eln.node.NodeBlockEntity
 import net.minecraft.client.gui.screens.MenuScreens
@@ -27,6 +29,7 @@ object ElnClient {
 
     private fun registerRenderers(event: EntityRenderersEvent.RegisterRenderers) {
         event.registerBlockEntityRenderer(SixNodeBlockRegistration.ENTITY.get()) { SixNodeRender() }
+        event.registerBlockEntityRenderer(TransparentNodeBlock.ENTITY.get()) { TransparentNodeRender() }
     }
 
     private fun clientSetup(event: FMLClientSetupEvent) {

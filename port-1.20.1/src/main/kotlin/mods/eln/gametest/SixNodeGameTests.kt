@@ -36,7 +36,7 @@ object SixNodeGameTests {
         return placeOnFloor(helper, relative, Eln.lowVoltageCableDescriptor!!.newItemStack())
     }
 
-    private fun placeOnFloor(helper: GameTestHelper, relative: BlockPos, stack: ItemStack): SixNode {
+    internal fun placeOnFloor(helper: GameTestHelper, relative: BlockPos, stack: ItemStack): SixNode {
         helper.setBlock(relative.below(), Blocks.STONE)
         val item = stack.item as SixNodeItem
         val pos = helper.absolutePos(relative)

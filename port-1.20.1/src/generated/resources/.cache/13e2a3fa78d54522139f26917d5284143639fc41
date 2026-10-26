@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-25T23:46:55.2852521	Item Models: eln
+// 1.20.1	2026-10-26T00:04:25.9986217	Item Models: eln
 e15f1b92327d1c6bdca01a822aae00e1f2b39628 assets/eln/models/item/120v_carbon_light_bulb.json
 26fa267b04cbd5adec04c6ddc2b105806f221b9f assets/eln/models/item/120v_farming_light_bulb.json
 a4bcd917916e0ced3bf9d24a520aead1150ca8bb assets/eln/models/item/120v_fluorescent_light_bulb.json
@@ -17,12 +17,18 @@ a4bcd917916e0ced3bf9d24a520aead1150ca8bb assets/eln/models/item/240v_fluorescent
 d6f7fc2303916da6ae46d0baaba93522f3bef3fd assets/eln/models/item/240v_halogen_light_bulb.json
 1dfb1cc9d083cb4ff3d5f758ad66cb887af15066 assets/eln/models/item/240v_incandescent_light_bulb.json
 60cbd124fc856c17e4b05d8a5468fddef97e8e9b assets/eln/models/item/240v_led_light_bulb.json
+c1e638de04662778ce3b80da023041e344f956b4 assets/eln/models/item/capacity_oriented_battery.json
 c7832fe137aad4f03afc1fb24815a3c29d8f84d1 assets/eln/models/item/classic_lamp_socket.json
+276659d9157767c343445f37025b9d3b0caa942e assets/eln/models/item/cost_oriented_battery.json
 8e98b493282840ff1fea7d56516892c94b8ecb68 assets/eln/models/item/creative_cable.json
+bfd41d58f5723d99064021cf865f15967f12a608 assets/eln/models/item/current_oriented_battery.json
 19dc134bfffa4f244550eeff0495d294a1412aed assets/eln/models/item/electrical_source.json
+747503cf6d57ffdfcf37ae189795402167608d3b assets/eln/models/item/experimental_battery.json
 dbb5a86824bbeffa4fcd034b729ba00d99188149 assets/eln/models/item/flat_lamp_socket.json
 c63b82bb1d955d6d42f2a42428ff69c3012e215b assets/eln/models/item/fluorescent_lamp_socket.json
+2e3c8843aca614dc9134e71f540f2de65c1a8b26 assets/eln/models/item/ground_cable.json
 09a7ce2886adcb72eb4a88e54c61afd368462110 assets/eln/models/item/high_voltage_cable.json
+4abb5e7843c3fba13870366c34ec783103f65a28 assets/eln/models/item/life_oriented_battery.json
 471045db137ffac087eb66d7e6cda45ba6377f06 assets/eln/models/item/long_suspended_lamp_socket.json
 596af223023c668bed4e64fbe80b90fbd6647b91 assets/eln/models/item/long_suspended_lamp_socket_no_swing.json
 267d8947f3916fb5999e591d88f2b348d8c01496 assets/eln/models/item/low_voltage_cable.json
@@ -32,7 +38,9 @@ e2c00b99c552a3bed701f38f8b499f04a8dbc8eb assets/eln/models/item/sconce_lamp_sock
 7d67699c260a440ef89f95ee23700e4798effde7 assets/eln/models/item/signal_cable.json
 a6bb7f07c53c352b0afc2ee5a38861e48cbfd044 assets/eln/models/item/signal_source.json
 e5e367e10c4b6ce0a44a6a5c092f763c65d7d4fe assets/eln/models/item/simple_lamp_socket.json
+e7b3dcd43c4d7581daefd87697d2203255e750af assets/eln/models/item/single_use_battery.json
 fb1de0adf9ec4d5bafcf49d0cf9206762207bb5f assets/eln/models/item/spot_lamp_socket.json
 5a167c249d02eb2dc02da5186f7e7329bfeef3f8 assets/eln/models/item/suspended_lamp_socket.json
 d29cb577bd1612961ea2de46552e1a43563c9fe7 assets/eln/models/item/suspended_lamp_socket_no_swing.json
 339f29569bba163e389fc63c38c3317da5e5ea2f assets/eln/models/item/very_high_voltage_cable.json
+133cb1b2fec6f47acc53482075f66e5a069bf129 assets/eln/models/item/voltage_oriented_battery.json

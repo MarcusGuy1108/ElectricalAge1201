@@ -623,4 +623,16 @@ object Utils {
         if (i is IDescriptorItem) return i.descriptor
         return i
     }
+
+    @JvmStatic
+    fun printFunction(func: FunctionTable, start: Double, end: Double, step: Double) {
+        println("********")
+        var x: Double
+        var idx = 0
+        while (start + step * idx.also { x = it.toDouble() } < end + 0.00001) {
+            println(func.getValue(x))
+            idx++
+        }
+        println("********")
+    }
 }

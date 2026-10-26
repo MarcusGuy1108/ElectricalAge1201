@@ -1,5 +1,9 @@
 package mods.eln
 
+import mods.eln.registration.TransparentNodeRegistration
+import mods.eln.node.transparent.TransparentNodeItem
+import mods.eln.node.transparent.TransparentNode
+import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.registration.ItemRegistration
 import mods.eln.item.lampitem.LampLists
 import mods.eln.lightblock.LightBlock
@@ -37,13 +41,17 @@ object ElnMod {
         Eln.createCreativeTabs()
         SixNodeBlockRegistration.BLOCK
         NodeManager.registerUuid(SixNodeBlock.NODE_UUID, SixNode::class.java)
+        TransparentNodeBlock.BLOCK
+        NodeManager.registerUuid(TransparentNodeBlock.NODE_UUID, TransparentNode::class.java)
         Eln.sixNodeItem = GenericItemBlockUsingDamage { SixNodeItem(it) }
+        Eln.transparentNodeItem = GenericItemBlockUsingDamage { TransparentNodeItem(it) }
         Eln.sharedItem = GenericItemUsingDamage()
         LightBlock.BLOCK
         Eln.obj.loadAllElnModels()
         LampLists.translateLampTypes() // Lamp sockets list the translated lamp types, so before registration.
         ItemRegistration.registerItem()
         SixNodeRegistration.registerSix()
+        TransparentNodeRegistration.registerTransparent()
         ElnRegistries.register(MOD_BUS)
         ElnMenus.MENUS.register(MOD_BUS)
         MOD_BUS.addListener(ElnDataGen::gatherData)

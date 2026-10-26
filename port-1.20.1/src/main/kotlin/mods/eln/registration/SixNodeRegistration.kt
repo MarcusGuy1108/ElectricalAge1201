@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.sixnode.groundcable.GroundCableDescriptor
 import mods.eln.sixnode.lampsocket.objrender.LampSocketSuspendedObjRender
 import mods.eln.sixnode.lampsocket.objrender.LampSocketStandardObjRender
 import mods.eln.sixnode.lampsocket.LampSocketDescriptor
@@ -71,7 +72,7 @@ object SixNodeRegistration {
         Eln.sixNodeItem.setCreativeTabForGroup(66, Eln.creativeTabPowerElectronics)
         Eln.sixNodeItem.setCreativeTabForGroup(116, Eln.creativeTabMachines)
         Eln.sixNodeItem.setCreativeTabForGroup(125, Eln.creativeTabToolsArmor)
-        // PORT: registerGround(2)
+        registerGround(2)
         registerElectricalSource(3)
         registerElectricalCable(32)
         // PORT: registerCurrentCables(33)
@@ -211,6 +212,18 @@ object SixNodeRegistration {
         // PORT: Signal Bus Cable (subId 20, ElectricalSignalBusCableElement) returns with the signal bus.
     }
 
+
+    private fun registerGround(id: Int) {
+        var subId: Int
+
+        run {
+            subId = 0
+            val name = I18N.TR_NAME(I18N.Type.NONE, "Ground Cable")
+            val desc = GroundCableDescriptor(name, Eln.obj.getObj("groundcable")).creative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        // PORT: Hub (subId 8) returns with HubDescriptor.
+    }
 
     private fun registerElectricalSource(id: Int) {
         var subId: Int

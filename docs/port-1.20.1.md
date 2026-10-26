@@ -70,7 +70,10 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      light block. A GameTest lights a 12 V lamp from a placed source through a cable; in game the source voltage is
      set in its GUI and the socket takes its bulb and cable through its GUI. Lamp supplies are not ported, so sockets
      must be switched to "Powered by cable".
-   * [ ] Transparent-node framework and the battery.
+   * [x] Transparent-node framework (full-block machines), the seven batteries with their GUI, and the creative
+     Ground Cable. Batteries float as in 1.7.10, so a lamp powered from one needs the negative terminal grounded; a
+     GameTest and an in-game check light a 12 V lamp that way. Hopper/pipe access to machine inventories, custom
+     collision boxes, multiblock ghost blocks and the fluid block entity are not ported yet.
 6. [ ] Six-node blocks, transparent-node machines and the remaining content, family by family.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
 

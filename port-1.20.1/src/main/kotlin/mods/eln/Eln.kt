@@ -1,5 +1,8 @@
 package mods.eln
 
+import mods.eln.misc.FunctionTable
+import mods.eln.node.transparent.TransparentNodeDescriptor
+import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.sim.mna.component.Resistor
 import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.generic.GenericItemUsingDamageDescriptor
@@ -92,6 +95,10 @@ object Eln {
     lateinit var serverEventListener: ServerEventListener
 
     @JvmStatic
+    val smallRs: Double
+        get() = lowVoltageCableDescriptor!!.electricalRs
+
+    @JvmStatic
     fun applySmallRs(aLoad: NbtElectricalLoad) {
         lowVoltageCableDescriptor!!.applyTo(aLoad)
     }
@@ -102,6 +109,11 @@ object Eln {
     }
 
     lateinit var sixNodeItem: GenericItemBlockUsingDamage<SixNodeDescriptor>
+    @JvmField
+    var batteryVoltageFunctionTable: FunctionTable? = null
+    lateinit var transparentNodeItem: GenericItemBlockUsingDamage<TransparentNodeDescriptor>
+    val transparentNodeBlock: TransparentNodeBlock
+        @JvmStatic get() = TransparentNodeBlock.BLOCK.get()
     lateinit var sharedItem: GenericItemUsingDamage<GenericItemUsingDamageDescriptor>
 
     @JvmField val obj = Obj3DFolder()

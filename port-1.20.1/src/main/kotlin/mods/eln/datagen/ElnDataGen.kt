@@ -1,5 +1,7 @@
 package mods.eln.datagen
 
+import mods.eln.node.transparent.TransparentNodeBlock
+import mods.eln.node.transparent.TransparentNodeDescriptor
 import mods.eln.lightblock.LightBlock
 import mods.eln.Eln
 import mods.eln.generic.CreativeTabPopulator
@@ -37,7 +39,11 @@ class ElnItemModels(output: PackOutput, files: ExistingFileHelper) : ItemModelPr
     override fun registerModels() {
         for (registrar in CreativeTabPopulator.blockItems) {
             for (descriptor in registrar.descriptors) {
-                val voltage = (descriptor as? SixNodeDescriptor)?.voltageLevelColor ?: VoltageLevelColor.None
+                val voltage = when (descriptor) {
+                    is SixNodeDescriptor -> descriptor.voltageLevelColor
+                    is TransparentNodeDescriptor -> descriptor.voltageLevelColor
+                    else -> VoltageLevelColor.None
+                }
                 descriptorModel(descriptor.parentItem!!, voltage, "blocks/" + descriptor.iconName)
             }
         }
@@ -83,6 +89,11 @@ class ElnBlockStates(output: PackOutput, files: ExistingFileHelper) : BlockState
         simpleBlock(
             SixNodeBlockRegistration.BLOCK.get(),
             models().getBuilder("six_node").texture("particle", mcLoc("block/stone"))
+        )
+        // 1.7.10 used the iron block texture for transparent node particles.
+        simpleBlock(
+            TransparentNodeBlock.BLOCK.get(),
+            models().getBuilder("transparent_node").texture("particle", mcLoc("block/iron_block"))
         )
         // Invisible; the model only exists so the block state resolves.
         simpleBlock(LightBlock.BLOCK.get(), models().getBuilder("light").texture("particle", mcLoc("block/glass")))
