@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T00:19:15.217140561	Tags for minecraft:item mod id eln
+// 1.20.1	2026-10-26T15:31:53.844276883	Tags for minecraft:item mod id eln
 b1c2dbaac22ebe066a8de4d98af4e881ddef621f data/eln/tags/items/casing_machine.json
 864234b02478871ab4edcaaf9bbb5976971370f5 data/eln/tags/items/casing_machine_advanced.json
 81d4a44dab12cfc684d9fff1d873edbc21aea006 data/eln/tags/items/circuit_advanced.json
@@ -26,6 +26,11 @@ faddda2a328ef2bf5622c70d46376f7bca1358e0 data/forge/tags/items/ingots/ferrite.js
 d941123117e2543cf4733b89375860087cf9bf5c data/forge/tags/items/ingots/lead.json
 de9263e8109a0fb9c323772ee182757202b21f85 data/forge/tags/items/ingots/silicon.json
 d3b1cb39f0a70f4fef0de98d8a8cbaae43dfc50f data/forge/tags/items/ingots/steel.json
+8244645197ca11106dafcf497a03ce9ac93bf80a data/forge/tags/items/ores.json
+2b6951f8fd96baa6c173700469c8988bb9beb54b data/forge/tags/items/ores/cinnabar.json
+28c605018a975611801fa52feac3f4707a1ecc54 data/forge/tags/items/ores/copper.json
+e72492bfd3c828c6078748e561051971b8565211 data/forge/tags/items/ores/lead.json
+c4d5e840a138209dffa934f3802ed4e360f264eb data/forge/tags/items/ores/tungsten.json
 7fe7afa47a6e8e04a942b77894cf4b0d86288101 data/forge/tags/items/plates/alloy.json
 6020d39ad18818e53600b5547d7ad1698ba6a5cf data/forge/tags/items/plates/coal.json
 414cc75622b6339360be79e9e8eee1867dbffa3d data/forge/tags/items/plates/copper.json

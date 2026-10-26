@@ -1,5 +1,8 @@
 package mods.eln.datagen
 
+import net.minecraftforge.common.Tags
+import net.minecraft.tags.BlockTags
+import mods.eln.ore.ElnOre
 import mods.eln.ghost.GhostBlock
 import mods.eln.misc.OreDictionaryTags
 import java.util.concurrent.CompletableFuture
@@ -41,6 +44,8 @@ object ElnDataGen {
         val blockTags = ElnBlockTags(output, event.lookupProvider, event.existingFileHelper)
         event.generator.addProvider(event.includeServer(), blockTags)
         event.generator.addProvider(event.includeServer(), ElnItemTags(output, event.lookupProvider, blockTags.contentsGetter(), event.existingFileHelper))
+        event.generator.addProvider(event.includeServer(), ElnWorldGen(output, event.lookupProvider))
+        event.generator.addProvider(event.includeServer(), elnLootTables(output))
     }
 }
 
@@ -65,6 +70,8 @@ class ElnItemModels(output: PackOutput, files: ExistingFileHelper) : ItemModelPr
                 descriptorModel(descriptor.parentItem!!, descriptor.voltageLevelColor, "items/" + descriptor.IconName!!.removePrefix("eln:"))
             }
         }
+        // The block models come from ElnBlockStates in the same run, so they cannot be checked for yet.
+        for (ore in ElnOre.values()) getBuilder(ore.id).parent(ModelFile.UncheckedModelFile(modLoc("block/" + ore.id)))
     }
 
     private fun descriptorModel(item: Item, voltage: VoltageLevelColor, icon: String) {
@@ -111,12 +118,21 @@ class ElnBlockStates(output: PackOutput, files: ExistingFileHelper) : BlockState
         // Invisible; the model only exists so the block state resolves.
         simpleBlock(LightBlock.BLOCK.get(), models().getBuilder("light").texture("particle", mcLoc("block/glass")))
         simpleBlock(GhostBlock.BLOCK.get(), models().getBuilder("ghost").texture("particle", mcLoc("block/iron_block")))
+        for (ore in ElnOre.values()) simpleBlock(ore.block.get(), models().cubeAll(ore.id, modLoc("blocks/" + ore.texture)))
     }
 }
 
 class ElnBlockTags(output: PackOutput, lookup: CompletableFuture<HolderLookup.Provider>, files: ExistingFileHelper) :
     BlockTagsProvider(output, lookup, Eln.MODID, files) {
-    override fun addTags(provider: HolderLookup.Provider) {}
+    override fun addTags(provider: HolderLookup.Provider) {
+        for (ore in ElnOre.values()) {
+            val block = ore.block.get()
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block)
+            tag(BlockTags.NEEDS_STONE_TOOL).add(block)
+            tag(Tags.Blocks.ORES).add(block)
+            tag(BlockTags.create(ResourceLocation("forge", "ores/" + ore.material))).add(block)
+        }
+    }
 }
 
 /** 1.7.10 registered materials in the Forge ore dictionary; 1.20.1 uses item tags, e.g. ingotCopper -> forge:ingots/copper. */
@@ -130,6 +146,10 @@ class ElnItemTags(
         for ((name, descriptors) in Eln.oreDictionary) {
             val appender = tag(ItemTags.create(OreDictionaryTags.tagFor(name)))
             for (descriptor in descriptors) appender.add(descriptor.parentItem!!)
+        }
+        copy(Tags.Blocks.ORES, Tags.Items.ORES)
+        for (ore in ElnOre.values()) {
+            copy(BlockTags.create(ResourceLocation("forge", "ores/" + ore.material)), ItemTags.create(ResourceLocation("forge", "ores/" + ore.material)))
         }
     }
 }

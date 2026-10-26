@@ -1,5 +1,8 @@
 package mods.eln.gametest
 
+import net.minecraft.world.level.block.Blocks
+import net.minecraftforge.registries.ForgeRegistries
+import mods.eln.ore.ElnOre
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.resources.ResourceKey
 import net.minecraft.core.registries.Registries
@@ -193,6 +196,30 @@ object NodeGameTests {
         for (desc in Eln.sharedItem.subItemList.values) check(desc.name) { desc.addInformation(desc.newItemStack(), null, ArrayList(), false) }
         for (desc in Eln.sharedItemStackOne.subItemList.values) check(desc.name) { desc.addInformation(desc.newItemStack(), null, ArrayList(), false) }
         helper.assertTrue(failures.isEmpty(), failures.joinToString("; "))
+        helper.succeed()
+    }
+
+    // Ore world generation is data: the placed features and the biome modifier must load on the server.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun oreWorldGenLoads(helper: GameTestHelper) {
+        val placed = helper.level.registryAccess().registryOrThrow(Registries.PLACED_FEATURE)
+        for (ore in ElnOre.values()) helper.assertTrue(placed.containsKey(ResourceLocation(Eln.MODID, ore.id)), "no placed feature ${ore.id}")
+        val modifiers = helper.level.registryAccess().registryOrThrow(ForgeRegistries.Keys.BIOME_MODIFIERS)
+        helper.assertTrue(modifiers.containsKey(ResourceLocation(Eln.MODID, "ores")), "no ore biome modifier")
+        helper.succeed()
+    }
+
+    // A copper vein placed into solid stone turns some of it into Eln copper ore.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun oreVeinReplacesStone(helper: GameTestHelper) {
+        val area = BlockPos.betweenClosed(BlockPos(0, 0, 0), BlockPos(2, 2, 2)).map { it.immutable() }
+        for (pos in area) helper.setBlock(pos, Blocks.STONE)
+        val vein = helper.level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
+            .get(ResourceLocation(Eln.MODID, ElnOre.COPPER.id))!!
+        vein.place(helper.level, helper.level.chunkSource.generator, helper.level.random, helper.absolutePos(BlockPos(1, 1, 1)))
+        helper.assertTrue(area.any { helper.getBlockState(it).`is`(ElnOre.COPPER.block.get()) }, "no copper ore placed")
         helper.succeed()
     }
 }

@@ -107,6 +107,12 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      magnetizers, plate machines and arc furnaces, with their GUIs and in-world item display. Their machine recipe
      lists are empty until the recipes are ported (milestone 7).
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
+   * [x] Ores and world generation: copper, lead, tungsten and cinnabar ore are separate blocks (`eln:<name>_ore`)
+     that drop themselves and sit in `forge:ores/<name>`. World generation is data (`ElnWorldGen` writes configured
+     and placed features plus a Forge biome modifier for every overworld biome) with the 1.7.10 vein counts and
+     absolute height ranges; the 1.7.10 config switches still apply through the `eln:config_enabled` placement
+     modifier (cinnabar stays off by default). Veins use one size, the middle of the 1.7.10 random range, and only
+     replace stone, not deepslate. GameTests check that the features load and that a vein replaces stone.
 
 ## References
 

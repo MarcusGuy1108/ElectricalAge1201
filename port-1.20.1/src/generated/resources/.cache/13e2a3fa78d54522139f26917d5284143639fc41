@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T12:02:10.533096633	Item Models: eln
+// 1.20.1	2026-10-26T15:31:53.835947154	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -153,6 +153,7 @@ f10ec40a879d809692ef8f6541856de64845ecf4 assets/eln/models/item/casing.json
 f119241069014405f2e28f747ef2d8a9dea44536 assets/eln/models/item/cheap_chip.json
 fddcf789c5224c4c27eb7e7dd708ff86aabd0271 assets/eln/models/item/cheap_ferromagnetic_core.json
 0ee89c396310e429f031cdb268d351a73c1f4fda assets/eln/models/item/cinnabar_dust.json
+9e6e685a8d8015ff477a218ef7ff1dc4157f4718 assets/eln/models/item/cinnabar_ore.json
 c7832fe137aad4f03afc1fb24815a3c29d8f84d1 assets/eln/models/item/classic_lamp_socket.json
 248f7a4d887d7941e9991a6658047d56ae3f997e assets/eln/models/item/clutch.json
 ddd54262874720ae13e3c53973a6095f38233a70 assets/eln/models/item/clutch_pin.json
@@ -275,6 +276,7 @@ f6d6255a299ed2df5c6b6da80252479f667dec4e assets/eln/models/item/copper_cable.jso
 cccc5dbe1554fd40c6976de5664dd54c74e522ad assets/eln/models/item/copper_dust.json
 6a3f4c81f8c460c7cf87e70f7c916b73dc5ba32e assets/eln/models/item/copper_ingot.json
 a163c9ce1e63e428f3fa804b66e491b455f18540 assets/eln/models/item/copper_molten_metal_pile.json
+173d8e28779805493fef537c2e659d01ee253d22 assets/eln/models/item/copper_ore.json
 211e4624393ff74fc02ef2d6b21231c1b7db716d assets/eln/models/item/copper_plate.json
 6cdb1f044650f81320bbb56d753f88c10af83ff2 assets/eln/models/item/copper_quadruplex_1_0_cable_600v.json
 6cdb1f044650f81320bbb56d753f88c10af83ff2 assets/eln/models/item/copper_quadruplex_1_0_cable_melted.json
@@ -365,6 +367,7 @@ bc4ad568920e5b4241327842c294cb3d6754afd2 assets/eln/models/item/large_flywheel.j
 2ca79205420b8b7165a87c404668038cbc7b9a39 assets/eln/models/item/lead_fuse_for_medium_voltage_cables.json
 da5ea4094ba605458cd119dd32f73e7d8dcc0217 assets/eln/models/item/lead_fuse_for_very_high_voltage_cables.json
 28363ee2d8bca5f4d8184a044c3ff1650fdfc5a5 assets/eln/models/item/lead_ingot.json
+0a5c3ef972928194f1bc9210cac984cd035faa0e assets/eln/models/item/lead_ore.json
 bce6ee5213a973550f1d4f17c620bf26746aaf0d assets/eln/models/item/lead_plate.json
 7a8ee94645a569967ea8f352cd1b708f37a00a15 assets/eln/models/item/led_vumeter.json
 78ebc76ccaaacdc347bccaac92131437d9feea14 assets/eln/models/item/legacy_dc_dc_converter.json
@@ -492,6 +495,7 @@ f86f6444977cc28ee09135b661915bdae80c3660 assets/eln/models/item/tachometer.json
 0cd921978a368d5d2d7791cd09bd2a8f9ed3fe42 assets/eln/models/item/tungsten_cable.json
 1c6c106a29f088a3fadfa29752ad70879c0f069c assets/eln/models/item/tungsten_dust.json
 22533a59a580410aeb250675f2885877fa440902 assets/eln/models/item/tungsten_ingot.json
+cb7e8b2295e411dbdbf58ff68d05e5e0b1c4310c assets/eln/models/item/tungsten_ore.json
 fba8fc3e18467337e77a4b67be77b87aefc08451 assets/eln/models/item/tungsten_turbine_blade.json
 0f62ebbb96e3989998b16fa85c621630dc9e7a68 assets/eln/models/item/turbine_blade_set.json
 a4279b17bd35430ac22cbc426264da085f874eb4 assets/eln/models/item/tutorial_sign.json

@@ -1,5 +1,6 @@
 package mods.eln
 
+import mods.eln.ore.ElnOre
 import net.minecraft.world.item.Item
 import mods.eln.generic.GenericItem
 import mods.eln.ghost.GhostBlock
@@ -56,6 +57,7 @@ object ElnMod {
         Eln.sharedItemStackOne = GenericItemUsingDamage { GenericItem(it, Item.Properties().stacksTo(1)) }
         LightBlock.BLOCK
         GhostBlock.BLOCK
+        ElnOre.register(MOD_BUS)
         Eln.obj.loadAllElnModels()
         LampLists.translateLampTypes() // Lamp sockets list the translated lamp types, so before registration.
         // Same order as 1.7.10: items such as heating corps refer to the cable descriptors.
