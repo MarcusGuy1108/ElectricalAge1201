@@ -1,5 +1,7 @@
 package mods.eln.registration
 
+import mods.eln.sixnode.EmergencyLampDescriptor
+import mods.eln.ghost.GhostGroup
 import mods.eln.item.ElectricalFuseDescriptor
 import mods.eln.item.ElectricalFuseDescriptor.Companion.BlownFuse
 import mods.eln.sixnode.TreeResinCollector.TreeResinCollectorDescriptor
@@ -955,8 +957,60 @@ object SixNodeRegistration {
             Eln.sixNodeItem.addDescriptor(completeId, descriptor)
         }
 
-        // PORT: Streetlight (subId 8, needs ghost blocks) and the 120V/240V Emergency Lamps (subIds 15, 16) return with
-        // mods.eln.ghost and EmergencyLampDescriptor.
+        run {
+            subId = 8
+            completeId = subId + (id shl 6)
+            val streetlightGhostGroup = GhostGroup()
+            streetlightGhostGroup.addElement(1, 0, 0)
+            streetlightGhostGroup.addElement(2, 0, 0)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Streetlight"),
+                LampSocketStandardObjRender(Eln.obj.getObj("StreetLight"), true),
+                0,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("farming")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            descriptor.extendedRenderBounds = true
+            descriptor.ghostGroup = streetlightGhostGroup
+            descriptor.setPlaceDirection(Direction.YN)
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 15
+            completeId = subId + (id shl 6)
+            descriptor = EmergencyLampDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "120V Emergency Lamp"),
+                Eln.instance.lowVoltageCableDescriptor,
+                (10 * 60 * 10).toDouble(),
+                NominalVoltage.V120,
+                10.0,
+                5.0,
+                6,
+                Eln.obj.getObj("EmergencyExitLighting")
+            )
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 16
+            completeId = subId + (id shl 6)
+            descriptor = EmergencyLampDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "240V Emergency Lamp"),
+                Eln.instance.meduimVoltageCableDescriptor,
+                (10 * 60 * 20).toDouble(),
+                NominalVoltage.V240,
+                25.0,
+                10.0,
+                8,
+                Eln.obj.getObj("EmergencyExitLighting")
+            )
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
     }
 
     private fun registerLampSupply(id: Int) {

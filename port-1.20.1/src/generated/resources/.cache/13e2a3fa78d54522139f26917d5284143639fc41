@@ -1,11 +1,13 @@
-// 1.20.1	2026-10-26T16:41:59.410794859	Item Models: eln
+// 1.20.1	2026-10-26T16:56:55.278548662	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/10a_electrical_breaker.json
 545dc1ad8561074077d4e11ed76e1d2a30d05598 assets/eln/models/item/10a_lead_fuse.json
+b293f43f8ffbff16da6e6084d3c7f1dc80645413 assets/eln/models/item/120v_basic_floodlight.json
 781d4d65e3ca019722c881b4f1d7f7d04546127d assets/eln/models/item/120v_battery_charger.json
 e15f1b92327d1c6bdca01a822aae00e1f2b39628 assets/eln/models/item/120v_carbon_light_bulb.json
+adfa41b5b2c4bb9988dc72bbf85f626daff67fa4 assets/eln/models/item/120v_emergency_lamp.json
 26fa267b04cbd5adec04c6ddc2b105806f221b9f assets/eln/models/item/120v_farming_light_bulb.json
 781d4d65e3ca019722c881b4f1d7f7d04546127d assets/eln/models/item/120v_fast_battery_charger.json
 a4bcd917916e0ced3bf9d24a520aead1150ca8bb assets/eln/models/item/120v_fluorescent_light_bulb.json
@@ -35,6 +37,7 @@ ecd45162f2398843b073971f26d809cba86080f8 assets/eln/models/item/240v_active_ther
 e15f1b92327d1c6bdca01a822aae00e1f2b39628 assets/eln/models/item/240v_carbon_light_bulb.json
 970765d23b12e4986b31290cb8df43b12df49637 assets/eln/models/item/240v_compressor.json
 ba7d519677ca11f5f3bee0b40147ab04f7c8834c assets/eln/models/item/240v_copper_heating_element.json
+adfa41b5b2c4bb9988dc72bbf85f626daff67fa4 assets/eln/models/item/240v_emergency_lamp.json
 26fa267b04cbd5adec04c6ddc2b105806f221b9f assets/eln/models/item/240v_farming_light_bulb.json
 a4bcd917916e0ced3bf9d24a520aead1150ca8bb assets/eln/models/item/240v_fluorescent_light_bulb.json
 f89842649a9c5d62d041ce6d637bef57d747cc2a assets/eln/models/item/240v_fuel_generator.json
@@ -45,6 +48,7 @@ d3d9a46316d8e57fd7ee42fb7ae5aa6ef91da26e assets/eln/models/item/240v_iron_heatin
 60cbd124fc856c17e4b05d8a5468fddef97e8e9b assets/eln/models/item/240v_led_light_bulb.json
 d949ae0cb1ad06e1ebfce5051255221ec018e6c6 assets/eln/models/item/240v_macerator.json
 ba26275fd42289b8b7b7b6ea03abc40c3d8399b3 assets/eln/models/item/240v_magnetizer.json
+651258738011811bd88257bea2cf9ef3f36afa4f assets/eln/models/item/240v_motorized_floodlight.json
 e98b32458ae7a6a6e1d204b2f6e7949e9599a5bc assets/eln/models/item/240v_plate_machine.json
 f0185f448cc26b26d847ad69a15ff80ce326e857 assets/eln/models/item/240v_tungsten_heating_element.json
 366bd9b56f1f47a1c33cbfe6842e2d69e87e2c58 assets/eln/models/item/240v_turbine.json
@@ -319,7 +323,7 @@ b746c93fe90ff391c96377bce84477608a92f2c9 assets/eln/models/item/dc_dc_converter.
 2d9d17fcdea5e5dcdcfba75c0f3b08f0f36e27ec assets/eln/models/item/dielectric.json
 0f109d84a5316e28e536c854b2e998c16f65ffff assets/eln/models/item/digital_display.json
 80fa063977d1586f02a1489a39099482b6827e05 assets/eln/models/item/digital_watch.json
-a163c9ce1e63e428f3fa804b66e491b455f18540 assets/eln/models/item/direct_utility_pole.json
+ec9cf9b931d087c246435de25233386841313928 assets/eln/models/item/direct_utility_pole.json
 29de2018795a4615e5d114e26bc724a42d9e7e84 assets/eln/models/item/electrical_anemometer_sensor.json
 1f3194728634947e67fac7632176816241ae5489 assets/eln/models/item/electrical_daylight_sensor.json
 08c9852e9013e9ca35433d7596bb5fbc82968c55 assets/eln/models/item/electrical_entity_sensor.json
@@ -352,7 +356,7 @@ e050a8589dbf097c978d9900e6d38bc925a887b0 assets/eln/models/item/gold_plate.json
 dc958e43bd1f9cb25bebe4bdfab559c438256ab9 assets/eln/models/item/gray_brush.json
 cd654aabd733359d1128f6b3710f9cbdc327f764 assets/eln/models/item/green_brush.json
 cb621a1806f6c0a23d42fcfd08a45983e1b41a53 assets/eln/models/item/grid_dc_dc_converter.json
-a163c9ce1e63e428f3fa804b66e491b455f18540 assets/eln/models/item/grid_switch.json
+27c8ccb42773f638a1bb2fbd38ae1b4b2d4a4650 assets/eln/models/item/grid_switch.json
 2e3c8843aca614dc9134e71f540f2de65c1a8b26 assets/eln/models/item/ground_cable.json
 a17cf402236ddd890f4ff852f328ad56045c0df3 assets/eln/models/item/heavy_winding.json
 f6ea4bc4b0429c71b70631ff62c7ffd2ab1e609b assets/eln/models/item/high_current_cable.json
@@ -517,6 +521,7 @@ cfb9845eebefba431fada9b91ab639369387c168 assets/eln/models/item/standard_alarm.j
 1e960f2cc7780c05a7d94cfdb5cf191486bb486a assets/eln/models/item/steam_turbine.json
 457cbef041b48856870af0f02d063e19b504dddb assets/eln/models/item/steel_turbine_blade.json
 a3ebda6238609da5b720e98bce6721b8e1747dbc assets/eln/models/item/stone_heat_furnace.json
+b7de6f55502a4dbeed48b6fb93ca2b03c5c74ac8 assets/eln/models/item/streetlight.json
 5a167c249d02eb2dc02da5186f7e7329bfeef3f8 assets/eln/models/item/suspended_lamp_socket.json
 d29cb577bd1612961ea2de46552e1a43563c9fe7 assets/eln/models/item/suspended_lamp_socket_no_swing.json
 04e983c309d539385b78134c87aaa3d6b52557e0 assets/eln/models/item/synthetic_diamond.json
@@ -542,7 +547,7 @@ fba8fc3e18467337e77a4b67be77b87aefc08451 assets/eln/models/item/tungsten_turbine
 a4279b17bd35430ac22cbc426264da085f874eb4 assets/eln/models/item/tutorial_sign.json
 4eb0d0401c45ffec7c6ee2e4778539bd9c2f8f18 assets/eln/models/item/unreleasedium.json
 ec9cf9b931d087c246435de25233386841313928 assets/eln/models/item/utility_pole.json
-a163c9ce1e63e428f3fa804b66e491b455f18540 assets/eln/models/item/utility_pole_w_dc_dc_converter.json
+b466131575d356dbf2b82fcbbe035a3df280f1c6 assets/eln/models/item/utility_pole_w_dc_dc_converter.json
 69b0276da72c05578f31b3af1c7907ab989cb040 assets/eln/models/item/variable_dc_dc_converter.json
 a2ab0b6595de5594edc21861bb81165edd9a8b2d assets/eln/models/item/variable_inductor.json
 339f29569bba163e389fc63c38c3317da5e5ea2f assets/eln/models/item/very_high_voltage_cable.json

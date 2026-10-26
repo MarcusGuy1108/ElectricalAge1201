@@ -66,7 +66,7 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
 5. [x] Vertical slice: cable, battery and lamp placed in a world with models, GUI and sync.
    * [x] Six-node framework and the classic cables: placeable in game, connected rendering, item icons, creative
      tab, simulation (GameTest feeds 10 V through two placed cables), drop when the support block goes, save/load.
-   * [x] GUI layer, Electrical Source, lamp sockets (all but the streetlight and emergency lamps), light bulbs and the
+   * [x] GUI layer, Electrical Source, lamp sockets, light bulbs and the
      light block. A GameTest lights a 12 V lamp from a placed source through a cable; in game the source voltage is
      set in its GUI and the socket takes its bulb and cable through its GUI.
    * [x] Transparent-node framework (full-block machines), the seven batteries with their GUI, and the creative
@@ -126,6 +126,10 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,
      so the tower, grid converter and switch are craftable with Eln alone. A GameTest links two poles and checks that
      the link carries voltage and uses up cable.
+   * [x] Streetlight (with its ghost blocks), the 120 V and 240 V emergency lamps, and the basic and motorized
+     floodlights. A GameTest powers a floodlight with two bulbs and checks that its beam places light blocks. The
+     direct utility pole and the grid switch, which 1.7.10 showed as 3D models in inventories, borrow the utility
+     pole and very high voltage switch icons.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
    * [x] Ores and world generation: copper, lead, tungsten and cinnabar ore are separate blocks (`eln:<name>_ore`)
      that drop themselves and sit in `forge:ores/<name>`. World generation is data (`ElnWorldGen` writes configured

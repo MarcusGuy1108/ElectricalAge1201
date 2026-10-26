@@ -8,6 +8,9 @@ import mods.eln.mechanical.GasTurbineDescriptor
 import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.ghost.GhostBlock
 import mods.eln.Eln
+import mods.eln.transparentnode.floodlight.FloodlightElement
+import mods.eln.transparentnode.floodlight.FloodlightContainer
+import mods.eln.lightblock.LightBlock
 import net.minecraft.world.item.ItemStack
 import mods.eln.ore.ElnOre
 import net.minecraftforge.common.util.FakePlayerFactory
@@ -171,6 +174,28 @@ object TransparentNodeGameTests {
         helper.succeedWhen {
             val inventory = machine.inventory!!
             helper.assertTrue((0 until inventory.containerSize).any { inventory.getItem(it).`is`(ElnOre.COPPER.block.get().asItem()) }, "no ore in the macerator")
+        }
+    }
+
+    // A powered floodlight with two bulbs throws its beam as light blocks away from itself.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun floodlightThrowsBeam(helper: GameTestHelper) {
+        val pos = BlockPos(1, 1, 1)
+        helper.setBlock(pos.below(), Blocks.STONE)
+        val stack = Eln.findItemStack("120V Basic Floodlight", 1)
+        helper.assertTrue((stack.item as TransparentNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(pos), Direction.YP), "floodlight not placed")
+        val light = ((helper.level.getBlockEntity(helper.absolutePos(pos)) as TransparentNodeEntity).node as TransparentNode).element as FloodlightElement
+        light.inventory.setItem(FloodlightContainer.LAMP_SLOT_1_ID, Eln.findItemStack("120V Incandescent Light Bulb", 1))
+        light.inventory.setItem(FloodlightContainer.LAMP_SLOT_2_ID, Eln.findItemStack("120V Incandescent Light Bulb", 1))
+        val source = VoltageSource("source", light.electricalLoad, null).setVoltage(120.0)
+        Eln.simulator.addElectricalComponent(source)
+        val origin = helper.absolutePos(pos)
+        helper.succeedWhen {
+            val lit = BlockPos.betweenClosed(origin.offset(-24, -4, -24), origin.offset(24, 24, 24))
+                .count { it.distManhattan(origin) > 2 && helper.level.getBlockState(it).block is LightBlock }
+            helper.assertTrue(lit > 0, "no light blocks from the beam, light value ${light.node!!.lightValue}")
+            Eln.simulator.removeElectricalComponent(source)
         }
     }
 }

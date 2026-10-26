@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.transparentnode.floodlight.FloodlightDescriptor
 import mods.eln.generic.GenericItemBlockUsingDamageDescriptor
 import mods.eln.gridnode.GridSwitchDescriptor
 import mods.eln.gridnode.electricalpole.ElectricalPoleDescriptor
@@ -138,7 +139,7 @@ object TransparentNodeRegistration {
         // pairs and their ThermalRegistry config).
         // PORT: registerTurret(66)
         registerFuelGenerator(67)
-        // PORT: registerFloodlight(68)
+        registerFloodlight(68)
         // PORT: registerFestive(69)
         // PORT: registerFab(70)
         // PORT: registerRailroad(71)
@@ -1345,6 +1346,8 @@ object TransparentNodeRegistration {
                 40,
                 51200.0
             ).powerDistribution()
+            // 1.7.10 drew these poles' 3D models as their item icons; the name's "w/" is not in the texture's name.
+            descriptor.setDefaultIcon("utilitypolewdc-dcconverter")
             val g = GhostGroup()
             g.addElement(0, 1, 0)
             g.addElement(0, 2, 0)
@@ -1385,6 +1388,7 @@ object TransparentNodeRegistration {
                 40,
                 51200.0
             ).powerDistribution()
+            descriptor.setDefaultIcon("utilitypole")
             val g = GhostGroup()
             g.addElement(0, 1, 0)
             g.addElement(0, 2, 0)
@@ -1396,6 +1400,9 @@ object TransparentNodeRegistration {
             subId = 8
             val name = TR_NAME(I18N.Type.NONE, "Grid Switch")
             val desc = GridSwitchDescriptor(name).powerDistribution()
+            // shortcut: 1.7.10 drew the switch's 3D model as its icon and there is no grid switch texture; it borrows
+            // the very high voltage switch icon until descriptor items get 3D item renderers.
+            desc.setDefaultIcon("veryhighvoltageswitch-ni")
             val g = GhostGroup()
             g.addRectangle(-1, 1, 0, 4, -2, 2)
             g.removeRectangle(-1, -1, 2, 4, -1, 1)
@@ -1404,6 +1411,34 @@ object TransparentNodeRegistration {
             g.removeElement(0, 0, 0)
             desc.ghostGroup = g
             transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerFloodlight(id: Int) {
+        var subId: Int
+        var completeId: Int
+        var descriptor: FloodlightDescriptor
+
+        run {
+            subId = 0
+            completeId = subId + (id shl 6)
+            descriptor = FloodlightDescriptor(
+                TR_NAME(I18N.Type.NONE, "120V Basic Floodlight"),
+                Eln.obj.getObj("Floodlight"),
+                false)
+            descriptor.setDefaultIcon("basicfloodlight")
+            transparentNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
+            subId = 1
+            completeId = subId + (id shl 6)
+            descriptor = FloodlightDescriptor(
+                TR_NAME(I18N.Type.NONE, "240V Motorized Floodlight"),
+                Eln.obj.getObj("FloodlightMotor"),
+                true)
+            descriptor.setDefaultIcon("motorizedfloodlight")
+            transparentNodeItem.addDescriptor(completeId, descriptor)
         }
     }
 }
