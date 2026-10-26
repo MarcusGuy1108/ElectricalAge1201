@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "eln:portable_battery"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "eln:electrical_motor"
+    },
+    "T": {
+      "item": "minecraft:iron_axe"
+    }
+  },
+  "pattern": [
+    " T ",
+    "IMI",
+    "IBI"
+  ],
+  "result": {
+    "item": "eln:portable_electrical_axe",
+    "nbt": "{energy:0.0d,powerOn:0b}"
+  },
+  "show_notification": true
+}

@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T17:14:20.238979265	Item Models: eln
+// 1.20.1	2026-10-26T17:17:53.452787539	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -467,6 +467,7 @@ be414a74e12e58fbdb5b058d774d611faf66a853 assets/eln/models/item/portable_battery
 8c8e6b9765e729a7dbf935c0f33ab93e018b0a74 assets/eln/models/item/portable_battery_pack.json
 db7ce14add9344949696e2cb2b6fb7603698b5cc assets/eln/models/item/portable_condensator.json
 468b7634e70d288364589506ec9b7b93cb05e2ea assets/eln/models/item/portable_condensator_pack.json
+d9dc7b63a9ff5396556b59869227362704c608b3 assets/eln/models/item/portable_electrical_axe.json
 ac97af4a75d7640ac752bf4e50805ff2364e7c0b assets/eln/models/item/portable_electrical_mining_drill.json
 907333efdc8ae2b1e2c030ed3c446ff972d50682 assets/eln/models/item/power_capacitor.json
 7bb591911b2a045475b1694941a82612bc8cfee4 assets/eln/models/item/power_capacitor_84.json

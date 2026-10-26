@@ -117,7 +117,8 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      and absorbs damage with its energy: 1.20.1 has no `ISpecialArmor`, so a `LivingHurtEvent` handler applies the
      1.7.10 rule (each charged piece takes its share of the damage, the full set all of it, at 500 J per point;
      damage that bypasses armor is not absorbed). It shows no armor points in the HUD. A GameTest checks the
-     absorbed damage and the energy paid. The portable electrical axe, the X-ray scanner and the Nope wand are not
+     absorbed damage and the energy paid. The portable electrical axe fells whole trees (logs and leaves found
+     through the `logs` and `leaves` block tags); a GameTest chops a tree. The X-ray scanner and the Nope wand are not
      ported.
    * [x] Auto miner, egg incubator, large rheostat, nixie tube and the power antennas. The auto miner digs down to
      three blocks above the world's minimum build height (1.7.10 stopped at y = 3), treats everything in

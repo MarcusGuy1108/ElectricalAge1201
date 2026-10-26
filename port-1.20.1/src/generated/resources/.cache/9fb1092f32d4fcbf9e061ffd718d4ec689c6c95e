@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T17:14:20.227322889	Recipes
+// 1.20.1	2026-10-26T17:17:53.441757012	Recipes
 5f826e94a1265cd03a8575f16d2c1a027c47921d data/eln/advancements/recipes/misc/100a_electrical_breaker.json
 7f28d2a5311bc783e994d258e1f42b12dd709496 data/eln/advancements/recipes/misc/100a_switch.json
 17cf0958baf47a85de3d95c712c68a1909013eb3 data/eln/advancements/recipes/misc/10a_diode.json
@@ -294,6 +294,7 @@ c320013eeeae10e11b90ce0bdb42167fd3204239 data/eln/advancements/recipes/misc/pal_
 44f25c7e332c3e724c3c356e6fbba3c72de2d559 data/eln/advancements/recipes/misc/portable_battery_pack.json
 4fa3e10e662a13a05eaf852a6b6749ac1f558fcf data/eln/advancements/recipes/misc/portable_condensator.json
 4d0dd905c4b08e58e3d2007b9f90991c02488705 data/eln/advancements/recipes/misc/portable_condensator_pack.json
+9982784a78fb286685e4d7730cfd40476fca5470 data/eln/advancements/recipes/misc/portable_electrical_axe.json
 a4da14223f92ce1fae7be46d181ee3ea1e752054 data/eln/advancements/recipes/misc/portable_electrical_mining_drill.json
 23464bb07273da8969c8e079a9b737d89e89006b data/eln/advancements/recipes/misc/power_capacitor.json
 0c0e6f6905140c602f844a4ee1ee69b875a2c058 data/eln/advancements/recipes/misc/power_inductor.json
@@ -710,6 +711,7 @@ a006e5f2a6e93cbb685473a53a19828c70538951 data/eln/recipes/pink_brush.json
 35d92faa2c0fc4835a57baddc600effb650d21cd data/eln/recipes/portable_battery_pack.json
 a1c5e93bc3a709f484ea314b1cc9048cf910e6e0 data/eln/recipes/portable_condensator.json
 7ddf55ecb4a5a63180812675cce6ca95ab7e917a data/eln/recipes/portable_condensator_pack.json
+d24752a3a13af3f8b4098c971685229d7e04ebcc data/eln/recipes/portable_electrical_axe.json
 10e4e32204e9fc7b39d62ea08a4d3ce156c21268 data/eln/recipes/portable_electrical_mining_drill.json
 719f10cc3f9aa2dee2df78a9df4274e5b9bcf79b data/eln/recipes/power_capacitor.json
 ad57809f0fef6dd5b124825b994b9e05bf1994bf data/eln/recipes/power_inductor.json

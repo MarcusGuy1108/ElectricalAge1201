@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.item.electricalitem.ElectricalAxe
 import mods.eln.item.electricalitem.BatteryItem
 import mods.eln.item.electricalitem.ElectricalPickaxe
 import mods.eln.item.electricalitem.ElectricalFlashlightItem
@@ -1247,7 +1248,12 @@ object ItemRegistration {
             Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
         }
 
-        // PORT: Portable Electrical Axe returns with ElectricalAxe.
+        run {
+            subId = 12
+            name = I18N.TR_NAME(I18N.Type.NONE, "Portable Electrical Axe")
+            val desc = ElectricalAxe(name, 22f, 1f, 40000.0, 200.0, 10000.0)
+            Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
+        }
         // PORT: The Nope Wand returns with NopeWandDescriptor.
     }
 

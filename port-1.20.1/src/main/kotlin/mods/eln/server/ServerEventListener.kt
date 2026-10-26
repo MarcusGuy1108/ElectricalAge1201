@@ -1,5 +1,6 @@
 package mods.eln.server
 
+import mods.eln.item.electricalitem.TreeCapitation
 import mods.eln.Eln
 import net.minecraftforge.event.entity.EntityJoinLevelEvent
 import net.minecraftforge.event.TickEvent
@@ -32,9 +33,9 @@ class ServerEventListener {
     private var lightningListNext = ArrayList<LightningBolt>()
     private var lightningList = ArrayList<LightningBolt>()
 
-    // PORT: the TreeCapitation tick (process) returns with the tree-felling tools.
     fun tick(event: TickEvent.ServerTickEvent) {
         if (event.phase != TickEvent.Phase.END) return
+        TreeCapitation.process(0.05)
         lightningList = lightningListNext
         lightningListNext = ArrayList()
     }

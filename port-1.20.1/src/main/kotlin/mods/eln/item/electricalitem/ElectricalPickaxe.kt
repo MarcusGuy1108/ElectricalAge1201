@@ -61,34 +61,11 @@ class ElectricalPickaxe(name: String, strengthOn: Float, strengthOff: Float,
                         val i = x+a
                         val j = y+b
                         val k = z+c
-                        removeBlockWithDrops(entity, this, stack, w, i, j, k)
+                        TreeCapitation.removeBlockWithDrops(entity, this, stack, w, i, j, k)
                     }
                 }
             }
         }
         return ok
-    }
-
-    // 1.7.10 TreeCapitation.removeBlockWithDrops: mines a neighbour block as the player would, paying the drill's energy.
-    private fun removeBlockWithDrops(player: Player, tool: ElectricalTool, stack: ItemStack, world: Level, x: Int, y: Int, z: Int) {
-        val pos = BlockPos(x, y, z)
-        if (world.isClientSide || !world.isLoaded(pos)) return
-        val state = world.getBlockState(pos)
-        if (state.isAir || state.getDestroyProgress(player, world, pos) <= 0f) return
-        if (!state.canHarvestBlock(world, pos, player)) return
-        if (player.abilities.instabuild) {
-            world.removeBlock(pos, false)
-            return
-        }
-        val energy = tool.getEnergy(stack)
-        tool.subtractEnergyForBlockBreak(stack, state.block)
-        val newEnergy = tool.getEnergy(stack)
-        if (newEnergy > 0 && newEnergy < energy) {
-            val blockEntity = world.getBlockEntity(pos)
-            if (state.onDestroyedByPlayer(world, pos, player, true, world.getFluidState(pos))) {
-                state.block.destroy(world, pos, state)
-                state.block.playerDestroy(world, player, pos, state, blockEntity, stack)
-            }
-        }
     }
 }

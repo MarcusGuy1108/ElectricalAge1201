@@ -7,6 +7,9 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.resources.ResourceKey
 import net.minecraft.core.registries.Registries
 import mods.eln.Eln
+import net.minecraftforge.common.util.FakePlayerFactory
+import net.minecraft.world.InteractionHand
+import mods.eln.item.electricalitem.ElectricalAxe
 import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.entity.EntityType
 import mods.eln.item.electricalitem.ElectricalArmor
@@ -274,5 +277,21 @@ object NodeGameTests {
         helper.assertTrue(abs(mob.health - 5.6f) < 0.01f, "health ${mob.health}, expected 5.6")
         helper.assertTrue(abs(armor.getEnergy(worn) - 7200.0) < 0.1, "energy ${armor.getEnergy(worn)}, expected 7200")
         helper.succeed()
+    }
+
+    // Chopping the bottom log with a charged electrical axe fells the rest of the tree.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun electricalAxeFellsTree(helper: GameTestHelper) {
+        for (y in 0..2) helper.setBlock(BlockPos(1, y, 1), Blocks.OAK_LOG)
+        val player = FakePlayerFactory.getMinecraft(helper.level)
+        val axe = Eln.findItemStack("Portable Electrical Axe", 1)
+        val tool = GenericItemUsingDamageDescriptor.getDescriptor(axe) as ElectricalAxe
+        tool.setEnergy(axe, tool.energyStorage)
+        player.setItemInHand(InteractionHand.MAIN_HAND, axe)
+        player.gameMode.destroyBlock(helper.absolutePos(BlockPos(1, 0, 1)))
+        helper.succeedWhen {
+            for (y in 1..2) helper.assertBlockNotPresent(Blocks.OAK_LOG, BlockPos(1, y, 1))
+        }
     }
 }
