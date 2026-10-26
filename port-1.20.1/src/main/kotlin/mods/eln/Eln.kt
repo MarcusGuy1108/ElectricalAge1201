@@ -224,6 +224,8 @@ object Eln {
     lateinit var mediumCurrentCableDescriptor: CurrentCableDescriptor
     lateinit var highCurrentCableDescriptor: CurrentCableDescriptor
     lateinit var signalCableDescriptor: ElectricalCableDescriptor
+    lateinit var signalBusCableDescriptor: ElectricalCableDescriptor
+    @JvmField var stdCableRenderSignalBus: CableRenderDescriptor? = null
     lateinit var lowVoltageCableDescriptor: ElectricalCableDescriptor
     lateinit var meduimVoltageCableDescriptor: ElectricalCableDescriptor
     lateinit var highVoltageCableDescriptor: ElectricalCableDescriptor

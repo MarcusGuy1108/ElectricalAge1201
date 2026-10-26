@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T17:17:53.452787539	Item Models: eln
+// 1.20.1	2026-10-26T20:43:44.491165605	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -491,6 +491,7 @@ e2c00b99c552a3bed701f38f8b499f04a8dbc8eb assets/eln/models/item/sconce_lamp_sock
 1c6fa6220fbaec0ad791701425253d7e67d5569f assets/eln/models/item/shaft_motor.json
 b0100b52061090269ab1d500aba102ea33c25f58 assets/eln/models/item/signal_20h_inductor.json
 3490743113c4d99050a824ac7b262f77400b65c5 assets/eln/models/item/signal_antenna.json
+5ec08260e4b6adb23c122eae7aa5284fbd0b26ba assets/eln/models/item/signal_bus_cable.json
 708a2e7448563c78f8bea4b1ce070b895b059d71 assets/eln/models/item/signal_button.json
 7d67699c260a440ef89f95ee23700e4798effde7 assets/eln/models/item/signal_cable.json
 97696c49f88f7ed4ce967114b91e1b34055e8b07 assets/eln/models/item/signal_diode.json

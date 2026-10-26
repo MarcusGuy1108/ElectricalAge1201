@@ -1,6 +1,7 @@
 @file:Suppress("NAME_SHADOWING")
 package mods.eln.node
 
+import mods.eln.node.six.SixNode
 import mods.eln.node.six.SixNodeBlock
 import mods.eln.ghost.GhostBlock
 import mods.eln.compat.*
@@ -242,7 +243,33 @@ abstract class NodeBase {
 
     open fun checkCanStay(onCreate: Boolean) {}
     open fun connectJob() {
-        // PORT: the "EXTERNAL OTHERS SIXNODE" wrapped connection pass returns with mods.eln.node.six (it only links six-nodes).
+        // EXTERNAL OTHERS SIXNODE: cables wrapping around a block edge onto a neighbouring face.
+        run {
+            val emptyBlockCoord = IntArray(3)
+            val otherBlockCoord = IntArray(3)
+            for (direction in Direction.values()) {
+                if (isBlockWrappable(direction)) {
+                    emptyBlockCoord[0] = coordinate.x
+                    emptyBlockCoord[1] = coordinate.y
+                    emptyBlockCoord[2] = coordinate.z
+                    direction.applyTo(emptyBlockCoord, 1)
+                    for (lrdu in LRDU.values()) {
+                        val elementSide = direction.applyLRDU(lrdu)
+                        otherBlockCoord[0] = emptyBlockCoord[0]
+                        otherBlockCoord[1] = emptyBlockCoord[1]
+                        otherBlockCoord[2] = emptyBlockCoord[2]
+                        elementSide.applyTo(otherBlockCoord, 1)
+                        val otherNode = NodeManager.instance!!.getNodeFromCoordonate(Coordinate(otherBlockCoord[0], otherBlockCoord[1], otherBlockCoord[2], coordinate.dimension))
+                            ?: continue
+                        val otherDirection = elementSide.inverse
+                        val otherLRDU = otherDirection.getLRDUGoingTo(direction)!!.inverse()
+                        if (this is SixNode || otherNode is SixNode) {
+                            tryConnectTwoNode(this, direction, lrdu, otherNode, otherDirection, otherLRDU)
+                        }
+                    }
+                }
+            }
+        }
         run {
             for (dir in Direction.values()) {
                 val otherNode = getNeighbor(dir)

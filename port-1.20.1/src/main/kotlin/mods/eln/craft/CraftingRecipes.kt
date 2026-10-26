@@ -337,7 +337,10 @@ object CraftingRecipes {
             Eln.instance.signalCableDescriptor.newItemStack(12),  //Signal Wire
             "RRR", "CCC", "RRR", 'C', ItemStack(Items.IRON_INGOT), 'R', "itemRubber"
         )
-        // PORT: the Signal Bus Cable recipe returns with the signal bus.
+        addRecipe(
+            Eln.instance.signalBusCableDescriptor.newItemStack(1), "R", "C", 'C', Eln.instance.signalCableDescriptor.newItemStack(1), 'R',
+            "itemRubber"
+        )
         addRecipe(
             Eln.instance.lowVoltageCableDescriptor.newItemStack(12), "RRR", "CCC", "RRR", 'C', "ingotCopper", 'R',
             "itemRubber"

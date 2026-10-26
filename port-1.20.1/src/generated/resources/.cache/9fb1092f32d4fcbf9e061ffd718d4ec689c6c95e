@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T17:34:23.298334058	Recipes
+// 1.20.1	2026-10-26T20:43:44.482307783	Recipes
 5f826e94a1265cd03a8575f16d2c1a027c47921d data/eln/advancements/recipes/misc/100a_electrical_breaker.json
 7f28d2a5311bc783e994d258e1f42b12dd709496 data/eln/advancements/recipes/misc/100a_switch.json
 17cf0958baf47a85de3d95c712c68a1909013eb3 data/eln/advancements/recipes/misc/10a_diode.json
@@ -312,6 +312,7 @@ d0fb118d973ab3305adb32270a13ca678012d028 data/eln/advancements/recipes/misc/schm
 1b680f8488f1d38190a7943fd124356871a49204 data/eln/advancements/recipes/misc/sconce_lamp_socket.json
 fc5dbd6a28a987547d08343c35dee8108f36a6d3 data/eln/advancements/recipes/misc/shaft_motor.json
 95d4310314bf96bc8acffc232c221e8e9d645bb5 data/eln/advancements/recipes/misc/signal_antenna.json
+91de2336e52596d6292284f916faf850c7b1d72d data/eln/advancements/recipes/misc/signal_bus_cable.json
 5e32d822f2f55bd0cac59e0625f61787fdf56ca7 data/eln/advancements/recipes/misc/signal_button.json
 61c45df57bc88fd0e2f104c0d2f81c13c16d4bee data/eln/advancements/recipes/misc/signal_cable.json
 28d36acea139cc2c54421240fe6d59dc0ea7cbb4 data/eln/advancements/recipes/misc/signal_cable_2.json
@@ -728,6 +729,7 @@ da58098c2eca8597613a16823648c82c1c1b7efb data/eln/recipes/robust_lamp_socket.jso
 775e1a0ed09dd0f54504e24a345690619211738e data/eln/recipes/sconce_lamp_socket.json
 9bac2ae6bcc2e411eb738ed98e165fcb40c0449c data/eln/recipes/shaft_motor.json
 47682c09036de271fae0d0d490ef2e85f3f0579e data/eln/recipes/signal_antenna.json
+47664508349b4981d55aacee0a4353f66c6144d9 data/eln/recipes/signal_bus_cable.json
 7cce9e22f007d09081d1f1deabd319188e87dd97 data/eln/recipes/signal_button.json
 2398206c194814c7e7126d3192c0285c1e95e07c data/eln/recipes/signal_cable.json
 a409cd2bc333ce0234233629ddad65a8a0bcde07 data/eln/recipes/signal_cable_2.json

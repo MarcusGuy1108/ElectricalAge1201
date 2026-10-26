@@ -244,4 +244,18 @@ object SixNodeGameTests {
         helper.assertTrue(copy.tag?.getDouble("voltage") == 50.0, "copied ${copy.tag}")
         helper.succeed()
     }
+
+    // A cable on top of a block and one on its side face connect around the block's edge.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun cablesWrapAroundBlockEdge(helper: GameTestHelper) {
+        helper.setBlock(BlockPos(1, 1, 1), Blocks.STONE)
+        val top = placeOnFloor(helper, BlockPos(1, 2, 1), Eln.lowVoltageCableDescriptor!!.newItemStack())
+        val stack = Eln.lowVoltageCableDescriptor!!.newItemStack()
+        val sidePos = helper.absolutePos(BlockPos(2, 1, 1))
+        helper.assertTrue((stack.item as SixNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, sidePos, Direction.XN), "side cable not placed")
+        val side = (helper.level.getBlockEntity(sidePos) as SixNodeEntity).node as SixNode
+        helper.assertTrue(top.nodeConnectionList.any { it.N1 === side || it.N2 === side }, "cables did not connect around the edge")
+        helper.succeed()
+    }
 }

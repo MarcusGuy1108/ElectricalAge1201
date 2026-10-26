@@ -92,8 +92,9 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
    * [x] Switches, relays, signal sources, wireless signals, passive components (resistors, diodes, capacitors,
      inductors) and lamp supplies; lamp sockets default to "Powered by lamp supply" again.
    * [x] Utility cables (copper/aluminium, single and multi-conductor, with length-tracked spools), current cables,
-     current relays and molten metal piles. As in 1.7.10 the classic voltage cables are hidden from the creative tab
-     but stay loadable. A GameTest lights a lamp through a utility cable. Wire scrap and ghost blocks are not ported.
+     current relays and molten metal piles. The classic signal, voltage, creative and signal bus cables are in the
+     creative tab (this fork's 1.7.10 code hid them behind the utility cables); machine cable slots take only these.
+     Cables wrap around block edges onto a neighbouring face (GameTest). A GameTest lights a lamp through a utility cable. Wire scrap and ghost blocks are not ported.
    * [x] Signal processing: voltage/current and thermal sensors, VU meters, alarms, light/weather/humidity/wind/
      temperature/proximity sensors, fire detectors, the scanner (reads tanks and inventories through Forge
      capabilities), redstone input/output, timer, math chip (signal equation), watches, digital display, tutorial

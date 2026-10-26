@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.sixnode.electricalcable.ElectricalSignalBusCableElement
 import mods.eln.sixnode.EmergencyLampDescriptor
 import mods.eln.ghost.GhostGroup
 import mods.eln.item.ElectricalFuseDescriptor
@@ -175,7 +176,6 @@ object SixNodeRegistration {
             name = I18N.TR_NAME(I18N.Type.NONE, "Signal Cable")
             Eln.instance.stdCableRenderSignal = CableRenderDescriptor("eln", "sprites/cable.png", 0.95f, 0.95f)
             desc = ElectricalCableDescriptor(name, Eln.instance.stdCableRenderSignal, "For signal transmission.", true).signal()
-            desc.hideFromCreative()
             Eln.instance.signalCableDescriptor = desc
             desc.setPhysicalConstantLikeNormalCable(
                 Eln.SVU, Eln.SVP, 0.02 / 50 * Eln.SVU, Eln.SVU * 1.3,
@@ -194,7 +194,6 @@ object SixNodeRegistration {
                 Eln.LVU, Eln.instance.LVP(), 0.2 / 20 / 100, Eln.LVU * 1.3, Eln.instance.LVP() * 1.2, 20.0, Eln.cableWarmLimit,
                 -100.0, Eln.cableHeatingTime, Eln.cableThermalConductionTao
             )
-            desc.hideFromCreative()
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
             desc = ElectricalCableDescriptor(name, Eln.instance.stdCableRender50V, "For low voltage with high current.", false)
             desc.setPhysicalConstantLikeNormalCable(
@@ -213,7 +212,6 @@ object SixNodeRegistration {
                 Eln.MVU, Eln.instance.MVP(), 0.10 / 20 / 100, Eln.MVU * 1.3, Eln.instance.MVP() * 1.2, 30.0, Eln.cableWarmLimit,
                 -100.0, Eln.cableHeatingTime, Eln.cableThermalConductionTao
             )
-            desc.hideFromCreative()
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
         run {
@@ -226,7 +224,6 @@ object SixNodeRegistration {
                 Eln.HVU, Eln.instance.HVP(), 0.025 * 5 / 4 / 20 / 100, Eln.HVU * 1.3, Eln.instance.HVP() * 1.2, 40.0,
                 Eln.cableWarmLimit, -100.0, Eln.cableHeatingTime, Eln.cableThermalConductionTao
             )
-            desc.hideFromCreative()
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
 
@@ -241,7 +238,6 @@ object SixNodeRegistration {
                 Eln.VVU, Eln.instance.VVP(), 0.025 * 5 / 4 / 20 / 8 / 100, Eln.VVU * 1.3, Eln.instance.VVP() * 1.2, 40.0,
                 Eln.cableWarmLimit, -100.0, Eln.cableHeatingTime, Eln.cableThermalConductionTao
             )
-            desc.hideFromCreative()
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
 
@@ -259,11 +255,22 @@ object SixNodeRegistration {
                 Eln.VVU * 16 * 1.3, Eln.VVU * 16 * Eln.instance.VVP() * 1.2, 40.0, Eln.cableWarmLimit, -100.0, Eln.cableHeatingTime,
                 Eln.cableThermalConductionTao
             )
-            desc.hideFromCreative()
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
 
-        // PORT: Signal Bus Cable (subId 20, ElectricalSignalBusCableElement) returns with the signal bus.
+        run {
+            subId = 20
+            name = I18N.TR_NAME(I18N.Type.NONE, "Signal Bus Cable")
+            Eln.instance.stdCableRenderSignalBus = CableRenderDescriptor("eln", "sprites/cable.png", 3.95f, 3.95f)
+            desc = ElectricalCableDescriptor(name, Eln.instance.stdCableRenderSignalBus!!, "For transmitting many signals.", true).signal()
+            Eln.instance.signalBusCableDescriptor = desc
+            desc.setPhysicalConstantLikeNormalCable(
+                Eln.SVU, Eln.SVP, 0.02 / 50 * Eln.SVU, Eln.SVU * 1.3,
+                Eln.SVP * 1.2, 0.5, Eln.cableWarmLimit, -100.0, Eln.cableHeatingTime, 1.0
+            )
+            desc.ElementClass = ElectricalSignalBusCableElement::class.java
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
     }
 
 
