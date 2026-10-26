@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T16:56:55.278548662	Item Models: eln
+// 1.20.1	2026-10-26T17:10:07.583146537	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -67,6 +67,7 @@ f5db757ca2201d42ddb7abe990e4723e116ebdc2 assets/eln/models/item/3_3v_ldo_regulat
 7ead31e554acaf868cd943766ec50dba88b56735 assets/eln/models/item/3x_graphite_rods.json
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/400a_electrical_breaker.json
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/40a_electrical_breaker.json
+4663ab34895e1634ccb824ecdbb6afec8cf82375 assets/eln/models/item/480v_defence_turret.json
 ddd54dbeb7dd91a47bb4cd7d5ad6d585106e8153 assets/eln/models/item/480v_heavy_tungsten_heating_element.json
 a0ebd659fd30ad2d58e5595552aa2654d277e395 assets/eln/models/item/480v_tungsten_heating_element.json
 807f47e27d79d4580566b82a8075b8b561cce40e assets/eln/models/item/48v_compressor.json

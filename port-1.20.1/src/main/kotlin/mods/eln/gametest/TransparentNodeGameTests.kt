@@ -8,6 +8,9 @@ import mods.eln.mechanical.GasTurbineDescriptor
 import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.ghost.GhostBlock
 import mods.eln.Eln
+import net.minecraft.world.entity.EntityType
+import mods.eln.transparentnode.turret.TurretElement
+import mods.eln.transparentnode.turret.TurretContainer
 import mods.eln.transparentnode.floodlight.FloodlightElement
 import mods.eln.transparentnode.floodlight.FloodlightContainer
 import mods.eln.lightblock.LightBlock
@@ -195,6 +198,29 @@ object TransparentNodeGameTests {
             val lit = BlockPos.betweenClosed(origin.offset(-24, -4, -24), origin.offset(24, 24, 24))
                 .count { it.distManhattan(origin) > 2 && helper.level.getBlockState(it).block is LightBlock }
             helper.assertTrue(lit > 0, "no light blocks from the beam, light value ${light.node!!.lightValue}")
+            Eln.simulator.removeElectricalComponent(source)
+        }
+    }
+
+    // A powered turret with a monster filter shoots a monster standing in front of it.
+    @GameTest(template = "empty3x3x3", timeoutTicks = 400)
+    @JvmStatic
+    fun turretShootsMonster(helper: GameTestHelper) {
+        val pos = BlockPos(1, 1, 1)
+        helper.setBlock(pos.below(), Blocks.STONE)
+        val stack = Eln.findItemStack("480V Defence Turret", 1)
+        helper.assertTrue((stack.item as TransparentNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(pos), Direction.YP), "turret not placed")
+        val turret = ((helper.level.getBlockEntity(helper.absolutePos(pos)) as TransparentNodeEntity).node as TransparentNode).element as TurretElement
+        turret.inventory!!.setItem(TurretContainer.filterId, Eln.findItemStack("Monster Filter", 1))
+        val source = VoltageSource("source", turret.getElectricalLoad(turret.front.back(), LRDU.Down), null).setVoltage(800.0)
+        Eln.simulator.addElectricalComponent(source)
+        // Silverfish do not burn in daylight, so only the turret can hurt this one. It stands right in front of the
+        // turret: further out, the test's own structure block can be in the line of fire.
+        val monsterPos = pos.offset(turret.front.toForge().normal)
+        helper.setBlock(monsterPos.below(), Blocks.STONE)
+        val monster = helper.spawnWithNoFreeWill(EntityType.SILVERFISH, monsterPos)
+        helper.succeedWhen {
+            helper.assertTrue(monster.health < monster.maxHealth || !monster.isAlive, "monster unhurt at ${monster.health}, turret angle ${turret.turretAngle}")
             Eln.simulator.removeElectricalComponent(source)
         }
     }

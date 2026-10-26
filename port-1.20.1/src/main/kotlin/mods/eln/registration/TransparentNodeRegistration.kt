@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.transparentnode.turret.TurretDescriptor
 import mods.eln.transparentnode.floodlight.FloodlightDescriptor
 import mods.eln.generic.GenericItemBlockUsingDamageDescriptor
 import mods.eln.gridnode.GridSwitchDescriptor
@@ -137,7 +138,7 @@ object TransparentNodeRegistration {
         registerThermalDissipatorPassiveAndActive(64)
         // PORT: registerTransparentNodeMisc(65) returns with the teleporter and the thermal heat exchanger (its fluid
         // pairs and their ThermalRegistry config).
-        // PORT: registerTurret(66)
+        registerTurret(66)
         registerFuelGenerator(67)
         registerFloodlight(68)
         // PORT: registerFestive(69)
@@ -1439,6 +1440,16 @@ object TransparentNodeRegistration {
                 true)
             descriptor.setDefaultIcon("motorizedfloodlight")
             transparentNodeItem.addDescriptor(completeId, descriptor)
+        }
+    }
+
+    private fun registerTurret(id: Int) {
+        run {
+            val subId = 0
+            val name = TR_NAME(I18N.Type.NONE, "480V Defence Turret")
+            val desc = TurretDescriptor(name, "Turret")
+            desc.setDefaultIcon("800vdefenceturret")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
     }
 }

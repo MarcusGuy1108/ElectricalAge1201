@@ -17,7 +17,9 @@ class LightBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(LightBloc
         val observers: MutableList<LightBlockObserver> = mutableListOf()
 
         @JvmStatic
-        fun addLight(w: Level, x: Int, y: Int, z: Int, light: Int, timeout: Int) {
+        fun addLight(w: Level, x: Int, y: Int, z: Int, requestedLight: Int, timeout: Int) {
+            // 1.7.10 clamped light levels to 15 itself; some callers ask for more (the turret's muzzle flash asks 25).
+            val light = requestedLight.coerceIn(0, 15)
             val pos = BlockPos(x, y, z)
             val state = w.getBlockState(pos)
 

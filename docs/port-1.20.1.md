@@ -130,6 +130,9 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      floodlights. A GameTest powers a floodlight with two bulbs and checks that its beam places light blocks. The
      direct utility pole and the grid switch, which 1.7.10 showed as 3D models in inventories, borrow the utility
      pole and very high voltage switch icons.
+   * [x] The 480 V defence turret, aimed by the player, monster and animal filters. A GameTest powers one and checks
+     that it shoots a monster in front of it. Light levels above 15 (the turret's muzzle flash asks for 25) are
+     clamped, as 1.7.10 did.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
    * [x] Ores and world generation: copper, lead, tungsten and cinnabar ore are separate blocks (`eln:<name>_ore`)
      that drop themselves and sit in `forge:ores/<name>`. World generation is data (`ElnWorldGen` writes configured

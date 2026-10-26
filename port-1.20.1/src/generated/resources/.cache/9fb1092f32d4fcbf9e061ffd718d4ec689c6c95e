@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T16:55:23.796379508	Recipes
+// 1.20.1	2026-10-26T17:10:07.574541134	Recipes
 5f826e94a1265cd03a8575f16d2c1a027c47921d data/eln/advancements/recipes/misc/100a_electrical_breaker.json
 7f28d2a5311bc783e994d258e1f42b12dd709496 data/eln/advancements/recipes/misc/100a_switch.json
 17cf0958baf47a85de3d95c712c68a1909013eb3 data/eln/advancements/recipes/misc/10a_diode.json
@@ -78,6 +78,7 @@ bf470545d113f7f0974b1232f255c32b540f224d data/eln/advancements/recipes/misc/3_3v
 01c4f3cba81e26a1d67dd31d750f10ee8b700f10 data/eln/advancements/recipes/misc/3x_graphite_rods_2.json
 e5f4ce638920fbbcd47aac4d6b5cfd52ace95b77 data/eln/advancements/recipes/misc/400a_electrical_breaker.json
 b019c77977e8e042b9b334e0c3ab644a0cfdb78a data/eln/advancements/recipes/misc/40a_electrical_breaker.json
+9c130b7a37b15044c59746e2f42b34f314abca7f data/eln/advancements/recipes/misc/480v_defence_turret.json
 61b829d8c5140a48f21b6e5e890b3deca66d3d89 data/eln/advancements/recipes/misc/480v_heavy_tungsten_heating_element.json
 2e36946aff9e2e654665601b35ae4905200dc528 data/eln/advancements/recipes/misc/480v_tungsten_heating_element.json
 03c82f9f5000a47d31e5a63e85e06cb9dc7099ed data/eln/advancements/recipes/misc/48v_compressor.json
@@ -489,6 +490,7 @@ a2220fb3913bcf1e96966e17685d26b698fd648e data/eln/recipes/3x_graphite_rods.json
 d4d8bb75eae8aa942d04b80896cc09433a1f9089 data/eln/recipes/3x_graphite_rods_2.json
 25c17885fc2d11529d65cf1d91a32c3e79bb342e data/eln/recipes/400a_electrical_breaker.json
 b4bad2ec11995ac5596efcd64b51065a700791a0 data/eln/recipes/40a_electrical_breaker.json
+b7e854063b0230cb8fa7278557d5a5f607ceb1a6 data/eln/recipes/480v_defence_turret.json
 5b21126a255d4af3ed7d5393b1f214b66dd09147 data/eln/recipes/480v_heavy_tungsten_heating_element.json
 131dffa2a2c8df2f726efefa657057c8e81d7bf1 data/eln/recipes/480v_tungsten_heating_element.json
 7d148133329f14cfa558cf15525f6adb588717db data/eln/recipes/48v_compressor.json
