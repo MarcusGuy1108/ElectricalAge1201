@@ -113,8 +113,12 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      armor material, as 1.7.10 used the iron materials), the flashlights, the portable mining drill (digs whatever
      the pickaxe and shovel block tags list, as fast as its charge allows), portable batteries and condensators,
      the electrical drills, ore scanner and mining pipe items, and charging of items in player inventories. A
-     GameTest checks the drill's charged and empty dig speed. The E-coal armor (1.7.10 `ISpecialArmor` is gone), the
-     portable electrical axe, the X-ray scanner and the Nope wand are not ported.
+     GameTest checks the drill's charged and empty dig speed. The E-coal armor charges like the other portable items
+     and absorbs damage with its energy: 1.20.1 has no `ISpecialArmor`, so a `LivingHurtEvent` handler applies the
+     1.7.10 rule (each charged piece takes its share of the damage, the full set all of it, at 500 J per point;
+     damage that bypasses armor is not absorbed). It shows no armor points in the HUD. A GameTest checks the
+     absorbed damage and the energy paid. The portable electrical axe, the X-ray scanner and the Nope wand are not
+     ported.
    * [x] Auto miner, egg incubator, large rheostat, nixie tube and the power antennas. The auto miner digs down to
      three blocks above the world's minimum build height (1.7.10 stopped at y = 3), treats everything in
      `forge:ores` as ore and fills a chest at its output (double chests included); a GameTest powers one and checks

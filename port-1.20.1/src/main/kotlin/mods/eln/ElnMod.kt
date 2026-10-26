@@ -4,6 +4,8 @@ import mods.eln.item.electricalinterface.ItemEnergyInventoryProcess
 import mods.eln.craft.CraftingRecipes
 import mods.eln.ore.ElnOre
 import mods.eln.item.CopperGear
+import mods.eln.item.electricalitem.ElectricalArmor
+import net.minecraftforge.event.entity.living.LivingHurtEvent
 import mods.eln.block.ArcBlock
 import net.minecraft.world.item.Item
 import mods.eln.generic.GenericItem
@@ -63,6 +65,7 @@ object ElnMod {
         GhostBlock.BLOCK
         ElnOre.register(MOD_BUS)
         CopperGear.register()
+        ElectricalArmor.register()
         ArcBlock.register()
         Eln.obj.loadAllElnModels()
         LampLists.translateLampTypes() // Lamp sockets list the translated lamp types, so before registration.
@@ -79,6 +82,7 @@ object ElnMod {
         Eln.serverEventListener = ServerEventListener()
 
         val bus = MinecraftForge.EVENT_BUS
+        bus.addListener { event: LivingHurtEvent -> ElectricalArmor.absorbDamage(event) }
         bus.addListener { _: ServerAboutToStartEvent ->
             LightBlockEntity.observers.clear()
             WirelessSignalTxElement.channelMap.clear()

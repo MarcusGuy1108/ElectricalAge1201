@@ -105,8 +105,7 @@ object ItemRegistration {
         // PORT: registerElectricMinecartItems(127)
         // PORT: registerWireToolItems(123)
         // PORT: registerWireMachineItems(118)
-        // Copper armor and tools are registered by CopperGear, the ores by ElnOre.
-        // PORT: the E-coal armor from registerArmor() returns with an energy-absorbing armor hook (ISpecialArmor is gone).
+        // Copper armor and tools are registered by CopperGear, the E-coal armor by ElectricalArmor, the ores by ElnOre.
     }
 
     private fun registerHeatingCorp(id: Int) {

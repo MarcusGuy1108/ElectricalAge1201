@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T17:10:07.574541134	Recipes
+// 1.20.1	2026-10-26T17:14:20.227322889	Recipes
 5f826e94a1265cd03a8575f16d2c1a027c47921d data/eln/advancements/recipes/misc/100a_electrical_breaker.json
 7f28d2a5311bc783e994d258e1f42b12dd709496 data/eln/advancements/recipes/misc/100a_switch.json
 17cf0958baf47a85de3d95c712c68a1909013eb3 data/eln/advancements/recipes/misc/10a_diode.json
@@ -166,6 +166,10 @@ e08a931fde29bbf7fc6c4c2f5639c5bbc38fad7f data/eln/advancements/recipes/misc/dc_d
 a5e7d32a54ef9b23ccd9fe472ca065e515d0636f data/eln/advancements/recipes/misc/digital_display.json
 02e6ea510e9c1aaa2d0b55d8cff521cb3a98d191 data/eln/advancements/recipes/misc/digital_watch.json
 fdf8742259f1bc9226a95bcbe953330ab4ca3299 data/eln/advancements/recipes/misc/direct_utility_pole.json
+a7c8efe2a8c4efa7c10112aad6a52e8cb454def2 data/eln/advancements/recipes/misc/e_coal_boots.json
+32f2bb76b2ba9771c4d051a679a50c2858629c6c data/eln/advancements/recipes/misc/e_coal_chestplate.json
+6433d0463d4a9fa6f34dffcdcb799b4fa7229d27 data/eln/advancements/recipes/misc/e_coal_helmet.json
+894a2704c476ff06dd29610d8e2a8b7d42d3599c data/eln/advancements/recipes/misc/e_coal_leggings.json
 fd8c10bc300b87fce89a040633165504795a6bd0 data/eln/advancements/recipes/misc/electrical_anemometer_sensor.json
 00a17a4b3013e30a0ca66e2dc3673d094decd6c6 data/eln/advancements/recipes/misc/electrical_daylight_sensor.json
 3fe90f16b5b606d243e3346c448ac9b83f4fb175 data/eln/advancements/recipes/misc/electrical_entity_sensor.json
@@ -578,6 +582,10 @@ a94a17f5e2f5a83fb450af56057766a9c2597d8d data/eln/recipes/d_flip_flop_chip.json
 9fa31562cffa970ef3791f7b8ea87f1586816d56 data/eln/recipes/digital_display.json
 e09341f48af3d15e0dcfc7f4f02b3db11797bf4f data/eln/recipes/digital_watch.json
 5614a6688712c50c00c74d5ea462598804727873 data/eln/recipes/direct_utility_pole.json
+9064388693483af07330e03f92e6e687d76fc61a data/eln/recipes/e_coal_boots.json
+9f72c6384210f71ac25ebe816f64420bc78c91f7 data/eln/recipes/e_coal_chestplate.json
+107e0c3bcfcd223c41f7cb59c34f5bb9cd3e3e0a data/eln/recipes/e_coal_helmet.json
+84caa6db98045f0b709d141b6c9ff42ff33007f9 data/eln/recipes/e_coal_leggings.json
 840f262f9a5680b54d3ea9539348241d89661012 data/eln/recipes/electrical_anemometer_sensor.json
 514b580a0f9627c8f230b20b33ef6acc9f46e99c data/eln/recipes/electrical_daylight_sensor.json
 2bd6b6d3dc178ea09a96aa958c5428c87e268bea data/eln/recipes/electrical_entity_sensor.json

@@ -23,6 +23,7 @@ import mods.eln.compat.*
 import mods.eln.Eln
 import mods.eln.block.ArcBlock
 import mods.eln.item.CopperGear
+import mods.eln.item.electricalitem.ElectricalArmor
 import mods.eln.i18n.I18N
 import mods.eln.misc.Recipe
 import net.minecraft.world.level.block.Blocks
@@ -1606,24 +1607,24 @@ object CraftingRecipes {
 
     private fun recipeECoal() {
         addRecipe(
-            findItemStack("E-Coal Helmet"), "PPP", "PCP", 'P', "plateCoal", 'C', findItemStack(
+            ElectricalArmor.byName("E-Coal Helmet"), "PPP", "PCP", 'P', "plateCoal", 'C', findItemStack(
                 "Portable " +
                         "Condensator"
             )
         )
         addRecipe(
-            findItemStack("E-Coal Boots"), " C ", "P P", "P P", 'P', "plateCoal", 'C', findItemStack(
+            ElectricalArmor.byName("E-Coal Boots"), " C ", "P P", "P P", 'P', "plateCoal", 'C', findItemStack(
                 "Portable " +
                         "Condensator"
             )
         )
         addRecipe(
-            findItemStack("E-Coal Chestplate"), "P P", "PCP", "PPP", 'P', "plateCoal", 'C', findItemStack(
+            ElectricalArmor.byName("E-Coal Chestplate"), "P P", "PCP", "PPP", 'P', "plateCoal", 'C', findItemStack(
                 "Portable Condensator"
             )
         )
         addRecipe(
-            findItemStack("E-Coal Leggings"), "PPP", "PCP", "P P", 'P', "plateCoal", 'C', findItemStack(
+            ElectricalArmor.byName("E-Coal Leggings"), "PPP", "PCP", "P P", 'P', "plateCoal", 'C', findItemStack(
                 "Portable Condensator"
             )
         )
@@ -1951,7 +1952,7 @@ object CraftingRecipes {
 
         Eln.instance.maceratorRecipes.addRecipe(
             Recipe(
-                findItemStack("E-Coal Helmet"), arrayOf<ItemStack>(
+                ElectricalArmor.byName("E-Coal Helmet"), arrayOf<ItemStack>(
                     findItemStack(
                         "Coal " +
                                 "Dust", 16
@@ -1961,7 +1962,7 @@ object CraftingRecipes {
         )
         Eln.instance.maceratorRecipes.addRecipe(
             Recipe(
-                findItemStack("E-Coal Boots"), arrayOf<ItemStack>(
+                ElectricalArmor.byName("E-Coal Boots"), arrayOf<ItemStack>(
                     findItemStack(
                         "Coal " +
                                 "Dust", 12
@@ -1971,7 +1972,7 @@ object CraftingRecipes {
         )
         Eln.instance.maceratorRecipes.addRecipe(
             Recipe(
-                findItemStack("E-Coal Chestplate"), arrayOf<ItemStack>(
+                ElectricalArmor.byName("E-Coal Chestplate"), arrayOf<ItemStack>(
                     findItemStack(
                         "Coal" +
                                 " Dust", 24
@@ -1981,7 +1982,7 @@ object CraftingRecipes {
         )
         Eln.instance.maceratorRecipes.addRecipe(
             Recipe(
-                findItemStack("E-Coal Leggings"), arrayOf<ItemStack>(
+                ElectricalArmor.byName("E-Coal Leggings"), arrayOf<ItemStack>(
                     findItemStack(
                         "Coal " +
                                 "Dust", 24

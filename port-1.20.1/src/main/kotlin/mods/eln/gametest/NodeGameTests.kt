@@ -7,6 +7,9 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.resources.ResourceKey
 import net.minecraft.core.registries.Registries
 import mods.eln.Eln
+import net.minecraft.world.entity.EquipmentSlot
+import net.minecraft.world.entity.EntityType
+import mods.eln.item.electricalitem.ElectricalArmor
 import mods.eln.item.electricalitem.ElectricalPickaxe
 import mods.eln.item.CopperGear
 import mods.eln.generic.GenericItemUsingDamageDescriptor
@@ -254,6 +257,22 @@ object NodeGameTests {
         helper.assertTrue(drill.isCorrectToolForDrops(Blocks.IRON_ORE.defaultBlockState()), "drill should drop iron ore")
         helper.assertFalse(drill.isCorrectToolForDrops(Blocks.OAK_LOG.defaultBlockState()), "drill should not count as an axe")
         helper.assertTrue(ItemStack(CopperGear.get("copper_pickaxe")).isCorrectToolForDrops(Blocks.DIAMOND_ORE.defaultBlockState()), "copper pickaxe should be iron grade")
+        helper.succeed()
+    }
+
+    // A charged E-coal chestplate absorbs its 8/20 share of the damage and pays 500 J per absorbed point.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun eCoalArmorAbsorbsDamage(helper: GameTestHelper) {
+        val mob = helper.spawnWithNoFreeWill(EntityType.SILVERFISH, BlockPos(1, 1, 1))
+        val chestplate = ElectricalArmor.byName("E-Coal Chestplate")
+        val armor = chestplate.item as ElectricalArmor
+        armor.setEnergy(chestplate, armor.energyStorage)
+        mob.setItemSlot(EquipmentSlot.CHEST, chestplate)
+        mob.hurt(mob.damageSources().cactus(), 4f) // generic damage bypasses armor
+        val worn = mob.getItemBySlot(EquipmentSlot.CHEST)
+        helper.assertTrue(abs(mob.health - 5.6f) < 0.01f, "health ${mob.health}, expected 5.6")
+        helper.assertTrue(abs(armor.getEnergy(worn) - 7200.0) < 0.1, "energy ${armor.getEnergy(worn)}, expected 7200")
         helper.succeed()
     }
 }

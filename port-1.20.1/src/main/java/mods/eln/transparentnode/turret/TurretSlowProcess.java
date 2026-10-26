@@ -330,6 +330,8 @@ public class TurretSlowProcess extends StateMachine {
         public void enter() {
             if (target != null) {
                 target.invulnerableTime = 0;
+                // shortcut: generic damage bypasses armor; 1.7.10's DamageSource("Unknown") did not. A custom eln damage
+                // type (datapack damage_type) would restore that.
                 target.hurt(target.damageSources().generic(), 5);
                 element.shoot();
                 element.play(new SoundCommand("eln:LaserGun"));

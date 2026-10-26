@@ -8,6 +8,7 @@ import net.minecraftforge.common.Tags
 import net.minecraft.tags.BlockTags
 import mods.eln.block.ArcBlock
 import mods.eln.item.CopperGear
+import mods.eln.item.electricalitem.ElectricalArmor
 import mods.eln.ore.ElnOre
 import mods.eln.ghost.GhostBlock
 import mods.eln.misc.OreDictionaryTags
@@ -82,6 +83,10 @@ class ElnItemModels(output: PackOutput, files: ExistingFileHelper) : ItemModelPr
         // The block models come from ElnBlockStates in the same run, so they cannot be checked for yet.
         for (ore in ElnOre.values()) getBuilder(ore.id).parent(ModelFile.UncheckedModelFile(modLoc("block/" + ore.id)))
         for (arc in ArcBlock.values()) getBuilder(arc.id).parent(ModelFile.UncheckedModelFile(modLoc("block/" + arc.id)))
+        for (item in ElectricalArmor.items) {
+            val id = item.id.path
+            withExistingParent(id, mcLoc("item/generated")).texture("layer0", modLoc("items/" + id.replace("e_coal", "ecoal")))
+        }
         for (id in CopperGear.ids) {
             withExistingParent(id, mcLoc(if (id in CopperGear.tools) "item/handheld" else "item/generated")).texture("layer0", modLoc("items/$id"))
         }

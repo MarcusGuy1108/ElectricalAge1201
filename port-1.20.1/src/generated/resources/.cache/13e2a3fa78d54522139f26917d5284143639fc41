@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T17:10:07.583146537	Item Models: eln
+// 1.20.1	2026-10-26T17:14:20.238979265	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -325,6 +325,10 @@ b746c93fe90ff391c96377bce84477608a92f2c9 assets/eln/models/item/dc_dc_converter.
 0f109d84a5316e28e536c854b2e998c16f65ffff assets/eln/models/item/digital_display.json
 80fa063977d1586f02a1489a39099482b6827e05 assets/eln/models/item/digital_watch.json
 ec9cf9b931d087c246435de25233386841313928 assets/eln/models/item/direct_utility_pole.json
+656b1b642bb3ca8cccd528995aef3221f1c2ea80 assets/eln/models/item/e_coal_boots.json
+d36421b1145920b8803fffc1ba1a2b411260fec5 assets/eln/models/item/e_coal_chestplate.json
+b9fee515bd6212e9189c6c7745a74bc8cf8a5774 assets/eln/models/item/e_coal_helmet.json
+ae1f276cb9db200ab75ba9b8623fd3d56d03b68f assets/eln/models/item/e_coal_leggings.json
 29de2018795a4615e5d114e26bc724a42d9e7e84 assets/eln/models/item/electrical_anemometer_sensor.json
 1f3194728634947e67fac7632176816241ae5489 assets/eln/models/item/electrical_daylight_sensor.json
 08c9852e9013e9ca35433d7596bb5fbc82968c55 assets/eln/models/item/electrical_entity_sensor.json
