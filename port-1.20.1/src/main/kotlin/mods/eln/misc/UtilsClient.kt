@@ -1,6 +1,7 @@
 @file:Suppress("NAME_SHADOWING")
 package mods.eln.misc
 
+import net.minecraft.world.item.ItemStack
 import mods.eln.compat.*
 import mods.eln.client.GL11
 import mods.eln.compat.*
@@ -247,6 +248,18 @@ object UtilsClient {
         // GL11.glDisable(3042);
 
         // OpenGlHelper.glBlendFunc(1, 1, 1, 1);
+    }
+
+    // 1.7.10 drew machine contents through a fake EntityItem; 1.20.1 renders the stack with the ground transform.
+    @JvmStatic
+    fun drawEntityItem(stack: ItemStack?, x: Double, y: Double, z: Double, roty: Float, scale: Float) {
+        if (stack == null || stack.isEmpty) return
+        GL11.glPushMatrix()
+        GL11.glTranslatef(x.toFloat(), y.toFloat(), z.toFloat())
+        GL11.glRotatef(roty, 0f, 1f, 0f)
+        GL11.glScalef(scale, scale, scale)
+        GL11.renderItem(stack)
+        GL11.glPopMatrix()
     }
 
     // PORT: drawIcon/drawEnergyBare (IItemRenderer item drawing) are replaced by generated item models.

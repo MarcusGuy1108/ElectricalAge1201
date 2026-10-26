@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.item.MachineBoosterDescriptor
 import mods.eln.item.EntitySensorFilterDescriptor
 import mods.eln.sixnode.electricaldatalogger.DataLogsPrintDescriptor
 import mods.eln.item.BrushDescriptor
@@ -1171,7 +1172,12 @@ object ItemRegistration {
             Eln.addToOre("ingotSilicon", desc)
         }
 
-        // PORT: Machine Booster returns with MachineBoosterDescriptor.
+        run {
+            subId = 22
+            name = I18N.TR_NAME(I18N.Type.NONE, "Machine Booster")
+            val desc = MachineBoosterDescriptor(name)
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
         run {
             subId = 23
             val desc =

@@ -1,5 +1,8 @@
 package mods.eln.client
 
+import net.minecraft.client.renderer.texture.OverlayTexture
+import net.minecraft.world.item.ItemDisplayContext
+import net.minecraft.world.item.ItemStack
 import net.minecraft.client.gui.Font
 import net.minecraft.client.Minecraft
 import com.mojang.blaze3d.vertex.PoseStack
@@ -197,6 +200,15 @@ object GL11 {
         val s = attribStack.removeLastOrNull() ?: return
         red = s[0]; green = s[1]; blue = s[2]; alpha = s[3]
         lighting = s[4] != 0f; texture2d = s[5] != 0f; blend = s[6] != 0f
+    }
+
+    // An item stack as a dropped item would show it, in the current pose.
+    @JvmStatic
+    fun renderItem(stack: ItemStack) {
+        if (stack.isEmpty || !live { renderItem(stack) }) return
+        Minecraft.getInstance().itemRenderer.renderStatic(
+            stack, ItemDisplayContext.GROUND, lightOverride ?: packedLight, OverlayTexture.NO_OVERLAY, pose!!, buffers!!, null, 0
+        )
     }
 
     // Text in the current pose, as 1.7.10 FontRenderer.drawString did inside fixed-function renders.

@@ -1,5 +1,13 @@
 package mods.eln.registration
 
+import mods.eln.item.ElectricalFuseDescriptor
+import mods.eln.item.ElectricalFuseDescriptor.Companion.BlownFuse
+import mods.eln.sixnode.TreeResinCollector.TreeResinCollectorDescriptor
+import mods.eln.sixnode.batterycharger.BatteryChargerDescriptor
+import mods.eln.sixnode.electricalbreaker.ElectricalBreakerDescriptor
+import mods.eln.sixnode.energymeter.EnergyMeterDescriptor
+import mods.eln.sixnode.hub.HubDescriptor
+import mods.eln.sixnode.powersocket.PowerSocketDescriptor
 import mods.eln.sixnode.electricaldatalogger.ElectricalDataLoggerDescriptor
 import mods.eln.sixnode.thermalcable.ThermalCableDescriptor
 import mods.eln.sixnode.electricalalarm.ElectricalAlarmDescriptor
@@ -127,9 +135,9 @@ object SixNodeRegistration {
         registerUtilityCables(34, 35, 36, 37)
         registerThermalCable(48)
         registerCurrentRelays(126)
-        // PORT: registerConduit(127)
+        registerConduit(127)
         registerLampSocket(64)
-        // PORT: registerPowerSocket(67)
+        registerPowerSocket(67)
         registerLampSupply(65)
 
         registerWirelessSignal(92)
@@ -138,7 +146,7 @@ object SixNodeRegistration {
         registerElectricalGateSource(95)
         registerPassiveComponent(96)
         registerSwitch(97)
-        // PORT: registerElectricalManager(98)
+        registerElectricalManager(98)
         registerElectricalSensor(100)
         registerThermalSensor(101)
         registerElectricalVuMeter(102)
@@ -149,9 +157,9 @@ object SixNodeRegistration {
         registerSixNodeMisc(117)
         registerLogicalGates(118)
         registerAnalogChips(124)
-        // PORT: registerBatteryCharger(66)
+        registerBatteryCharger(66)
 
-        // PORT: registerTreeResinCollector(116)
+        registerTreeResinCollector(116)
         // PORT: registerPortableNaN()
     }
 
@@ -717,7 +725,12 @@ object SixNodeRegistration {
             val desc = GroundCableDescriptor(name, Eln.obj.getObj("groundcable")).creative()
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
-        // PORT: Hub (subId 8) returns with HubDescriptor.
+        run {
+            subId = 8
+            val name = I18N.TR_NAME(I18N.Type.NONE, "Hub")
+            val desc = HubDescriptor(name, Eln.obj.getObj("hub")).power()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
     }
 
     private fun registerElectricalSource(id: Int) {
@@ -737,7 +750,12 @@ object SixNodeRegistration {
                 ElectricalSourceDescriptor(name, Eln.obj.getObj("signalsource"), true).creative()
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
-        // PORT: Current Source (subId 2) returns with CurrentSourceDescriptor.
+        run {
+            subId = 2
+            val name = I18N.TR_NAME(I18N.Type.NONE, "Current Source")
+            val desc = CurrentSourceDescriptor(name, Eln.obj.getObj("currentsource")).creative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
     }
 
     private fun registerLampSocket(id: Int) {
@@ -1903,6 +1921,302 @@ object SixNodeRegistration {
             val desc =
                 ElectricalDataLoggerDescriptor(name, false, "IndustrialPanel", 0.25f, 0.5f, 1f, "§f")
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+    private fun registerPowerSocket(id: Int) {
+        var subId: Int
+        var desc: PowerSocketDescriptor
+        run {
+            subId = 1
+            val name = I18N.TR_NAME(I18N.Type.NONE, "240V Type J Socket")
+            desc = PowerSocketDescriptor(subId, name, Eln.obj.getObj("PowerSocket")).power()
+            desc.setPlaceDirection(
+                arrayOf(
+                    Direction.XP,
+                    Direction.XN,
+                    Direction.ZP,
+                    Direction.ZN
+                )
+            )
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 2
+            val name = I18N.TR_NAME(I18N.Type.NONE, "240V Type E Socket")
+            desc = PowerSocketDescriptor(subId, name, Eln.obj.getObj("PowerSocket")).power()
+            desc.setPlaceDirection(
+                arrayOf(
+                    Direction.XP,
+                    Direction.XN,
+                    Direction.ZP,
+                    Direction.ZN
+                )
+            )
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerElectricalManager(id: Int) {
+        var subId: Int
+        var name: String
+
+        run {
+            subId = 0
+            name = I18N.TR_NAME(I18N.Type.NONE, "5A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 5.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 1
+            name = I18N.TR_NAME(I18N.Type.NONE, "10A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 10.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 2
+            name = I18N.TR_NAME(I18N.Type.NONE, "15A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 15.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 3
+            name = I18N.TR_NAME(I18N.Type.NONE, "20A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 20.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 7
+            name = I18N.TR_NAME(I18N.Type.NONE, "30A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 30.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 8
+            name = I18N.TR_NAME(I18N.Type.NONE, "40A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 40.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 9
+            name = I18N.TR_NAME(I18N.Type.NONE, "50A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 50.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 10
+            name = I18N.TR_NAME(I18N.Type.NONE, "60A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 60.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 11
+            name = I18N.TR_NAME(I18N.Type.NONE, "100A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 100.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 13
+            name = I18N.TR_NAME(I18N.Type.NONE, "125A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 125.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 14
+            name = I18N.TR_NAME(I18N.Type.NONE, "200A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 200.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 15
+            name = I18N.TR_NAME(I18N.Type.NONE, "400A Electrical Breaker")
+            val desc = ElectricalBreakerDescriptor(name, Eln.obj.getObj("ElectricalBreaker"), 400.0)
+            desc.setDefaultIcon("electricalbreaker")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 4
+            name = I18N.TR_NAME(I18N.Type.NONE, "Energy Meter")
+            val desc = EnergyMeterDescriptor(name, Eln.obj.getObj("EnergyMeter"), 8, 0)
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 5
+            name = I18N.TR_NAME(I18N.Type.NONE, "Advanced Energy Meter")
+            val desc = EnergyMeterDescriptor(name, Eln.obj.getObj("AdvancedEnergyMeter"), 7, 8)
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        // PORT: MQTT Energy Meter returns with MqttEnergyMeterElement, MqttEnergyMeterRender.
+        run {
+            subId = 6
+            name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Fuse Holder")
+            val desc = ElectricalFuseHolderDescriptor(
+                name, Eln.obj.getObj(
+                    "ElectricalFuse"
+                )
+            )
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 16
+            name = I18N.TR_NAME(I18N.Type.NONE, "5A Lead Fuse")
+            val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"), 5.0)
+            desc.creativeTab = Eln.creativeTabPowerElectronics
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 17
+            name = I18N.TR_NAME(I18N.Type.NONE, "10A Lead Fuse")
+            val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"), 10.0)
+            desc.creativeTab = Eln.creativeTabPowerElectronics
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 18
+            name = I18N.TR_NAME(I18N.Type.NONE, "15A Lead Fuse")
+            val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"), 15.0)
+            desc.creativeTab = Eln.creativeTabPowerElectronics
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 19
+            name = I18N.TR_NAME(I18N.Type.NONE, "20A Lead Fuse")
+            val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"), 20.0)
+            desc.creativeTab = Eln.creativeTabPowerElectronics
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 20
+            name = I18N.TR_NAME(I18N.Type.NONE, "30A Lead Fuse")
+            val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"), 30.0)
+            desc.creativeTab = Eln.creativeTabPowerElectronics
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 21
+            name = I18N.TR_NAME(I18N.Type.NONE, "50A Lead Fuse")
+            val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"), 50.0)
+            desc.creativeTab = Eln.creativeTabPowerElectronics
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 7
+            name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for low voltage cables")
+            val desc = ElectricalFuseDescriptor(
+                name, Eln.lowVoltageCableDescriptor, Eln.obj.getObj(
+                    "ElectricalFuse"
+                )
+            )
+            desc.hideFromCreative()
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 8
+            name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for medium voltage cables")
+            val desc = ElectricalFuseDescriptor(
+                name, Eln.meduimVoltageCableDescriptor,
+                Eln.obj.getObj("ElectricalFuse")
+            )
+            desc.hideFromCreative()
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 9
+            name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for high voltage cables")
+            val desc = ElectricalFuseDescriptor(
+                name, Eln.highVoltageCableDescriptor,
+                Eln.obj.getObj("ElectricalFuse")
+            )
+            desc.hideFromCreative()
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 10
+            name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for very high voltage cables")
+            val desc = ElectricalFuseDescriptor(
+                name, Eln.veryHighVoltageCableDescriptor,
+                Eln.obj.getObj("ElectricalFuse")
+            )
+            desc.hideFromCreative()
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 11
+            name = I18N.TR_NAME(I18N.Type.NONE, "Blown Lead Fuse")
+            val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"))
+            BlownFuse = desc
+            Eln.sharedItem.addWithoutRegistry(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerBatteryCharger(id: Int) {
+        var subId: Int
+        var completId: Int
+        var name: String?
+
+        var descriptor: BatteryChargerDescriptor
+        run {
+            subId = 0
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "120V Battery Charger")
+            descriptor = BatteryChargerDescriptor(
+                name, Eln.obj.getObj("batterychargera"), Eln.meduimVoltageCableDescriptor,
+                NominalVoltage.V120, 200.0
+            )
+            Eln.sixNodeItem.addDescriptor(completId, descriptor)
+        }
+        run {
+            subId = 1
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "120V Fast Battery Charger")
+            descriptor = BatteryChargerDescriptor(
+                name, Eln.obj.getObj("batterychargera"), Eln.meduimVoltageCableDescriptor,
+                NominalVoltage.V120, 400.0
+            )
+            Eln.sixNodeItem.addDescriptor(completId, descriptor)
+        }
+        run {
+            subId = 4
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "240V Battery Charger")
+            descriptor = BatteryChargerDescriptor(
+                name, Eln.obj.getObj("batterychargera"),
+                Eln.highVoltageCableDescriptor, NominalVoltage.V240, 1000.0
+            )
+            Eln.sixNodeItem.addDescriptor(completId, descriptor)
+        }
+    }
+
+    private fun registerConduit(id: Int) {
+        val subId = 0
+        val name = I18N.TR_NAME(I18N.Type.NONE, "Conduit")
+        val desc = ConduitCableDescriptor(name, CableRenderDescriptor("eln", "sprites/conduit.png", 4f, 4f)).power()
+        desc.hideFromCreative()
+        Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+    }
+
+    private fun registerTreeResinCollector(id: Int) {
+        var subId: Int
+        var completId: Int
+        var name: String?
+
+        var descriptor: TreeResinCollectorDescriptor
+        run {
+            subId = 0
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "Tree Resin Collector")
+            descriptor = TreeResinCollectorDescriptor(name, Eln.obj.getObj("treeresincolector")).machines()
+            Eln.sixNodeItem.addDescriptor(completId, descriptor)
         }
     }
 }

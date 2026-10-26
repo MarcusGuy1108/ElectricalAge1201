@@ -1,5 +1,6 @@
 package mods.eln.gametest
 
+import mods.eln.sixnode.electricalbreaker.ElectricalBreakerElement
 import mods.eln.sixnode.logicgate.LogicGateElement
 import mods.eln.sixnode.electricalcable.UtilityCableDescriptor
 import mods.eln.sixnode.electricalswitch.ElectricalSwitchElement
@@ -155,6 +156,21 @@ object SixNodeGameTests {
         helper.succeedWhen {
             helper.assertTrue(lampNode.lightValue >= LampSocketRender.MIN_LIGHT_ON_VALUE, "lamp light ${lampNode.lightValue} through ${utility.name}")
         }
+    }
+
+    // A breaker passes current along its front axis once closed, like the switch.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun breakerControlsLamp(helper: GameTestHelper) {
+        val (breakerNode, lampNode) = sourceThroughToLamp(helper, Eln.sixNodeItem.getDescriptor(98 shl 6)!!.newItemStack())
+        val breaker = breakerNode.getElement(Direction.YN) as ElectricalBreakerElement
+        breaker.front = LRDU.values().first { Direction.YN.applyLRDU(it) == Direction.XN }
+        breakerNode.reconnect()
+        helper.startSequence()
+            .thenExecuteAfter(20) { helper.assertTrue(lampNode.lightValue == 0, "lamp lit through an open breaker") }
+            .thenExecute { breaker.setSwitchState(true) }
+            .thenWaitUntil { helper.assertTrue(lampNode.lightValue >= LampSocketRender.MIN_LIGHT_ON_VALUE, "lamp light ${lampNode.lightValue} with the breaker closed") }
+            .thenSucceed()
     }
 
     // An unconnected NOT gate drives its output high and an unconnected AND gate keeps it low.

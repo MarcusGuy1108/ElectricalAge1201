@@ -86,6 +86,10 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      sign, logic gates, analog chips and regulator chips; plus the thermal cable and the data loggers. A GameTest
      checks NOT and AND gate outputs. MQTT and Modbus controllers, the wiki operator page and the wind state save
      (wind restarts on each server start) are not ported.
+   * [x] Power six-nodes: power sockets, breakers, fuse holders and fuses, energy meters, the battery charger (with
+     the machine booster), the hub, the current source, conduit and the tree resin collector (finds trunks and
+     leaves through the `logs`/`leaves` block tags). A GameTest switches a lamp through a breaker. The MQTT energy
+     meter and the breaker's current-limit overlay on its item icon are not ported.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
 
 ## References

@@ -1,0 +1,52 @@
+package mods.eln.sixnode.batterycharger;
+
+import mods.eln.gui.GuiButtonEln;
+import mods.eln.gui.GuiContainerEln;
+import mods.eln.gui.GuiHelperContainer;
+import mods.eln.gui.IGuiObject;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Container;
+
+import static mods.eln.i18n.I18N.tr;
+
+public class BatteryChargerGui extends GuiContainerEln {
+
+    private BatteryChargerRender render;
+
+    GuiButtonEln powerOn;
+
+    public BatteryChargerGui(BatteryChargerRender render, Player player, Container inventory) {
+        super(new BatteryChargerContainer(player, inventory));
+        this.render = render;
+    }
+
+    @Override
+    public void initGui() {
+        super.initGui();
+        powerOn = newGuiButton(97 + 10, 6 + 17 - 10, 40, "");
+    }
+
+    @Override
+    protected void preDraw(float f, int x, int y) {
+        super.preDraw(f, x, y);
+
+        if (render.powerOn) {
+            powerOn.setDisplayString(tr("Is on"));
+        } else {
+            powerOn.setDisplayString(tr("Is off"));
+        }
+    }
+
+    @Override
+    protected GuiHelperContainer newHelper() {
+        return new GuiHelperContainer(this, 176, 166 - 40, 8, 84 - 40);
+    }
+
+    @Override
+    public void guiObjectEvent(IGuiObject object) {
+        if (object == powerOn) {
+            render.clientSend(BatteryChargerElement.toogleCharge);
+        }
+        super.guiObjectEvent(object);
+    }
+}
