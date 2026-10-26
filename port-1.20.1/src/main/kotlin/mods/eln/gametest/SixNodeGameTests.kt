@@ -1,5 +1,6 @@
 package mods.eln.gametest
 
+import net.minecraft.world.InteractionHand
 import java.io.DataOutputStream
 import java.io.DataInputStream
 import java.io.ByteArrayOutputStream
@@ -119,6 +120,18 @@ object SixNodeGameTests {
             helper.assertTrue(lampNode.lightValue >= LampSocketRender.MIN_LIGHT_ON_VALUE, "lamp light ${lampNode.lightValue}, ${socket.electricalLoad.voltage} V")
             helper.assertTrue(helper.getBlockState(BlockPos(2, 1, 1)).getValue(NodeBlock.LIGHT) == lampNode.lightValue, "block light not synced")
         }
+    }
+
+    // Right-clicking a node with the multimeter reads it out instead of opening a GUI or doing nothing.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun multimeterReadsCable(helper: GameTestHelper) {
+        val cable = placeCable(helper, BlockPos(1, 1, 1))
+        val player = helper.makeMockPlayer()
+        player.setItemInHand(InteractionHand.MAIN_HAND, Eln.multiMeterElement!!.newItemStack())
+        helper.assertTrue(cable.onBlockActivated(player, Direction.YN, 0.5f, 0.1f, 0.5f), "multimeter click not handled")
+        helper.assertTrue(cable.multiMeterString(Direction.YN).isNotEmpty(), "empty multimeter reading")
+        helper.succeed()
     }
 
     // Breaking the support block must remove the cable on top of it, as 1.7.10 did.

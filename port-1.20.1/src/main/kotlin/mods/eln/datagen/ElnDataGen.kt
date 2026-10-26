@@ -1,5 +1,13 @@
 package mods.eln.datagen
 
+import java.util.concurrent.CompletableFuture
+import net.minecraftforge.common.data.BlockTagsProvider
+import net.minecraft.world.level.block.Block
+import net.minecraft.tags.ItemTags
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.data.tags.TagsProvider
+import net.minecraft.data.tags.ItemTagsProvider
+import net.minecraft.core.HolderLookup
 import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.node.transparent.TransparentNodeDescriptor
 import mods.eln.lightblock.LightBlock
@@ -28,6 +36,9 @@ object ElnDataGen {
         val output = event.generator.packOutput
         event.generator.addProvider(event.includeClient(), ElnItemModels(output, event.existingFileHelper))
         event.generator.addProvider(event.includeClient(), ElnBlockStates(output, event.existingFileHelper))
+        val blockTags = ElnBlockTags(output, event.lookupProvider, event.existingFileHelper)
+        event.generator.addProvider(event.includeServer(), blockTags)
+        event.generator.addProvider(event.includeServer(), ElnItemTags(output, event.lookupProvider, blockTags.contentsGetter(), event.existingFileHelper))
     }
 }
 
@@ -97,5 +108,40 @@ class ElnBlockStates(output: PackOutput, files: ExistingFileHelper) : BlockState
         )
         // Invisible; the model only exists so the block state resolves.
         simpleBlock(LightBlock.BLOCK.get(), models().getBuilder("light").texture("particle", mcLoc("block/glass")))
+    }
+}
+
+class ElnBlockTags(output: PackOutput, lookup: CompletableFuture<HolderLookup.Provider>, files: ExistingFileHelper) :
+    BlockTagsProvider(output, lookup, Eln.MODID, files) {
+    override fun addTags(provider: HolderLookup.Provider) {}
+}
+
+/** 1.7.10 registered materials in the Forge ore dictionary; 1.20.1 uses item tags, e.g. ingotCopper -> forge:ingots/copper. */
+class ElnItemTags(
+    output: PackOutput,
+    lookup: CompletableFuture<HolderLookup.Provider>,
+    blockTags: CompletableFuture<TagsProvider.TagLookup<Block>>,
+    files: ExistingFileHelper
+) : ItemTagsProvider(output, lookup, blockTags, Eln.MODID, files) {
+    override fun addTags(provider: HolderLookup.Provider) {
+        for ((name, descriptors) in Eln.oreDictionary) {
+            val appender = tag(ItemTags.create(tagFor(name)))
+            for (descriptor in descriptors) appender.add(descriptor.parentItem!!)
+        }
+    }
+
+    companion object {
+        private val FORGE_PREFIXES = listOf("ingot", "dust", "ore", "plate", "gem", "nugget", "block", "gear", "rod", "wire")
+
+        fun tagFor(oreName: String): ResourceLocation {
+            val prefix = FORGE_PREFIXES.firstOrNull { oreName.startsWith(it) && oreName.length > it.length && oreName[it.length].isUpperCase() }
+            return if (prefix != null) {
+                ResourceLocation("forge", prefix + "s/" + snake(oreName.substring(prefix.length)))
+            } else {
+                ResourceLocation(Eln.MODID, snake(oreName))
+            }
+        }
+
+        private fun snake(name: String) = name.replace(Regex("([a-z0-9])([A-Z])"), "$1_$2").lowercase()
     }
 }

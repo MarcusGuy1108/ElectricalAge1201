@@ -1,5 +1,13 @@
 package mods.eln
 
+import mods.eln.item.ArithmeticLogicUnit
+import mods.eln.item.NibbleMemory
+import mods.eln.item.Thermistor
+import mods.eln.item.Transistor
+import mods.eln.item.SiliconWafer
+import mods.eln.item.TreeResin
+import mods.eln.item.CopperCableDescriptor
+import mods.eln.generic.GenericItemUsingDamageDescriptorWithComment
 import mods.eln.misc.FunctionTable
 import mods.eln.node.transparent.TransparentNodeDescriptor
 import mods.eln.node.transparent.TransparentNodeBlock
@@ -111,6 +119,39 @@ object Eln {
     lateinit var sixNodeItem: GenericItemBlockUsingDamage<SixNodeDescriptor>
     @JvmField
     var batteryVoltageFunctionTable: FunctionTable? = null
+    // 1.7.10 OreDictionary registrations; the data generator turns them into item tags (see ElnItemTags).
+    @JvmField
+    val oreDictionary = LinkedHashMap<String, MutableList<GenericItemUsingDamageDescriptor>>()
+
+    @JvmStatic
+    fun addToOre(name: String?, descriptor: GenericItemUsingDamageDescriptor) {
+        if (name == null) return
+        oreDictionary.getOrPut(name) { ArrayList() }.add(descriptor)
+    }
+
+    @JvmField var copperIngot: GenericItemUsingDamageDescriptorWithComment? = null
+    @JvmField var plumbIngot: GenericItemUsingDamageDescriptorWithComment? = null
+    @JvmField var tungstenIngot: GenericItemUsingDamageDescriptorWithComment? = null
+    @JvmField var dustCopper: GenericItemUsingDamageDescriptorWithComment? = null
+    @JvmField var plateCopper: GenericItemUsingDamageDescriptorWithComment? = null
+    @JvmField var copperCableDescriptor: CopperCableDescriptor? = null
+    @JvmField var treeResin: TreeResin? = null
+    lateinit var siliconWafer: SiliconWafer
+    lateinit var transistor: Transistor
+    lateinit var thermistor: Thermistor
+    lateinit var nibbleMemory: NibbleMemory
+    lateinit var alu: ArithmeticLogicUnit
+    // Never set in 1.7.10 either, so these chips have no dictionary name.
+    @JvmField var dictSiliconWafer: String? = null
+    @JvmField var dictTransistor: String? = null
+    @JvmField var dictThermistor: String? = null
+    @JvmField var dictNibbleMemory: String? = null
+    @JvmField var dictALU: String? = null
+    @JvmField var multiMeterElement: GenericItemUsingDamageDescriptor? = null
+    @JvmField var thermometerElement: GenericItemUsingDamageDescriptor? = null
+    @JvmField var allMeterElement: GenericItemUsingDamageDescriptor? = null
+    @JvmField var wrenchDescriptor: GenericItemUsingDamageDescriptor? = null
+
     lateinit var transparentNodeItem: GenericItemBlockUsingDamage<TransparentNodeDescriptor>
     val transparentNodeBlock: TransparentNodeBlock
         @JvmStatic get() = TransparentNodeBlock.BLOCK.get()

@@ -1,6 +1,7 @@
 @file:Suppress("NAME_SHADOWING")
 package mods.eln.node
 
+import mods.eln.compat.*
 import mods.eln.gui.ElnMenus
 import mods.eln.Eln
 import mods.eln.misc.Coordinate
@@ -143,8 +144,27 @@ abstract class NodeBase {
     }
 
     open fun onBlockActivated(entityPlayer: Player, side: Direction, vx: Float, vy: Float, vz: Float): Boolean {
-        // PORT: multimeter, thermometer, all-meter and config copy tool handling returns with those items (uses
-        // multiMeterString/thermoMeterString/readConfigTool/writeConfigTool below).
+        if (!entityPlayer.level().isClientSide && entityPlayer.currentEquippedItem != null) {
+            val equipped = entityPlayer.currentEquippedItem!!
+            if (Eln.multiMeterElement?.checkSameItemStack(equipped) == true) {
+                val str = multiMeterString(side)
+                addMeterChatMessages(entityPlayer, str)
+                return true
+            }
+            if (Eln.thermometerElement?.checkSameItemStack(equipped) == true) {
+                val str = thermoMeterString(side)
+                addMeterChatMessages(entityPlayer, str)
+                return true
+            }
+            if (Eln.allMeterElement?.checkSameItemStack(equipped) == true) {
+                val str1 = multiMeterString(side)
+                val str2 = thermoMeterString(side)
+                val str = listOf(str1, str2).filter { it.isNotEmpty() }.joinToString("\n")
+                if (str.isNotEmpty()) addMeterChatMessages(entityPlayer, str)
+                return true
+            }
+            // PORT: the config copy tool (readConfigTool/writeConfigTool below) returns with that item.
+        }
         if (hasGui(side) && entityPlayer is ServerPlayer) {
             ElnMenus.openNodeGui(entityPlayer, coordinate, side)
             return true

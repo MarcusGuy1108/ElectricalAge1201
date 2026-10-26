@@ -341,7 +341,10 @@ object Utils {
     }
 
     // PORT: the wrench key (ServerKeyHandler.WRENCH) and Eln's wrench item return with the key handler and items.
+    // The Eln wrench, or any item named like a wrench (other mods' wrenches), as 1.7.10 accepted.
     fun isWrench(stack: ItemStack): Boolean {
+        val wrench = Eln.wrenchDescriptor
+        if (wrench != null && getItemObject(stack) === wrench) return true
         return stack.hoverName.string.lowercase().contains("wrench")
     }
 
