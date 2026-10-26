@@ -1,6 +1,10 @@
 package mods.eln.node.transparent
 
 import net.minecraftforge.common.util.LazyOptional
+import net.minecraftforge.fluids.capability.IFluidHandler
+import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.wrapper.SidedInvWrapper
+import net.minecraft.world.WorldlyContainer
 import net.minecraftforge.common.capabilities.ForgeCapabilities
 import net.minecraftforge.common.capabilities.Capability
 import mods.eln.Eln
@@ -20,21 +24,39 @@ import java.io.DataOutputStream
 import java.io.IOException
 import java.lang.reflect.InvocationTargetException
 
-// PORT: 1.7.10 forwarded ISidedInventory to the element inventory for hoppers and pipes; that returns as a Forge
-// item handler capability.
 open class TransparentNodeEntity(pos: BlockPos, state: BlockState) :
     NodeBlockEntity(TransparentNodeBlock.ENTITY.get(), pos, state) {
     var elementRender: TransparentNodeElementRender? = null
 
-    // The element's tank, as 1.7.10 TransparentNodeEntityWithFluid exposed it. Server side only, like the node.
-    // shortcut: a fresh LazyOptional per query, never invalidated; cache and invalidate it if a pipe mod holds on to it.
+    // The element's tank, as 1.7.10 TransparentNodeEntityWithFluid exposed it, and its inventory with the 1.7.10
+    // ISidedInventory side access, for hoppers and pipes. Server side only, like the node. Cached and invalidated with
+    // the block entity, so pipes holding on to them let go when the machine is broken.
+    private var fluidCapability: LazyOptional<IFluidHandler>? = null
+    private val itemCapabilities = arrayOfNulls<LazyOptional<IItemHandler>>(6)
+
     override fun <T> getCapability(cap: Capability<T>, side: net.minecraft.core.Direction?): LazyOptional<T> {
+        val node = node as? TransparentNode
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
-            val handler = (node as? TransparentNode)?.fluidHandler
-            if (handler != null) return LazyOptional.of { handler }.cast()
+            val handler = node?.fluidHandler
+            if (handler != null) return (fluidCapability ?: LazyOptional.of { handler }.also { fluidCapability = it }).cast()
+        }
+        if (cap == ForgeCapabilities.ITEM_HANDLER && side != null) {
+            val inventory = node?.getInventory(null) as? WorldlyContainer
+            if (inventory != null) {
+                val handler = itemCapabilities[side.ordinal]
+                    ?: LazyOptional.of<IItemHandler> { SidedInvWrapper(inventory, side) }.also { itemCapabilities[side.ordinal] = it }
+                return handler.cast()
+            }
         }
         return super.getCapability(cap, side)
     }
+
+    override fun invalidateCaps() {
+        super.invalidateCaps()
+        fluidCapability?.invalidate()
+        itemCapabilities.forEach { it?.invalidate() }
+    }
+
     var elementRenderId: Short = 0
 
     override fun getCableRender(side: Direction, lrdu: LRDU): CableRenderDescriptor? {

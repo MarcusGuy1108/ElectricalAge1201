@@ -8,6 +8,8 @@ import mods.eln.mechanical.GasTurbineDescriptor
 import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.ghost.GhostBlock
 import mods.eln.Eln
+import net.minecraft.world.item.ItemStack
+import mods.eln.ore.ElnOre
 import net.minecraftforge.common.util.FakePlayerFactory
 import net.minecraft.world.InteractionHand
 import mods.eln.gridnode.electricalpole.ElectricalPoleElement
@@ -152,6 +154,23 @@ object TransparentNodeGameTests {
         helper.succeedWhen {
             helper.assertTrue(poles[1].electricalLoad.voltage > 990.0, "far pole at ${poles[1].electricalLoad.voltage} V")
             Eln.simulator.removeElectricalComponent(source)
+        }
+    }
+
+    // A hopper on top of a macerator feeds its input slot, through the item handler that carries the 1.7.10 side access.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun hopperFeedsMacerator(helper: GameTestHelper) {
+        val pos = BlockPos(1, 1, 1)
+        helper.setBlock(pos.below(), Blocks.STONE)
+        val stack = Eln.findItemStack("48V Macerator", 1)
+        helper.assertTrue((stack.item as TransparentNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(pos), Direction.YP), "macerator not placed")
+        val machine = ((helper.level.getBlockEntity(helper.absolutePos(pos)) as TransparentNodeEntity).node as TransparentNode).element!!
+        helper.setBlock(pos.above(), Blocks.HOPPER)
+        (helper.getBlockEntity(pos.above()) as Container).setItem(0, ItemStack(ElnOre.COPPER.block.get()))
+        helper.succeedWhen {
+            val inventory = machine.inventory!!
+            helper.assertTrue((0 until inventory.containerSize).any { inventory.getItem(it).`is`(ElnOre.COPPER.block.get().asItem()) }, "no ore in the macerator")
         }
     }
 }

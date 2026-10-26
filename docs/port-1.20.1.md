@@ -71,8 +71,10 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      set in its GUI and the socket takes its bulb and cable through its GUI.
    * [x] Transparent-node framework (full-block machines), the seven batteries with their GUI, and the creative
      Ground Cable. Batteries float as in 1.7.10, so a lamp powered from one needs the negative terminal grounded; a
-     GameTest and an in-game check light a 12 V lamp that way. Hopper/pipe access to machine inventories, custom
-     collision boxes, multiblock ghost blocks and the fluid block entity are not ported yet.
+     GameTest and an in-game check light a 12 V lamp that way. Hoppers and pipes reach machine inventories and
+     tanks through the Forge item and fluid handler capabilities of the block entity, with the 1.7.10 side rules
+     (machines take input from the top and give output from the other sides); a GameTest feeds a macerator from a
+     hopper. Custom collision boxes are not ported yet.
 6. [ ] Six-node blocks, transparent-node machines and the remaining content, family by family.
    * [x] Meters, wrench, config copy tool, brushes and the basic material items (ingots, dusts, plates, chips).
    * [x] Switches, relays, signal sources, wireless signals, passive components (resistors, diodes, capacitors,

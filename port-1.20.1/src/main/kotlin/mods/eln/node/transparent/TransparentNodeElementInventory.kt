@@ -4,16 +4,19 @@ import mods.eln.sixnode.electricalcable.IUtilityCableInventory
 import mods.eln.misc.INBTTReady
 import mods.eln.misc.Utils.readFromNBT
 import mods.eln.misc.Utils.writeToNBT
+import net.minecraft.core.Direction
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.SimpleContainer
+import net.minecraft.world.WorldlyContainer
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 
 /**
  * Inventory of a transparent node element. 1.7.10 implemented ISidedInventory by hand; 1.20.1's SimpleContainer
- * covers the slot handling. The side access methods stay so machines keep overriding them.
+ * covers the slot handling. Machines keep overriding the 1.7.10 side access methods, which take the side as a
+ * Minecraft side number (0 down, 1 up, 2 north, 3 south, 4 west, 5 east, the order of Direction.get3DDataValue).
  */
-open class TransparentNodeElementInventory : SimpleContainer, INBTTReady, IUtilityCableInventory {
+open class TransparentNodeElementInventory : SimpleContainer, INBTTReady, IUtilityCableInventory, WorldlyContainer {
     @JvmField
     protected var transparentNodeRender: TransparentNodeElementRender? = null
     @JvmField
@@ -73,7 +76,14 @@ open class TransparentNodeElementInventory : SimpleContainer, INBTTReady, IUtili
         return false
     }
 
-    // PORT: the side access below feeds hoppers and pipes again once the block entity exposes an item handler.
+    override fun getSlotsForFace(side: Direction): IntArray = getAccessibleSlotsFromSide(side.get3DDataValue())
+
+    override fun canPlaceItemThroughFace(slot: Int, stack: ItemStack, side: Direction?): Boolean =
+        side != null && canInsertItem(slot, stack, side.get3DDataValue())
+
+    override fun canTakeItemThroughFace(slot: Int, stack: ItemStack, side: Direction): Boolean =
+        canExtractItem(slot, stack, side.get3DDataValue())
+
     open fun getAccessibleSlotsFromSide(side: Int): IntArray {
         return intArrayOf()
     }
