@@ -3,6 +3,9 @@ package mods.eln.sixnode.lampsocket
 import mods.eln.compat.*
 import mods.eln.Eln
 import mods.eln.i18n.I18N
+import mods.eln.item.BrushDescriptor
+import mods.eln.item.ConfigCopyToolDescriptor
+import mods.eln.item.IConfigurable
 import mods.eln.item.lampitem.LampDescriptor
 import mods.eln.misc.Direction
 import mods.eln.misc.LRDU
@@ -28,6 +31,7 @@ import mods.eln.sim.mna.component.Resistor
 import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.sim.process.destruct.VoltageStateWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
+import mods.eln.sixnode.currentcable.CurrentCableDescriptor
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import net.minecraft.world.entity.player.Player
 import net.minecraft.server.level.ServerPlayer
@@ -41,14 +45,14 @@ import java.io.IOException
 import kotlin.math.pow
 
 class LampSocketElement(sixNode: SixNode, side: Direction, sixNodeDescriptor: SixNodeDescriptor) :
-    SixNodeElement(sixNode, side, sixNodeDescriptor) {
+    SixNodeElement(sixNode, side, sixNodeDescriptor), IConfigurable {
 
     override val inventory = SixNodeElementInventory(2, 64, this, LampSocketContainer.REQUIRED_CABLE_LENGTH)
 
     // ElectricalCableDescriptor here covers utility cables
     private val inventoryProxy = AutoAcceptInventoryProxy(inventory)
         .acceptIfEmpty(LampSocketContainer.LAMP_SLOT_ID, LampDescriptor::class.java)
-        .acceptIfEmpty(LampSocketContainer.CABLE_SLOT_ID, ElectricalCableDescriptor::class.java) // PORT: and CurrentCableDescriptor
+        .acceptIfEmpty(LampSocketContainer.CABLE_SLOT_ID, ElectricalCableDescriptor::class.java, CurrentCableDescriptor::class.java)
 
     val descriptor = sixNodeDescriptor as LampSocketDescriptor
 
@@ -97,7 +101,19 @@ class LampSocketElement(sixNode: SixNode, side: Direction, sixNodeDescriptor: Si
         var takeItem = false
 
         when (val equippedItemDescriptor = getItemObject(entityPlayer.currentEquippedItem)) {
-            // PORT: brush painting (paintable sockets) returns with BrushDescriptor.
+            is BrushDescriptor -> {
+                // Ignore brush use on non-paintable sockets (e.g. Streetlight)
+                if (!descriptor.paintable) return false
+
+                val brushColor = equippedItemDescriptor.getColor(entityPlayer.currentEquippedItem!!)
+
+                if (brushColor != paintColor && equippedItemDescriptor.use(entityPlayer.currentEquippedItem!!, entityPlayer)) {
+                    paintColor = brushColor
+                    needPublish()
+                }
+
+                return true
+            }
 
             is LampDescriptor -> {
                 takeItem = equippedItemDescriptor.lampData.technology in descriptor.acceptedLampTypes
@@ -109,6 +125,9 @@ class LampSocketElement(sixNode: SixNode, side: Direction, sixNodeDescriptor: Si
                 takeItem = !equippedItemDescriptor.signalWire
             }
 
+            is CurrentCableDescriptor -> {
+                takeItem = true
+            }
         }
 
         return if (takeItem) {
@@ -216,7 +235,7 @@ class LampSocketElement(sixNode: SixNode, side: Direction, sixNodeDescriptor: Si
                 val cableDescriptor = Eln.sixNodeItem.getDescriptor(cableStack)
 
                 // ElectricalCableDescriptor here covers utility cables
-                if (cableDescriptor is ElectricalCableDescriptor) {
+                if (cableDescriptor is ElectricalCableDescriptor || cableDescriptor is CurrentCableDescriptor) {
                     cableDescriptor.applyTo(electricalLoad)
                 }
             }
@@ -322,7 +341,57 @@ class LampSocketElement(sixNode: SixNode, side: Direction, sixNodeDescriptor: Si
         return info
     }
 
-    // PORT: readConfigTool/writeConfigTool (IConfigurable) return with the config copy tool.
+    override fun readConfigTool(compound: CompoundTag, invoker: Player) {
+        var publishChanges = false
+        var inventoryChanged = false
+
+        if (compound.contains("poweredByLampSupply")) {
+            poweredByLampSupply = compound.getBoolean("poweredByLampSupply")
+            publishChanges = true
+        }
+
+        if (compound.contains("lampSupplyChannel")) {
+            lampSupplyChannel = compound.getString("lampSupplyChannel")
+            publishChanges = true
+        }
+
+        if (descriptor.enableProjectionRotation && compound.contains("projectionRotationAngle")) {
+            projectionRotationAngle = compound.getDouble("projectionRotationAngle")
+            publishChanges = true
+        }
+
+        if (compound.contains("grounded")) {
+            grounded = compound.getBoolean("grounded")
+            publishChanges = true
+        }
+
+        if (ConfigCopyToolDescriptor.readLampDescriptor(compound, "lamp", inventory, LampSocketContainer.LAMP_SLOT_ID, invoker, descriptor.acceptedLampTypes)) {
+            inventoryChanged = true
+        }
+
+        if (ConfigCopyToolDescriptor.readCableType(compound, inventory, LampSocketContainer.CABLE_SLOT_ID, invoker, false)) {
+            inventoryChanged = true
+        }
+
+        // Prevent duplicate calls of these functions
+        if (inventoryChanged) {
+            inventoryChange(inventory)
+            if (Eln.config.getBooleanOrElse("gameplay.qol.rememberLastLampSocketContents", false)) {
+                lastLampStack = inventory.getStackInSlot(LampSocketContainer.LAMP_SLOT_ID)?.copy()
+                lastCableStack = inventory.getStackInSlot(LampSocketContainer.CABLE_SLOT_ID)?.copy()
+            }
+        }
+        else if (publishChanges) needPublish()
+    }
+
+    override fun writeConfigTool(compound: CompoundTag, invoker: Player) {
+        compound.putBoolean("poweredByLampSupply", poweredByLampSupply)
+        compound.putString("lampSupplyChannel", lampSupplyChannel)
+        if (descriptor.enableProjectionRotation) compound.putDouble("projectionRotationAngle", projectionRotationAngle)
+        compound.putBoolean("grounded", grounded)
+        ConfigCopyToolDescriptor.writeGenDescriptor(compound, "lamp", inventory.getStackInSlot(LampSocketContainer.LAMP_SLOT_ID))
+        ConfigCopyToolDescriptor.writeCableType(compound, inventory.getStackInSlot(LampSocketContainer.CABLE_SLOT_ID))
+    }
 
     companion object {
         var lastChannel = "Default channel"

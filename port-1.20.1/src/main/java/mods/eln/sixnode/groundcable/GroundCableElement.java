@@ -1,7 +1,11 @@
 package mods.eln.sixnode.groundcable;
 
+import mods.eln.compat.LegacyCompat;
+
 import mods.eln.Eln;
+import mods.eln.generic.GenericItemUsingDamageDescriptor;
 import mods.eln.i18n.I18N;
+import mods.eln.item.BrushDescriptor;
 import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Utils;
@@ -14,9 +18,11 @@ import mods.eln.sim.ElectricalLoad;
 import mods.eln.sim.ThermalLoad;
 import mods.eln.sim.mna.component.VoltageSource;
 import mods.eln.sim.nbt.NbtElectricalLoad;
+import mods.eln.sixnode.electricalcable.UtilityCableElement;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
@@ -81,14 +87,30 @@ public class GroundCableElement extends SixNodeElement {
         return null;
     }
 
-    // PORT: utility cables choose their ground conductor here again once they are ported.
     @Override
     public int getConnectionMask(LRDU lrdu) {
+        //if (LegacyCompat.getStackInSlot(inventory, GroundCableContainer.cableSlotId) == null) return 0;
+        Object adjacentElement = getAdjacentConnectionElement(lrdu);
+        UtilityCableElement utilityCable = adjacentElement instanceof UtilityCableElement ? (UtilityCableElement) adjacentElement : null;
+        if (utilityCable != null) {
+            return connectionMaskForUtilityCable(utilityCable);
+        }
         return defaultConnectionMask();
     }
 
     int defaultConnectionMask() {
         return NodeBase.maskElectricalPower + (color << NodeBase.maskColorShift) + (colorCare << NodeBase.maskColorCareShift);
+    }
+
+    int connectionMaskForUtilityCable(UtilityCableElement utilityCable) {
+        if (utilityCable.descriptor.getActsAsSingleConductor()) return defaultConnectionMask();
+        int groundColor = utilityCable.activeGroundConductorColor();
+        if (groundColor < 0) return defaultConnectionMask();
+        return groundConductorMask(groundColor);
+    }
+
+    int groundConductorMask(int groundColor) {
+        return NodeBase.maskElectricalPower + (groundColor << NodeBase.maskColorShift) + NodeBase.maskColorCareData;
     }
 
     @Override
@@ -115,7 +137,7 @@ public class GroundCableElement extends SixNodeElement {
         super.networkSerialize(stream);
         try {
             stream.writeByte(color << 4);
-            Utils.serialiseItemStack(stream, inventory.getItem(GroundCableContainer.cableSlotId));
+            Utils.serialiseItemStack(stream, LegacyCompat.getStackInSlot(inventory, GroundCableContainer.cableSlotId));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -128,12 +150,24 @@ public class GroundCableElement extends SixNodeElement {
 
     @Override
     public boolean onBlockActivated(Player entityPlayer, Direction side, float vx, float vy, float vz) {
+        ItemStack currentItemStack = LegacyCompat.getCurrentEquippedItem(entityPlayer);
         if (Utils.isPlayerUsingWrench(entityPlayer)) {
             colorCare = colorCare ^ 1;
             Utils.addChatMessage(entityPlayer, "Wire color care " + colorCare);
             sixNode.reconnect();
+        } else if (currentItemStack != null) {
+            Item item = currentItemStack.getItem();
+
+            GenericItemUsingDamageDescriptor gen = BrushDescriptor.getDescriptor(currentItemStack);
+            if (gen != null && gen instanceof BrushDescriptor) {
+                BrushDescriptor brush = (BrushDescriptor) gen;
+                int brushColor = brush.getColor(currentItemStack);
+                if (brushColor != color && brush.use(currentItemStack, entityPlayer)) {
+                    color = brushColor;
+                    sixNode.reconnect();
+                }
+            }
         }
-        // PORT: painting the wire color with a brush returns with BrushDescriptor.
         return false;
     }
 

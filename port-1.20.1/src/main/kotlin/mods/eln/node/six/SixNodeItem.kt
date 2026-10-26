@@ -1,6 +1,7 @@
 @file:Suppress("NAME_SHADOWING")
 package mods.eln.node.six
 
+import mods.eln.sixnode.electricalcable.UtilityCableDescriptor
 import mods.eln.Eln
 import mods.eln.generic.GenericItemBlockUsingDamageDescriptor
 import mods.eln.generic.IDescriptorItem
@@ -38,7 +39,11 @@ class SixNodeItem(override val descriptor: SixNodeDescriptor) : Item(Properties(
         lines.forEach { tooltip.add(Component.literal(it)) }
     }
 
-    // PORT: utility cable length consumption (UtilityCableDescriptor) returns with the utility cables.
+    private fun shouldConsumeUtilityCableLength(player: Player): Boolean {
+        val creativeFreeLength = Eln.config.getBooleanOrElse("gameplay.cables.creativeFreeLength", true)
+        return !(creativeFreeLength && player.abilities.instabuild)
+    }
+
     override fun useOn(context: UseOnContext): InteractionResult {
         val player = context.player ?: return InteractionResult.PASS
         val stack = context.itemInHand
@@ -47,13 +52,25 @@ class SixNodeItem(override val descriptor: SixNodeDescriptor) : Item(Properties(
         val placeContext = BlockPlaceContext(context)
         val pos = placeContext.clickedPos
         val direction = Direction.from(context.clickedFace).inverse
+        val descriptor = descriptor
+        if (descriptor is UtilityCableDescriptor && !descriptor.hasLengthForPlacement(stack)) {
+            if (!context.level.isClientSide) addChatMessage(player, "Not enough wire length remaining to place another segment")
+            return InteractionResult.FAIL
+        }
         if (!player.mayUseItemAt(pos, context.clickedFace, stack)) return InteractionResult.FAIL
         if (!descriptor.canBePlacedOnSide(player, Coordinate(pos.x, pos.y, pos.z, context.level), direction)) return InteractionResult.FAIL
         if (context.level.isClientSide) return InteractionResult.SUCCESS
         if (placeBlockAt(stack, player, context.level, pos, direction)) {
             val sound = Eln.sixNodeBlock.defaultBlockState().soundType
             context.level.playSound(null, pos, sound.placeSound, SoundSource.BLOCKS, (sound.volume + 1.0f) / 2.0f, sound.pitch * 0.8f)
-            if (!player.abilities.instabuild) stack.shrink(1)
+            if (descriptor is UtilityCableDescriptor) {
+                if (shouldConsumeUtilityCableLength(player)) {
+                    descriptor.consumeLengthForPlacement(stack)
+                    if (!descriptor.hasLengthForPlacement(stack)) stack.shrink(1)
+                }
+            } else if (!player.abilities.instabuild) {
+                stack.shrink(1)
+            }
         }
         return InteractionResult.CONSUME
     }

@@ -1,6 +1,8 @@
 package mods.eln.item;
 
 import mods.eln.misc.Utils;
+import mods.eln.sixnode.electricalcable.IUtilityCableInventory;
+import mods.eln.sixnode.electricalcable.UtilityCableDescriptor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,7 +16,6 @@ public abstract class ItemMovingHelper {
     public abstract boolean acceptsStack(ItemStack stack);
     public abstract ItemStack newStackOfSize(int items);
 
-    // PORT: utility cable spools (trimmed to length on insertion) return with UtilityCableDescriptor.
     public void move(Inventory src, Container dst, int dstSlot, int desired) {
         boolean dstChanged = false;
         if (src.player instanceof ServerPlayer && Utils.isCreative((ServerPlayer) src.player)) {
@@ -30,6 +31,13 @@ public abstract class ItemMovingHelper {
                 ItemStack invStack = src.getItem(idx);
                 if (invStack.isEmpty()) continue;
                 if (!acceptsStack(invStack)) continue;
+                if (Utils.getItemObject(invStack) instanceof UtilityCableDescriptor) {
+                    // trimCable marks the destination dirty itself.
+                    if (IUtilityCableInventory.Companion.trimCable(invStack, dst, dstSlot, false)) {
+                        src.setChanged();
+                        return;
+                    } else continue;
+                }
                 int move = Math.min(invStack.getCount(), diff);
                 diff -= move;
                 invStack.shrink(move);

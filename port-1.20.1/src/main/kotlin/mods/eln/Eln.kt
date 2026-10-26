@@ -1,5 +1,7 @@
 package mods.eln
 
+import mods.eln.item.BrushDescriptor
+import mods.eln.sixnode.currentcable.CurrentCableDescriptor
 import mods.eln.item.ArithmeticLogicUnit
 import mods.eln.item.NibbleMemory
 import mods.eln.item.Thermistor
@@ -152,6 +154,8 @@ object Eln {
     @JvmField var allMeterElement: GenericItemUsingDamageDescriptor? = null
     @JvmField var wrenchDescriptor: GenericItemUsingDamageDescriptor? = null
     @JvmField var configCopyToolElement: GenericItemUsingDamageDescriptor? = null
+    @JvmField var whiteDesc: BrushDescriptor? = null
+    @JvmField var brushSubNames: List<String> = emptyList()
 
     lateinit var transparentNodeItem: GenericItemBlockUsingDamage<TransparentNodeDescriptor>
     val transparentNodeBlock: TransparentNodeBlock
@@ -166,6 +170,12 @@ object Eln {
     @JvmField var stdCableRender800V: CableRenderDescriptor? = null
     @JvmField var stdCableRender3200V: CableRenderDescriptor? = null
     @JvmField var stdCableRenderCreative: CableRenderDescriptor? = null
+    @JvmField var lowCurrentCableRender: CableRenderDescriptor? = null
+    @JvmField var mediumCurrentCableRender: CableRenderDescriptor? = null
+    @JvmField var highCurrentCableRender: CableRenderDescriptor? = null
+    lateinit var lowCurrentCableDescriptor: CurrentCableDescriptor
+    lateinit var mediumCurrentCableDescriptor: CurrentCableDescriptor
+    lateinit var highCurrentCableDescriptor: CurrentCableDescriptor
     lateinit var signalCableDescriptor: ElectricalCableDescriptor
     lateinit var lowVoltageCableDescriptor: ElectricalCableDescriptor
     lateinit var meduimVoltageCableDescriptor: ElectricalCableDescriptor

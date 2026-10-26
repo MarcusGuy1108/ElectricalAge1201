@@ -1,5 +1,6 @@
 package mods.eln.sixnode.electricalcable;
 
+import mods.eln.item.BrushDescriptor;
 import mods.eln.Eln;
 import mods.eln.generic.GenericItemUsingDamageDescriptor;
 import mods.eln.i18n.I18N;
@@ -168,8 +169,15 @@ public class ElectricalCableElement extends SixNodeElement {
             colorCare = colorCare ^ 1;
             Utils.addChatMessage(entityPlayer, "Wire color care " + colorCare);
             sixNode.reconnect();
+        } else if (Utils.getItemObject(entityPlayer.getMainHandItem()) instanceof BrushDescriptor) {
+            ItemStack currentItemStack = entityPlayer.getMainHandItem();
+            BrushDescriptor brush = (BrushDescriptor) Utils.getItemObject(currentItemStack);
+            int brushColor = brush.getColor(currentItemStack);
+            if (brushColor != color && brush.use(currentItemStack, entityPlayer)) {
+                color = brushColor;
+                sixNode.reconnect();
+            }
         }
-        // PORT: painting the wire with a BrushDescriptor (color) returns with the brush item.
         return false;
     }
 }

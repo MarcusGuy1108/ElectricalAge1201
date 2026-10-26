@@ -1,5 +1,6 @@
 package mods.eln.sixnode.lampsocket
 
+import mods.eln.sixnode.lampsupply.LampSupplyElement
 import net.minecraft.server.level.ServerLevel
 import mods.eln.compat.*
 import mods.eln.item.lampitem.BoilerplateLampData
@@ -19,6 +20,7 @@ class LampSocketProcess(var element: LampSocketElement) : IProcess {
 
     private var processElapsedTime = 0.0
 
+    var cachedBestChannelHandle: Pair<Double, LampSupplyElement.PowerSupplyChannelHandle>? = null
     var stableLightProbability = 0.0
     var fastLightValue = 0
 
@@ -36,8 +38,18 @@ class LampSocketProcess(var element: LampSocketElement) : IProcess {
             val lampDescriptor = Utils.getItemObject(lampStack) as LampDescriptor
 
             if (element.poweredByLampSupply) {
-                // PORT: lamp supply channels return with mods.eln.sixnode.lampsupply; until then such a socket stays dark.
-                element.electricalLoad.state = 0.0
+                findBestLampSupply(element.sixNode!!.coordinate)
+
+                val bestLampSupply = cachedBestChannelHandle?.second
+
+                if (bestLampSupply != null && bestLampSupply.element.getChannelState(bestLampSupply.id)) {
+                    bestLampSupply.element.addToRp(lampDescriptor.lampData.resistance)
+                    element.electricalLoad.state = bestLampSupply.element.powerLoad.state
+                } else {
+                    element.electricalLoad.state = 0.0
+                }
+
+                activeLampSupplyConnection = (bestLampSupply != null)
             }
 
             val lampData = lampDescriptor.lampData
@@ -99,6 +111,21 @@ class LampSocketProcess(var element: LampSocketElement) : IProcess {
 
         processElapsedTime += time
         if (processElapsedTime >= 1.0) processElapsedTime = 0.0
+    }
+
+    private fun findBestLampSupply(coordinate: Coordinate, forceUpdate: Boolean = false) {
+        val channelMap = LampSupplyElement.channelMap[element.lampSupplyChannel]
+
+        if (channelMap != null) {
+            if (channelMap.contains(cachedBestChannelHandle?.second) && !forceUpdate) return
+            else {
+                channelMap.filterNotNull()
+                cachedBestChannelHandle = channelMap
+                    .map { Pair(it.element.sixNode!!.coordinate.trueDistanceTo(coordinate), it) }
+                    .filter { it.first < it.second.element.range }
+                    .minByOrNull { it.first }
+            }
+        } else cachedBestChannelHandle = null
     }
 
     private fun updateNearbyBlocks(growRate: Double, nominalLight: Int, actualLight: Int, deltaT: Double) {

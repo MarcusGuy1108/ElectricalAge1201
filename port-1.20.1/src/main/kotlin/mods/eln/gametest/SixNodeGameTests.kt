@@ -1,5 +1,6 @@
 package mods.eln.gametest
 
+import mods.eln.sixnode.electricalcable.UtilityCableDescriptor
 import mods.eln.sixnode.electricalswitch.ElectricalSwitchElement
 import mods.eln.misc.LRDU
 import net.minecraft.world.InteractionHand
@@ -141,6 +142,18 @@ object SixNodeGameTests {
         socket.poweredByLampSupply = false
         socket.inventoryChange(socket.inventory)
         return Pair(middleNode, lampNode)
+    }
+
+    // A single-conductor utility cable carries the source to the lamp like a classic cable.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun utilityCableCarriesPower(helper: GameTestHelper) {
+        val utility = Eln.sixNodeItem.descriptors.filterIsInstance<UtilityCableDescriptor>()
+            .first { it.insulated && !it.melted && it.conductorCount == 1 && it.totalConductorAreaMm2 > 2.0 }
+        val (_, lampNode) = sourceThroughToLamp(helper, utility.newItemStack())
+        helper.succeedWhen {
+            helper.assertTrue(lampNode.lightValue >= LampSocketRender.MIN_LIGHT_ON_VALUE, "lamp light ${lampNode.lightValue} through ${utility.name}")
+        }
     }
 
     // A switch only passes current along its front axis, so it is turned to face the source, then closed.

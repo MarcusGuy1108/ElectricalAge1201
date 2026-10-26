@@ -12,7 +12,11 @@ import mods.eln.misc.Direction;
 import mods.eln.node.NodeBase;
 import mods.eln.node.NodeBlock;
 import mods.eln.node.NodeManager;
+import mods.eln.sixnode.currentcable.CurrentCableDescriptor;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.electricalcable.IUtilityCableInventory;
+import mods.eln.sixnode.electricalcable.UtilityCableDescriptor;
+import mods.eln.sixnode.electricalcable.UtilityCableItemMovingHelper;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.player.Player;
@@ -52,8 +56,9 @@ public class ConfigCopyToolDescriptor extends GenericItemUsingDamageDescriptor {
             // ElectricalCableDescriptor here covers utility cables (utility cables are not signal cables)
             if (desc instanceof ElectricalCableDescriptor) {
                 readCable = !(((ElectricalCableDescriptor) desc).signalWire && !acceptSignalCable);
+            } else if (desc instanceof CurrentCableDescriptor) {
+                readCable = true;
             }
-            // PORT: current cables (CurrentCableDescriptor) are accepted here again once ported.
 
             if (readCable) return readCableType(compound, inv, slot, invoker);
         }
@@ -76,8 +81,11 @@ public class ConfigCopyToolDescriptor extends GenericItemUsingDamageDescriptor {
             if (stackInSlot != null) {
                 GenericItemBlockUsingDamageDescriptor thisCableDesc = GenericItemBlockUsingDamageDescriptor.getDescriptor(stackInSlot, GenericCableDescriptor.class);
                 if (thisCableDesc != null) {
-                    // PORT: utility cable spools move by length (UtilityCableItemMovingHelper) once ported.
-                    {
+                    if (thisCableDesc instanceof UtilityCableDescriptor) {
+                        double cableLength = ((UtilityCableDescriptor) thisCableDesc).getRemainingLengthMeters(stackInSlot);
+                        UtilityCableItemMovingHelper itemMover = new UtilityCableItemMovingHelper((UtilityCableDescriptor) thisCableDesc, cableLength);
+                        itemMover.move(invoker.getInventory(), inv, slot, 0);
+                    } else {
                         (new ItemMovingHelper() {
                             @Override
                             public boolean acceptsStack(ItemStack stack) {
@@ -97,8 +105,12 @@ public class ConfigCopyToolDescriptor extends GenericItemUsingDamageDescriptor {
             if (type != -1) {
                 GenericItemBlockUsingDamageDescriptor cableDesc = Eln.sixNodeItem.getDescriptor(type);
                 if (cableDesc != null) {
-                    // PORT: utility cable spools move by length (UtilityCableItemMovingHelper) once ported.
-                    {
+                    if (cableDesc instanceof UtilityCableDescriptor) {
+                        double cableLength = IUtilityCableInventory.DEFAULT_REQUIRED_LENGTH;
+                        if (compound.contains(name + "Length")) cableLength = compound.getDouble(name + "Length");
+                        UtilityCableItemMovingHelper itemMover = new UtilityCableItemMovingHelper((UtilityCableDescriptor) cableDesc, cableLength);
+                        itemMover.move(invoker.getInventory(), inv, slot, amt);
+                    } else {
                         (new ItemMovingHelper() {
                             @Override
                             public boolean acceptsStack(ItemStack stack) {
@@ -131,7 +143,9 @@ public class ConfigCopyToolDescriptor extends GenericItemUsingDamageDescriptor {
         if(desc != null) {
             Eln.logger.info("CCT Copy: " + name + "Type: " + desc.parentItemDamage);
             compound.putInt(name + "Type", desc.parentItemDamage);
-            // PORT: utility cable spools also store their length here once ported.
+            if (desc instanceof UtilityCableDescriptor) {
+                compound.putDouble(name + "Length", ((UtilityCableDescriptor) desc).getRemainingLengthMeters(stack));
+            }
         } else {
             Eln.logger.info("CCT Copy: " + name + "Type: -1");
             compound.putInt(name + "Type", -1);

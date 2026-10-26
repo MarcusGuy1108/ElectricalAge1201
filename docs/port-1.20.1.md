@@ -68,13 +68,18 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      tab, simulation (GameTest feeds 10 V through two placed cables), drop when the support block goes, save/load.
    * [x] GUI layer, Electrical Source, lamp sockets (all but the streetlight and emergency lamps), light bulbs and the
      light block. A GameTest lights a 12 V lamp from a placed source through a cable; in game the source voltage is
-     set in its GUI and the socket takes its bulb and cable through its GUI. Lamp supplies are not ported, so sockets
-     must be switched to "Powered by cable".
+     set in its GUI and the socket takes its bulb and cable through its GUI.
    * [x] Transparent-node framework (full-block machines), the seven batteries with their GUI, and the creative
      Ground Cable. Batteries float as in 1.7.10, so a lamp powered from one needs the negative terminal grounded; a
      GameTest and an in-game check light a 12 V lamp that way. Hopper/pipe access to machine inventories, custom
      collision boxes, multiblock ghost blocks and the fluid block entity are not ported yet.
 6. [ ] Six-node blocks, transparent-node machines and the remaining content, family by family.
+   * [x] Meters, wrench, config copy tool, brushes and the basic material items (ingots, dusts, plates, chips).
+   * [x] Switches, relays, signal sources, wireless signals, passive components (resistors, diodes, capacitors,
+     inductors) and lamp supplies; lamp sockets default to "Powered by lamp supply" again.
+   * [x] Utility cables (copper/aluminium, single and multi-conductor, with length-tracked spools), current cables,
+     current relays and molten metal piles. As in 1.7.10 the classic voltage cables are hidden from the creative tab
+     but stay loadable. A GameTest lights a lamp through a utility cable. Wire scrap and ghost blocks are not ported.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
 
 ## References

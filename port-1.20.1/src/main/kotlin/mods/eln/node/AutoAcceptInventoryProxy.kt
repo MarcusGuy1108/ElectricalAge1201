@@ -1,5 +1,7 @@
 package mods.eln.node
 
+import mods.eln.sixnode.electricalcable.UtilityCableDescriptor
+import mods.eln.sixnode.electricalcable.IUtilityCableInventory
 import mods.eln.compat.*
 import mods.eln.generic.GenericItemBlockUsingDamageDescriptor
 import mods.eln.generic.GenericItemUsingDamageDescriptor
@@ -44,7 +46,9 @@ class AutoAcceptInventoryProxy(val inventory: Container) {
 
                     GenericItemBlockUsingDamageDescriptor.getDescriptor(itemStack)?.let { desc ->
                         if (acceptedItems.any { it.isAssignableFrom(desc.javaClass) }) {
-                            // PORT: UtilityCableDescriptor length trimming (IUtilityCableInventory.trimCable) returns with utility cables.
+                            if (desc is UtilityCableDescriptor) {
+                                return IUtilityCableInventory.trimCable(itemStack, inventory, index, creativeFreeInsert)
+                            }
                             if (!creativeFreeInsert) itemStack.stackSize -= 1
                             inventory.setInventorySlotContents(index, desc.newItemStack())
                             return true

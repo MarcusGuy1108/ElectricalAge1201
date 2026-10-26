@@ -1,5 +1,6 @@
 package mods.eln.node.transparent
 
+import mods.eln.sixnode.electricalcable.IUtilityCableInventory
 import mods.eln.misc.INBTTReady
 import mods.eln.misc.Utils.readFromNBT
 import mods.eln.misc.Utils.writeToNBT
@@ -12,15 +13,14 @@ import net.minecraft.world.item.ItemStack
  * Inventory of a transparent node element. 1.7.10 implemented ISidedInventory by hand; 1.20.1's SimpleContainer
  * covers the slot handling. The side access methods stay so machines keep overriding them.
  */
-open class TransparentNodeElementInventory : SimpleContainer, INBTTReady {
+open class TransparentNodeElementInventory : SimpleContainer, INBTTReady, IUtilityCableInventory {
     @JvmField
     protected var transparentNodeRender: TransparentNodeElementRender? = null
     @JvmField
     protected var transparentNodeElement: TransparentNodeElement? = null
     var stackLimit: Int
 
-    // PORT: this was IUtilityCableInventory.requiredCableLength; the interface returns with the utility cables.
-    var requiredCableLength = DEFAULT_REQUIRED_LENGTH
+    override var requiredCableLength = DEFAULT_REQUIRED_LENGTH
 
     constructor(size: Int, stackLimit: Int, transparentNodeRender: TransparentNodeElementRender?) : super(size) {
         this.stackLimit = stackLimit
@@ -87,6 +87,6 @@ open class TransparentNodeElementInventory : SimpleContainer, INBTTReady {
     }
 
     companion object {
-        const val DEFAULT_REQUIRED_LENGTH = 1.0
+        const val DEFAULT_REQUIRED_LENGTH = IUtilityCableInventory.DEFAULT_REQUIRED_LENGTH
     }
 }

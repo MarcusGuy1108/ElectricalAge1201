@@ -4,9 +4,12 @@ import mods.eln.gui.ISlotSkin
 import mods.eln.i18n.I18N
 import mods.eln.misc.Utils
 import mods.eln.node.six.SixNodeItemSlot
+import mods.eln.sixnode.currentcable.CurrentCableDescriptor
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.electricalcable.UtilityCableDescriptor
 import net.minecraft.world.Container
 import net.minecraft.world.item.ItemStack
+import kotlin.math.abs
 
 /**
  * This class should be used going forward for all devices which accept cables in their inventory. It provides the
@@ -23,9 +26,8 @@ class CableItemSlot(
     val expectedCableLength: Double,
     comment: Array<String> = arrayOf(I18N.tr("Cable slot"))
 ) : SixNodeItemSlot(
-    // PORT: current cables and utility cable spools are accepted again once they are ported.
     inventory, slot, x, y, stackLimit, arrayOf(
-        ElectricalCableDescriptor::class.java
+        ElectricalCableDescriptor::class.java, CurrentCableDescriptor::class.java, UtilityCableDescriptor::class.java
     ), ISlotSkin.SlotSkin.medium, comment
 ) {
 
@@ -33,7 +35,9 @@ class CableItemSlot(
         if (!super.isItemValid(itemStack)) return false
 
         return when (val cableDescriptor = Utils.getItemObject(itemStack)) {
+            is UtilityCableDescriptor -> abs(cableDescriptor.getRemainingLengthMeters(itemStack) - expectedCableLength) < UtilityCableDescriptor.LENGTH_METERS_EPSILON
             is ElectricalCableDescriptor -> !(cableDescriptor.signalWire && !acceptSignalCable)
+            is CurrentCableDescriptor -> true
             else -> false
         }
     }

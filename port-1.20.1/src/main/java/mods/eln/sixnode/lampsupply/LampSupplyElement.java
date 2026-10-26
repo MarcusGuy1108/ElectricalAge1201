@@ -24,6 +24,7 @@ import mods.eln.sim.mna.misc.MnaConst;
 import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.sim.process.destruct.VoltageStateWatchDog;
 import mods.eln.sim.process.destruct.WorldExplosion;
+import mods.eln.sixnode.currentcable.CurrentCableDescriptor;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import mods.eln.sixnode.wirelesssignal.IWirelessSignalSpot;
@@ -73,7 +74,7 @@ public class LampSupplyElement extends SixNodeElement implements IConfigurable {
     // Java reports the Kotlin vararg of descriptor classes as an unchecked array creation here.
     @SuppressWarnings("unchecked")
     private final AutoAcceptInventoryProxy inventoryProxy = (new AutoAcceptInventoryProxy(inventory))
-        .acceptIfEmpty(0, ElectricalCableDescriptor.class); // PORT: and CurrentCableDescriptor once ported.
+        .acceptIfEmpty(0, ElectricalCableDescriptor.class, CurrentCableDescriptor.class);
 
     static class Entry {
         Entry(String powerChannel, String wirelessChannel, int aggregator) {
@@ -279,8 +280,9 @@ public class LampSupplyElement extends SixNodeElement implements IConfigurable {
         // Spool length check and trimming are handled in AutoAcceptInventoryProxy
         if (desc instanceof ElectricalCableDescriptor) {
             takeItem = !((ElectricalCableDescriptor) desc).signalWire;
+        } else if (desc instanceof CurrentCableDescriptor) {
+            takeItem = true;
         }
-        // PORT: current cables are accepted here again once CurrentCableDescriptor is ported.
 
         if (takeItem) {
             return inventoryProxy.take(playerEquippedItem, this, false, true);

@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.item.BrushDescriptor
 import mods.eln.Eln
 import mods.eln.Eln.instance
 import mods.eln.generic.GenericItemUsingDamageDescriptor
@@ -77,7 +78,7 @@ object ItemRegistration {
         registerTreeResinAndRubber(64)
         registerRawCable(65)
         registerArc(69)
-        // PORT: registerBrush(119)
+        registerBrush(119)
         registerMiscItem(120)
         // PORT: registerElectricalTool(121)
         // PORT: registerPortableItem(122)
@@ -972,6 +973,53 @@ object ItemRegistration {
             name = I18N.TR_NAME(I18N.Type.NONE, "Canister of Arc Water")
             val descriptor = GenericItemUsingDamageDescriptor(name)
             Eln.sharedItem.addElement(completId, descriptor)
+        }
+    }
+
+    private fun registerBrush(id: Int) {
+        var subId: Int
+
+        var name: String
+        val subNames = arrayOf(
+            I18N.TR_NAME(I18N.Type.NONE, "Black Brush"),
+            I18N.TR_NAME(I18N.Type.NONE, "Red Brush"),
+            I18N.TR_NAME(
+                I18N.Type.NONE,
+                "Green Brush"
+            ),
+            I18N.TR_NAME(I18N.Type.NONE, "Brown Brush"),
+            I18N.TR_NAME(I18N.Type.NONE, "Blue Brush"),
+            I18N.TR_NAME(
+                I18N.Type.NONE,
+                "Purple Brush"
+            ),
+            I18N.TR_NAME(I18N.Type.NONE, "Cyan Brush"),
+            I18N.TR_NAME(I18N.Type.NONE, "Silver Brush"),
+            I18N.TR_NAME(
+                I18N.Type.NONE,
+                "Gray Brush"
+            ),
+            I18N.TR_NAME(I18N.Type.NONE, "Pink Brush"),
+            I18N.TR_NAME(I18N.Type.NONE, "Lime Brush"),
+            I18N.TR_NAME(
+                I18N.Type.NONE, "Yellow" +
+                        " Brush"
+            ),
+            I18N.TR_NAME(I18N.Type.NONE, "Light Blue Brush"),
+            I18N.TR_NAME(I18N.Type.NONE, "Magenta Brush"),
+            I18N.TR_NAME(
+                I18N.Type.NONE,
+                "Orange Brush"
+            ),
+            I18N.TR_NAME(I18N.Type.NONE, "White Brush")
+        )
+        for (idx in 0..15) {
+            subId = idx
+            name = subNames[idx]
+            val desc = BrushDescriptor(name)
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+            Eln.whiteDesc = desc
+            Eln.brushSubNames = subNames.toList()
         }
     }
 

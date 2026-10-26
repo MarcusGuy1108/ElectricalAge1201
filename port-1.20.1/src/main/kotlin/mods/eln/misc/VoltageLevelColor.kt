@@ -1,5 +1,6 @@
 package mods.eln.misc
 
+import mods.eln.sixnode.currentcable.CurrentCableDescriptor
 import mods.eln.Eln
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.client.GL11
@@ -64,6 +65,13 @@ enum class VoltageLevelColor(private val voltageLevel: String?) {
             }
         }
 
-        // PORT: fromCable(CurrentCableDescriptor) returns with mods.eln.sixnode.currentcable.
+        @JvmStatic
+        fun fromCable(descriptor: CurrentCableDescriptor?): VoltageLevelColor {
+            return if (descriptor != null) {
+                Neutral
+            } else {
+                None
+            }
+        }
     }
 }
