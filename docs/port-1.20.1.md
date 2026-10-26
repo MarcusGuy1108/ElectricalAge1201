@@ -63,7 +63,7 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
    and a save/load round trip. `NodeBlock`/`NodeBlockEntity` are ported (light level is a block state property) but
    first run once a concrete node block is registered in milestone 5. Client-to-server node packets are now rejected
    unless the player is in the node's dimension and within 64 blocks.
-5. [ ] Vertical slice: cable, battery and lamp placed in a world with models, GUI and sync.
+5. [x] Vertical slice: cable, battery and lamp placed in a world with models, GUI and sync.
    * [x] Six-node framework and the classic cables: placeable in game, connected rendering, item icons, creative
      tab, simulation (GameTest feeds 10 V through two placed cables), drop when the support block goes, save/load.
    * [x] GUI layer, Electrical Source, lamp sockets (all but the streetlight and emergency lamps), light bulbs and the
