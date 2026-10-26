@@ -1,4 +1,6 @@
-// 1.20.1	2026-10-26T15:31:53.831333426	Loot Tables
+// 1.20.1	2026-10-26T16:41:59.403972772	Loot Tables
+0099d65dedaf61b73f49ff5e60c2cd387bf8ff19 data/eln/loot_tables/blocks/arc_clay_block.json
+ffffe3b258ec0cb1c5c73ef7c04a78f25991e209 data/eln/loot_tables/blocks/arc_metal_block.json
 2170c6d8242e2739dcd455c79e0359eaedb3d8bc data/eln/loot_tables/blocks/cinnabar_ore.json
 11359e299d92bd1780e39bc53a5007f62f13b45b data/eln/loot_tables/blocks/copper_ore.json
 291da1415e4b2906a98bb7943fd817f29f17e5f2 data/eln/loot_tables/blocks/lead_ore.json

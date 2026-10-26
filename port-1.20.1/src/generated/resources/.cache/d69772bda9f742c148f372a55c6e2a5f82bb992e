@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T15:31:53.844276883	Tags for minecraft:item mod id eln
+// 1.20.1	2026-10-26T16:41:59.413514729	Tags for minecraft:item mod id eln
 b1c2dbaac22ebe066a8de4d98af4e881ddef621f data/eln/tags/items/casing_machine.json
 864234b02478871ab4edcaaf9bbb5976971370f5 data/eln/tags/items/casing_machine_advanced.json
 81d4a44dab12cfc684d9fff1d873edbc21aea006 data/eln/tags/items/circuit_advanced.json
@@ -38,3 +38,6 @@ f0ef06d4846a9e0b80384bccd9cca8a906d47ec6 data/forge/tags/items/plates/gold.json
 35bf23f5b836093d190c34499a26839d82953bd5 data/forge/tags/items/plates/iron.json
 c878309f02ed8719e9c1b955f3d2e5791fda50fc data/forge/tags/items/plates/lead.json
 663df367a4ee8cc025e31b87950547b1ec0b812e data/forge/tags/items/plates/silicon.json
+8c11619d10c0fdfdf82ebdfade6a584245eb9dbf data/forge/tags/items/storage_blocks.json
+abfb9e50b187d7339b48dfd08f429d9c95b83b00 data/forge/tags/items/storage_blocks/aluminum.json
+e21af88f398926fbea4c8f788fd22ac9bc222dd5 data/forge/tags/items/storage_blocks/steel.json

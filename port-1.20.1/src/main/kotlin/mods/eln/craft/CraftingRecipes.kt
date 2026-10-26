@@ -21,6 +21,7 @@ import mods.eln.misc.OreDictionaryTags
 import com.google.gson.JsonObject
 import mods.eln.compat.*
 import mods.eln.Eln
+import mods.eln.block.ArcBlock
 import mods.eln.item.CopperGear
 import mods.eln.i18n.I18N
 import mods.eln.misc.Recipe
@@ -265,7 +266,7 @@ object CraftingRecipes {
 
         recipeECoal()
 
-        // PORT: recipeGridDevices returns with the grid devices (utility poles, transmission towers).
+        recipeGridDevices()
         recipeMaceratorModOres()
         craftBrush()
         // PORT: the December-only Christmas recipes return with the festive items (data recipes cannot check the date).
@@ -961,19 +962,13 @@ object CraftingRecipes {
         )
     }
 
-    private fun recipeGridDevices(oreNames: HashSet<String>) {
-        var poleRecipes = 0
-        for (oreName in arrayOf<String>("ingotAluminum", "ingotAluminium", "ingotSteel")) {
-            if (oreNames.contains(oreName)) {
-                addRecipe(findItemStack("Utility Pole"), "WWW", "IWI", " W ", 'W', "logWood", 'I', oreName)
-                addRecipe(findItemStack("Direct Utility Pole"), "WWW", "IWI", " WI", 'W', "logWood", 'I', oreName)
-                poleRecipes++
-            }
-        }
-        if (poleRecipes == 0) {
-            // Really?
-            addRecipe(findItemStack("Utility Pole"), "WWW", "IWI", " W ", 'I', "ingotIron", 'W', "logWood")
-        }
+    // 1.7.10 checked which of aluminum and steel the ore dictionary held and fell back to iron for the poles; Eln's own
+    // arc clay and arc metal count as aluminum and steel, so the recipes accept either.
+    private fun recipeGridDevices() {
+        val ingot = firstExistingOre("ingotAluminum", "ingotSteel")
+        val block = firstExistingOre("blockAluminum", "blockSteel")
+        addRecipe(findItemStack("Utility Pole"), "WWW", "IWI", " W ", 'W', "logWood", 'I', ingot)
+        addRecipe(findItemStack("Direct Utility Pole"), "WWW", "IWI", " WI", 'W', "logWood", 'I', ingot)
         addRecipe(
             findItemStack("Utility Pole w/DC-DC Converter"), "HHH", " TC", " PH", 'P', findItemStack(
                 "Utility " +
@@ -985,26 +980,20 @@ object CraftingRecipes {
         // I don't care what you think, if your modpack lacks steel then you don't *need* this much power.
         // Or just use the new Arc furnace. Other mod's steel methods are slow and tedious and require huge multiblocks.
         // Feel free to add alternate non-iron recipes, though. Here, or by minetweaker.
-        for (type in arrayOf<String>("Aluminum", "Aluminium", "Steel")) {
-            val blockType = "block$type"
-            val ingotType = "ingot$type"
-            if (oreNames.contains(blockType)) {
-                addRecipe(
-                    findItemStack("Transmission Tower"), "ii ", "mi ", " B ", 'i', ingotType, 'B', blockType,
-                    'm', findItemStack("Machine Block")
-                )
-                addRecipe(
-                    findItemStack("Grid DC-DC Converter"), "i i", "mtm", "imi", 'i', ingotType, 't',
-                    findItemStack("DC-DC Converter"), 'm', findItemStack("Advanced Machine Block")
-                )
-                addRecipe(
-                    findItemStack("Grid Switch"), "AGA", "MRM", "AGA", 'A', ingotType, 'G', findItemStack(
-                        "Gold" +
-                                " Plate"
-                    ), 'M', findItemStack("Advanced Electrical Motor"), 'R', findItemStack("Rubber")
-                )
-            }
-        }
+        addRecipe(
+            findItemStack("Transmission Tower"), "ii ", "mi ", " B ", 'i', ingot, 'B', block,
+            'm', findItemStack("Machine Block")
+        )
+        addRecipe(
+            findItemStack("Grid DC-DC Converter"), "i i", "mtm", "imi", 'i', ingot, 't',
+            findItemStack("DC-DC Converter"), 'm', findItemStack("Advanced Machine Block")
+        )
+        addRecipe(
+            findItemStack("Grid Switch"), "AGA", "MRM", "AGA", 'A', ingot, 'G', findItemStack(
+                "Gold" +
+                        " Plate"
+            ), 'M', findItemStack("Advanced Electrical Motor"), 'R', findItemStack("Rubber")
+        )
     }
 
     private fun recipeElectricalFurnace() {
@@ -1518,7 +1507,10 @@ object CraftingRecipes {
             findItemStack("Creative Cable", 1), "I", "S", 'S', findItemStack("unreleasedium"), 'I',
             findItemStack("Synthetic Diamond")
         )
-        // PORT: the arc clay and arc metal block recipes return with those blocks.
+        addRecipe(ItemStack(ArcBlock.CLAY.block.get()), "III", "III", "III", 'I', findItemStack("Arc Clay Ingot"))
+        addRecipe(findItemStack("Arc Clay Ingot", 9), "I", 'I', ItemStack(ArcBlock.CLAY.block.get()))
+        addRecipe(ItemStack(ArcBlock.METAL.block.get()), "III", "III", "III", 'I', findItemStack("Arc Metal Ingot"))
+        addRecipe(findItemStack("Arc Metal Ingot", 9), "I", 'I', ItemStack(ArcBlock.METAL.block.get()))
         addRecipe(findItemStack("Graphite Rod", 2), "I", 'I', findItemStack("2x Graphite Rods"))
         addRecipe(findItemStack("Graphite Rod", 3), "I", 'I', findItemStack("3x Graphite Rods"))
         addRecipe(findItemStack("Graphite Rod", 4), "I", 'I', findItemStack("4x Graphite Rods"))

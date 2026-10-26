@@ -1,8 +1,11 @@
-// 1.20.1	2026-10-26T15:31:53.830427336	Tags for minecraft:block mod id eln
+// 1.20.1	2026-10-26T16:41:59.398422579	Tags for minecraft:block mod id eln
 8244645197ca11106dafcf497a03ce9ac93bf80a data/forge/tags/blocks/ores.json
 2b6951f8fd96baa6c173700469c8988bb9beb54b data/forge/tags/blocks/ores/cinnabar.json
 28c605018a975611801fa52feac3f4707a1ecc54 data/forge/tags/blocks/ores/copper.json
 e72492bfd3c828c6078748e561051971b8565211 data/forge/tags/blocks/ores/lead.json
 c4d5e840a138209dffa934f3802ed4e360f264eb data/forge/tags/blocks/ores/tungsten.json
-8244645197ca11106dafcf497a03ce9ac93bf80a data/minecraft/tags/blocks/mineable/pickaxe.json
+8c11619d10c0fdfdf82ebdfade6a584245eb9dbf data/forge/tags/blocks/storage_blocks.json
+abfb9e50b187d7339b48dfd08f429d9c95b83b00 data/forge/tags/blocks/storage_blocks/aluminum.json
+e21af88f398926fbea4c8f788fd22ac9bc222dd5 data/forge/tags/blocks/storage_blocks/steel.json
+fe74190a0bfb1e3a5aaef3ee498e290ac00fd1ae data/minecraft/tags/blocks/mineable/pickaxe.json
 8244645197ca11106dafcf497a03ce9ac93bf80a data/minecraft/tags/blocks/needs_stone_tool.json

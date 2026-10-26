@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": [
+      {
+        "tag": "forge:ingots/aluminum"
+      },
+      {
+        "tag": "forge:ingots/steel"
+      }
+    ],
+    "G": {
+      "item": "eln:gold_plate"
+    },
+    "M": {
+      "item": "eln:advanced_electrical_motor"
+    },
+    "R": {
+      "item": "eln:rubber"
+    }
+  },
+  "pattern": [
+    "AGA",
+    "MRM",
+    "AGA"
+  ],
+  "result": {
+    "item": "eln:grid_switch"
+  },
+  "show_notification": true
+}

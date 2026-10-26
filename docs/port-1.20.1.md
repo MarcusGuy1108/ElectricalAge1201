@@ -118,6 +118,11 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      the chest. Its screen shows the log but not the X-ray ore picture, and the egg incubator is a full block
      instead of half height. The experimental transporter and the thermal heat exchanger (it converts modded fluids
      such as steam, which vanilla 1.20.1 lacks) are not ported.
+   * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
+     converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
+     hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,
+     so the tower, grid converter and switch are craftable with Eln alone. A GameTest links two poles and checks that
+     the link carries voltage and uses up cable.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
    * [x] Ores and world generation: copper, lead, tungsten and cinnabar ore are separate blocks (`eln:<name>_ore`)
      that drop themselves and sit in `forge:ores/<name>`. World generation is data (`ElnWorldGen` writes configured

@@ -8,6 +8,9 @@ import mods.eln.mechanical.GasTurbineDescriptor
 import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.ghost.GhostBlock
 import mods.eln.Eln
+import net.minecraftforge.common.util.FakePlayerFactory
+import net.minecraft.world.InteractionHand
+import mods.eln.gridnode.electricalpole.ElectricalPoleElement
 import net.minecraft.world.item.Items
 import net.minecraft.world.Container
 import mods.eln.transparentnode.autominer.AutoMinerElement
@@ -122,6 +125,32 @@ object TransparentNodeGameTests {
         helper.succeedWhen {
             val chest = helper.level.getBlockEntity(output.blockPos) as Container
             helper.assertTrue((0 until chest.containerSize).any { chest.getItem(it).`is`(Items.COBBLESTONE) }, "no cobblestone in the chest")
+            Eln.simulator.removeElectricalComponent(source)
+        }
+    }
+
+    // Right-clicking two utility poles with very high voltage cable links them; the link carries power and uses up
+    // one cable per block of distance.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun utilityPolesLinkWithCable(helper: GameTestHelper) {
+        val poles = listOf(BlockPos(0, 1, 0), BlockPos(2, 1, 2)).map { pos ->
+            val stack = Eln.findItemStack("Utility Pole", 1)
+            helper.setBlock(pos.below(), Blocks.STONE)
+            helper.assertTrue((stack.item as TransparentNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(pos), Direction.YP), "pole not placed at $pos")
+            ((helper.level.getBlockEntity(helper.absolutePos(pos)) as TransparentNodeEntity).node as TransparentNode).element as ElectricalPoleElement
+        }
+        val player = FakePlayerFactory.getMinecraft(helper.level)
+        player.setItemInHand(InteractionHand.MAIN_HAND, Eln.veryHighVoltageCableDescriptor.newItemStack(16))
+        for (pole in poles) pole.onBlockActivated(player, Direction.YP, 0f, 0f, 0f)
+        helper.assertTrue(poles[0].gridLinkList.size == 1, "poles not linked")
+        helper.assertTrue(player.mainHandItem.count == 13, "${player.mainHandItem.count} cables left, expected 13")
+        // No load on the far pole: a resistor to ground straight on a pole's line-simplified load is not a circuit the
+        // solver's line folding handles, and an open link shows the source voltage anyway.
+        val source = VoltageSource("source", poles[0].electricalLoad, null).setVoltage(1000.0)
+        Eln.simulator.addElectricalComponent(source)
+        helper.succeedWhen {
+            helper.assertTrue(poles[1].electricalLoad.voltage > 990.0, "far pole at ${poles[1].electricalLoad.voltage} V")
             Eln.simulator.removeElectricalComponent(source)
         }
     }

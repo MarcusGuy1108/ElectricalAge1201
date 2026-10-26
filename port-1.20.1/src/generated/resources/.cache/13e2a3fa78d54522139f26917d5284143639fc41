@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T16:18:51.909348135	Item Models: eln
+// 1.20.1	2026-10-26T16:41:59.410794859	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -137,7 +137,9 @@ a58f142d439ec7574d53c2a02829cff5ca253f20 assets/eln/models/item/analog_vumeter.j
 9576636f0b21f7dff8b20b88117dd63e3b7aa5e0 assets/eln/models/item/analogic_regulator.json
 42048f8a75f91efc5821ffc01807db9fbcf16657 assets/eln/models/item/and_chip.json
 09df7a17037b83d02813bf684d77016bde55ae5f assets/eln/models/item/animal_filter.json
+df25ff6c5d32ad5060413325e58105be86a993fb assets/eln/models/item/arc_clay_block.json
 51474ab5f455fd6d98fc4eefebf3b28e8954c4aa assets/eln/models/item/arc_clay_ingot.json
+e124037cf64a28313b60ec4d7c2ac7a57a540e0a assets/eln/models/item/arc_metal_block.json
 a6c1e4b7c825c6da54d228aa45c47850e07a2545 assets/eln/models/item/arc_metal_ingot.json
 245eda229100d694e3aae6411a9c9ed749623da4 assets/eln/models/item/arithmetic_logic_unit.json
 7f996096126c4f4635dba49739bd2bba445c30a1 assets/eln/models/item/auto_miner.json
@@ -317,6 +319,7 @@ b746c93fe90ff391c96377bce84477608a92f2c9 assets/eln/models/item/dc_dc_converter.
 2d9d17fcdea5e5dcdcfba75c0f3b08f0f36e27ec assets/eln/models/item/dielectric.json
 0f109d84a5316e28e536c854b2e998c16f65ffff assets/eln/models/item/digital_display.json
 80fa063977d1586f02a1489a39099482b6827e05 assets/eln/models/item/digital_watch.json
+a163c9ce1e63e428f3fa804b66e491b455f18540 assets/eln/models/item/direct_utility_pole.json
 29de2018795a4615e5d114e26bc724a42d9e7e84 assets/eln/models/item/electrical_anemometer_sensor.json
 1f3194728634947e67fac7632176816241ae5489 assets/eln/models/item/electrical_daylight_sensor.json
 08c9852e9013e9ca35433d7596bb5fbc82968c55 assets/eln/models/item/electrical_entity_sensor.json
@@ -348,6 +351,8 @@ e050a8589dbf097c978d9900e6d38bc925a887b0 assets/eln/models/item/gold_plate.json
 62d1d8ad03cc2866985683ba90a1377a7657ab82 assets/eln/models/item/graphite_rod.json
 dc958e43bd1f9cb25bebe4bdfab559c438256ab9 assets/eln/models/item/gray_brush.json
 cd654aabd733359d1128f6b3710f9cbdc327f764 assets/eln/models/item/green_brush.json
+cb621a1806f6c0a23d42fcfd08a45983e1b41a53 assets/eln/models/item/grid_dc_dc_converter.json
+a163c9ce1e63e428f3fa804b66e491b455f18540 assets/eln/models/item/grid_switch.json
 2e3c8843aca614dc9134e71f540f2de65c1a8b26 assets/eln/models/item/ground_cable.json
 a17cf402236ddd890f4ff852f328ad56045c0df3 assets/eln/models/item/heavy_winding.json
 f6ea4bc4b0429c71b70631ff62c7ffd2ab1e609b assets/eln/models/item/high_current_cable.json
@@ -524,6 +529,7 @@ f86f6444977cc28ee09135b661915bdae80c3660 assets/eln/models/item/tachometer.json
 3368384b5b73ab45bcf2edd1dff468e256e2ecb2 assets/eln/models/item/thermometer.json
 99cf1da62d4dfab6e597ec5c5ffda4d0a34144bb assets/eln/models/item/thermometer_sensor.json
 50b141b139140cf5f322468c8e4066a196971cb3 assets/eln/models/item/transistor.json
+2d630176ae04b4cf9b6c4072a3d1d5cb711ab43a assets/eln/models/item/transmission_tower.json
 0c36b48fe14d4023a308d8519a6fb7da2b0ce433 assets/eln/models/item/tree_resin.json
 1dd112acdc1d871136afeb0772142de989de111a assets/eln/models/item/tree_resin_collector.json
 0cd921978a368d5d2d7791cd09bd2a8f9ed3fe42 assets/eln/models/item/tungsten_cable.json
@@ -535,6 +541,8 @@ fba8fc3e18467337e77a4b67be77b87aefc08451 assets/eln/models/item/tungsten_turbine
 6b150e7c724199c75b12ee4344fb0f82195f734d assets/eln/models/item/turbo_electrical_drill.json
 a4279b17bd35430ac22cbc426264da085f874eb4 assets/eln/models/item/tutorial_sign.json
 4eb0d0401c45ffec7c6ee2e4778539bd9c2f8f18 assets/eln/models/item/unreleasedium.json
+ec9cf9b931d087c246435de25233386841313928 assets/eln/models/item/utility_pole.json
+a163c9ce1e63e428f3fa804b66e491b455f18540 assets/eln/models/item/utility_pole_w_dc_dc_converter.json
 69b0276da72c05578f31b3af1c7907ab989cb040 assets/eln/models/item/variable_dc_dc_converter.json
 a2ab0b6595de5594edc21861bb81165edd9a8b2d assets/eln/models/item/variable_inductor.json
 339f29569bba163e389fc63c38c3317da5e5ea2f assets/eln/models/item/very_high_voltage_cable.json

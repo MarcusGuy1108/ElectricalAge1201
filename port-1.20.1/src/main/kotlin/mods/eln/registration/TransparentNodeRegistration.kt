@@ -1,5 +1,11 @@
 package mods.eln.registration
 
+import mods.eln.generic.GenericItemBlockUsingDamageDescriptor
+import mods.eln.gridnode.GridSwitchDescriptor
+import mods.eln.gridnode.electricalpole.ElectricalPoleDescriptor
+import mods.eln.gridnode.electricalpole.Kind
+import mods.eln.gridnode.transformer.GridTransformerDescriptor
+import net.minecraft.world.phys.Vec3
 import mods.eln.transparentnode.autominer.AutoMinerDescriptor
 import mods.eln.transparentnode.eggincubator.EggIncubatorDescriptor
 import mods.eln.transparentnode.electricalantennarx.ElectricalAntennaRxDescriptor
@@ -63,6 +69,10 @@ object TransparentNodeRegistration {
             }
         }
         return g
+    }
+
+    private fun <T : GenericItemBlockUsingDamageDescriptor> T.powerDistribution() = apply {
+        creativeTab = Eln.creativeTabPowerDistribution
     }
 
     private fun <T : SimpleShaftDescriptor> T.applyLargeMachineLayout(): T {
@@ -135,7 +145,7 @@ object TransparentNodeRegistration {
         // PORT: registerWireProcessingMachines(72)
         registerLargeRheostat() // 96, but from the wrong side.
         registerNixieTube() // 117, but from the wrong side.
-        // PORT: registerGridDevices(123)
+        registerGridDevices(123)
     }
 
     private fun registerBattery(id: Int) {
@@ -1280,6 +1290,120 @@ object TransparentNodeRegistration {
             val name = I18N.TR_NAME(I18N.Type.NONE, "Nixie Tube")
             val desc = NixieTubeDescriptor(name, Eln.obj.getObj("NixieTube"))
             Eln.transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerGridDevices(id: Int) {
+        var subId: Int
+        run {
+            subId = 3
+            val descriptor = GridTransformerDescriptor(
+                TR_NAME(I18N.Type.NONE, "Grid DC-DC Converter"), Eln.obj.getObj(
+                    "GridConverter"
+                ), "textures/wire.png", instance.veryHighVoltageCableDescriptor
+            ).powerDistribution()
+            val g = GhostGroup()
+            g.addElement(1, 0, 0)
+            g.addElement(0, 0, -1)
+            g.addElement(1, 0, -1)
+            g.addElement(1, 1, 0)
+            g.addElement(0, 1, 0)
+            g.addElement(1, 1, -1)
+            g.addElement(0, 1, -1)
+            descriptor.ghostGroup = g
+            transparentNodeItem.addDescriptor(subId + (id shl 6), descriptor)
+        }
+        run {
+            subId = 4
+            val descriptor = ElectricalPoleDescriptor(
+                TR_NAME(I18N.Type.NONE, "Utility Pole"),
+                Eln.obj.getObj(
+                    "UtilityPole"
+                ),
+                "textures/wire.png",
+                instance.veryHighVoltageCableDescriptor,
+                Kind.OVERHEAD,
+                40,
+                51200.0
+            ).powerDistribution()
+            descriptor.renderOffset = Vec3(0.0, -0.1, 0.0)
+            val g = GhostGroup()
+            g.addElement(0, 1, 0)
+            g.addElement(0, 2, 0)
+            g.addElement(0, 3, 0)
+            descriptor.ghostGroup = g
+            transparentNodeItem.addDescriptor(subId + (id shl 6), descriptor)
+        }
+        run {
+            subId = 5
+            val descriptor = ElectricalPoleDescriptor(
+                TR_NAME(I18N.Type.NONE, "Utility Pole w/DC-DC Converter"),
+                Eln.obj.getObj("UtilityPole"),
+                "textures/wire.png",
+                instance.veryHighVoltageCableDescriptor,
+                Kind.TRANSFORMER_TO_GROUND,
+                40,
+                51200.0
+            ).powerDistribution()
+            val g = GhostGroup()
+            g.addElement(0, 1, 0)
+            g.addElement(0, 2, 0)
+            g.addElement(0, 3, 0)
+            descriptor.ghostGroup = g
+            transparentNodeItem.addDescriptor(subId + (id shl 6), descriptor)
+        }
+        run {
+            subId = 6
+            val descriptor = ElectricalPoleDescriptor(
+                TR_NAME(I18N.Type.NONE, "Transmission Tower"),
+                Eln.obj.getObj(
+                    "TransmissionTower"
+                ),
+                "textures/wire.png",
+                instance.veryHighVoltageCableDescriptor,
+                Kind.OVERHEAD,
+                96,
+                51200.0
+            ).powerDistribution()
+            val g = GhostGroup()
+            g.addRectangle(-1, 1, 0, 0, -1, 1)
+            g.addRectangle(0, 0, 1, 8, 0, 0)
+            g.removeElement(0, 0, 0)
+            descriptor.ghostGroup = g
+            transparentNodeItem.addDescriptor(subId + (id shl 6), descriptor)
+        }
+        run {
+            subId = 7
+            val descriptor = ElectricalPoleDescriptor(
+                TR_NAME(I18N.Type.NONE, "Direct Utility Pole"),
+                Eln.obj.getObj(
+                    "UtilityPole"
+                ),
+                "textures/wire.png",
+                instance.veryHighVoltageCableDescriptor,
+                Kind.SHUNT_TO_GROUND,
+                40,
+                51200.0
+            ).powerDistribution()
+            val g = GhostGroup()
+            g.addElement(0, 1, 0)
+            g.addElement(0, 2, 0)
+            g.addElement(0, 3, 0)
+            descriptor.ghostGroup = g
+            transparentNodeItem.addDescriptor(subId + (id shl 6), descriptor)
+        }
+        run {
+            subId = 8
+            val name = TR_NAME(I18N.Type.NONE, "Grid Switch")
+            val desc = GridSwitchDescriptor(name).powerDistribution()
+            val g = GhostGroup()
+            g.addRectangle(-1, 1, 0, 4, -2, 2)
+            g.removeRectangle(-1, -1, 2, 4, -1, 1)
+            g.removeRectangle(1, 1, 2, 4, -1, 1)
+            g.removeRectangle(0, 0, 1, 4, -2, 2)
+            g.removeElement(0, 0, 0)
+            desc.ghostGroup = g
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
     }
 }

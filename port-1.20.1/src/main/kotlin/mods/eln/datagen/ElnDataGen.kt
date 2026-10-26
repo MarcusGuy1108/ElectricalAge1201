@@ -6,6 +6,7 @@ import net.minecraft.data.recipes.RecipeProvider
 import mods.eln.craft.CraftingRecipes
 import net.minecraftforge.common.Tags
 import net.minecraft.tags.BlockTags
+import mods.eln.block.ArcBlock
 import mods.eln.item.CopperGear
 import mods.eln.ore.ElnOre
 import mods.eln.ghost.GhostBlock
@@ -80,6 +81,7 @@ class ElnItemModels(output: PackOutput, files: ExistingFileHelper) : ItemModelPr
         }
         // The block models come from ElnBlockStates in the same run, so they cannot be checked for yet.
         for (ore in ElnOre.values()) getBuilder(ore.id).parent(ModelFile.UncheckedModelFile(modLoc("block/" + ore.id)))
+        for (arc in ArcBlock.values()) getBuilder(arc.id).parent(ModelFile.UncheckedModelFile(modLoc("block/" + arc.id)))
         for (id in CopperGear.ids) {
             withExistingParent(id, mcLoc(if (id in CopperGear.tools) "item/handheld" else "item/generated")).texture("layer0", modLoc("items/$id"))
         }
@@ -130,6 +132,7 @@ class ElnBlockStates(output: PackOutput, files: ExistingFileHelper) : BlockState
         simpleBlock(LightBlock.BLOCK.get(), models().getBuilder("light").texture("particle", mcLoc("block/glass")))
         simpleBlock(GhostBlock.BLOCK.get(), models().getBuilder("ghost").texture("particle", mcLoc("block/iron_block")))
         for (ore in ElnOre.values()) simpleBlock(ore.block.get(), models().cubeAll(ore.id, modLoc("blocks/" + ore.texture)))
+        for (arc in ArcBlock.values()) simpleBlock(arc.block.get(), models().cubeAll(arc.id, modLoc("blocks/" + arc.id)))
     }
 }
 
@@ -142,6 +145,11 @@ class ElnBlockTags(output: PackOutput, lookup: CompletableFuture<HolderLookup.Pr
             tag(BlockTags.NEEDS_STONE_TOOL).add(block)
             tag(Tags.Blocks.ORES).add(block)
             tag(BlockTags.create(ResourceLocation("forge", "ores/" + ore.material))).add(block)
+        }
+        for (arc in ArcBlock.values()) {
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(arc.block.get())
+            tag(Tags.Blocks.STORAGE_BLOCKS).add(arc.block.get())
+            tag(BlockTags.create(ResourceLocation("forge", "storage_blocks/" + arc.material))).add(arc.block.get())
         }
     }
 }
@@ -161,6 +169,10 @@ class ElnItemTags(
         copy(Tags.Blocks.ORES, Tags.Items.ORES)
         for (ore in ElnOre.values()) {
             copy(BlockTags.create(ResourceLocation("forge", "ores/" + ore.material)), ItemTags.create(ResourceLocation("forge", "ores/" + ore.material)))
+        }
+        copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS)
+        for (arc in ArcBlock.values()) {
+            copy(BlockTags.create(ResourceLocation("forge", "storage_blocks/" + arc.material)), ItemTags.create(ResourceLocation("forge", "storage_blocks/" + arc.material)))
         }
     }
 }

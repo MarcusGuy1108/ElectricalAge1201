@@ -3,6 +3,8 @@
     "eln:copper_ore",
     "eln:lead_ore",
     "eln:tungsten_ore",
-    "eln:cinnabar_ore"
+    "eln:cinnabar_ore",
+    "eln:arc_clay_block",
+    "eln:arc_metal_block"
   ]
 }

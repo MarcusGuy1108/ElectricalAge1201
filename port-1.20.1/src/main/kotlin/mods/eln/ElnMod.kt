@@ -4,6 +4,7 @@ import mods.eln.item.electricalinterface.ItemEnergyInventoryProcess
 import mods.eln.craft.CraftingRecipes
 import mods.eln.ore.ElnOre
 import mods.eln.item.CopperGear
+import mods.eln.block.ArcBlock
 import net.minecraft.world.item.Item
 import mods.eln.generic.GenericItem
 import mods.eln.ghost.GhostBlock
@@ -62,6 +63,7 @@ object ElnMod {
         GhostBlock.BLOCK
         ElnOre.register(MOD_BUS)
         CopperGear.register()
+        ArcBlock.register()
         Eln.obj.loadAllElnModels()
         LampLists.translateLampTypes() // Lamp sockets list the translated lamp types, so before registration.
         // Same order as 1.7.10: items such as heating corps refer to the cable descriptors.

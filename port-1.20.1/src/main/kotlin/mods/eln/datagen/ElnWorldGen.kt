@@ -1,6 +1,7 @@
 package mods.eln.datagen
 
 import mods.eln.Eln
+import mods.eln.block.ArcBlock
 import mods.eln.ore.ConfigEnabledPlacement
 import mods.eln.ore.ElnOre
 import net.minecraft.core.HolderLookup
@@ -93,13 +94,15 @@ class ElnWorldGen(output: PackOutput, lookup: CompletableFuture<HolderLookup.Pro
     }
 }
 
-/** Ore blocks drop themselves, as in 1.7.10 (smelting or macerating them is the processing step). */
+/** Ore and arc blocks drop themselves, as in 1.7.10 (smelting or macerating ores is the processing step). */
 class ElnBlockLoot : BlockLootSubProvider(emptySet(), FeatureFlags.REGISTRY.allFlags()) {
+    private val blocks get() = ElnOre.values().map { it.block.get() } + ArcBlock.values().map { it.block.get() }
+
     override fun generate() {
-        for (ore in ElnOre.values()) dropSelf(ore.block.get())
+        for (block in blocks) dropSelf(block)
     }
 
-    override fun getKnownBlocks(): Iterable<Block> = ElnOre.values().map { it.block.get() }
+    override fun getKnownBlocks(): Iterable<Block> = blocks
 }
 
 fun elnLootTables(output: PackOutput) =
