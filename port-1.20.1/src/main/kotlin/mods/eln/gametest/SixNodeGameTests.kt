@@ -17,6 +17,7 @@ import mods.eln.sixnode.lampsocket.LampSocketContainer
 import mods.eln.sixnode.electricalsource.ElectricalSourceElement
 import mods.eln.node.NodeBlock
 import mods.eln.Eln
+import net.minecraftforge.common.util.FakePlayerFactory
 import mods.eln.misc.Direction
 import mods.eln.node.NodeManager
 import mods.eln.node.six.SixNode
@@ -222,5 +223,25 @@ object SixNodeGameTests {
         helper.succeedWhen {
             helper.assertBlockNotPresent(Eln.sixNodeBlock, BlockPos(1, 1, 1))
         }
+    }
+
+    // Clicking a node with the config copy tool pastes the tool's settings; shift-clicking copies the node's.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun configCopyToolCopiesSettings(helper: GameTestHelper) {
+        val source = placeOnFloor(helper, BlockPos(1, 1, 1), Eln.sixNodeItem.getDescriptor(3 shl 6)!!.newItemStack())
+        val player = FakePlayerFactory.getMinecraft(helper.level)
+        val tool = Eln.configCopyToolElement!!.newItemStack()
+        tool.getOrCreateTag().putDouble("voltage", 50.0)
+        player.setItemInHand(InteractionHand.MAIN_HAND, tool)
+        player.isShiftKeyDown = false
+        source.onBlockActivated(player, Direction.YN, 0f, 0f, 0f)
+        val copy = Eln.configCopyToolElement!!.newItemStack()
+        player.setItemInHand(InteractionHand.MAIN_HAND, copy)
+        player.isShiftKeyDown = true
+        source.onBlockActivated(player, Direction.YN, 0f, 0f, 0f)
+        player.isShiftKeyDown = false
+        helper.assertTrue(copy.tag?.getDouble("voltage") == 50.0, "copied ${copy.tag}")
+        helper.succeed()
     }
 }

@@ -1,5 +1,6 @@
 package mods.eln.node.six
 
+import mods.eln.item.IConfigurable
 import mods.eln.compat.*
 import mods.eln.Eln
 import mods.eln.misc.Direction
@@ -236,7 +237,17 @@ class SixNode : Node() {
         return element.thermoMeterString()
     }
 
-    // PORT: readConfigTool/writeConfigTool (IConfigurable elements) return with the config copy tool.
+    override fun readConfigTool(side: Direction?, tag: CompoundTag?, invoker: Player?): Boolean {
+        val configurable = sideElementList[side!!.int] as? IConfigurable ?: return false
+        configurable.readConfigTool(tag, invoker)
+        return true
+    }
+
+    override fun writeConfigTool(side: Direction?, tag: CompoundTag?, invoker: Player?): Boolean {
+        val configurable = sideElementList[side!!.int] as? IConfigurable ?: return false
+        configurable.writeConfigTool(tag, invoker)
+        return true
+    }
 
 
 

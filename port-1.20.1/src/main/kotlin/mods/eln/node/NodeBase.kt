@@ -6,6 +6,7 @@ import mods.eln.ghost.GhostBlock
 import mods.eln.compat.*
 import mods.eln.gui.ElnMenus
 import mods.eln.Eln
+import mods.eln.sound.SoundCommand
 import mods.eln.misc.Coordinate
 import mods.eln.misc.Direction
 import mods.eln.misc.INBTTReady
@@ -165,7 +166,20 @@ abstract class NodeBase {
                 if (str.isNotEmpty()) addMeterChatMessages(entityPlayer, str)
                 return true
             }
-            // PORT: the config copy tool (readConfigTool/writeConfigTool below) returns with that item.
+            if (Eln.configCopyToolElement?.checkSameItemStack(equipped) == true) {
+                val tag = equipped.getOrCreateTag()
+                var snd = beepError
+                if (entityPlayer.isShiftKeyDown) {
+                    if (writeConfigTool(side, tag, entityPlayer)) snd = beepDownloaded
+                } else {
+                    if (readConfigTool(side, tag, entityPlayer)) {
+                        needPublish()
+                        snd = beepUploaded
+                    }
+                }
+                snd.copy().set(entityPlayer.x, entityPlayer.y, entityPlayer.z, entityPlayer.level()).play()
+                return true
+            }
         }
         if (hasGui(side) && entityPlayer is ServerPlayer) {
             ElnMenus.openNodeGui(entityPlayer, coordinate, side)
@@ -463,7 +477,9 @@ abstract class NodeBase {
             return block === Blocks.REDSTONE_WIRE
         }
 
-        // PORT: beepUploaded/beepDownloaded/beepError return with the sound system and config copy tool.
+        var beepUploaded = SoundCommand("eln:beep_accept_2").smallRange()
+        var beepDownloaded = SoundCommand("eln:beep_accept").smallRange()
+        var beepError = SoundCommand("eln:beep_error").smallRange()
 
         fun tryConnectTwoNode(nodeA: NodeBase, directionA: Direction, lrduA: LRDU, nodeB: NodeBase, directionB: Direction, lrduB: LRDU) {
             val mskA = nodeA.getSideConnectionMask(directionA, lrduA)

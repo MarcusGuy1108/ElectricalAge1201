@@ -1,5 +1,6 @@
 package mods.eln.node.transparent
 
+import mods.eln.item.IConfigurable
 import net.minecraftforge.fluids.capability.IFluidHandler
 import mods.eln.compat.*
 import mods.eln.Eln
@@ -101,7 +102,17 @@ class TransparentNode : Node() {
         return element!!.thermoMeterString(side)
     }
 
-    // PORT: readConfigTool/writeConfigTool (IConfigurable elements) return with the config copy tool.
+    override fun readConfigTool(side: Direction?, tag: CompoundTag?, invoker: Player?): Boolean {
+        val configurable = element as? IConfigurable ?: return false
+        configurable.readConfigTool(tag, invoker)
+        return true
+    }
+
+    override fun writeConfigTool(side: Direction?, tag: CompoundTag?, invoker: Player?): Boolean {
+        val configurable = element as? IConfigurable ?: return false
+        configurable.writeConfigTool(tag, invoker)
+        return true
+    }
 
     val fluidHandler: IFluidHandler?
         get() = element?.getFluidHandler()

@@ -77,6 +77,7 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      hopper. Custom collision boxes are not ported yet.
 6. [ ] Six-node blocks, transparent-node machines and the remaining content, family by family.
    * [x] Meters, wrench, config copy tool, brushes and the basic material items (ingots, dusts, plates, chips).
+     The config copy tool copies a node's settings on shift-click and pastes them on click (GameTest).
    * [x] Switches, relays, signal sources, wireless signals, passive components (resistors, diodes, capacitors,
      inductors) and lamp supplies; lamp sockets default to "Powered by lamp supply" again.
    * [x] Utility cables (copper/aluminium, single and multi-conductor, with length-tracked spools), current cables,
