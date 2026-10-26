@@ -104,6 +104,10 @@ class ElectricalVuMeterDescriptor(name: String, objName: String, var onOffOnly: 
             list.add(tr("Displays the value of a signal."))
     }
 
+    override fun getFrontFromPlace(side: Direction, player: Player): LRDU {
+        return super.getFrontFromPlace(side, player)!!.inverse()
+    }
+
     init {
         this.name = name
         obj = Eln.obj.getObj(objName)

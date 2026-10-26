@@ -1,5 +1,8 @@
 package mods.eln.node.transparent
 
+import net.minecraftforge.common.util.LazyOptional
+import net.minecraftforge.common.capabilities.ForgeCapabilities
+import net.minecraftforge.common.capabilities.Capability
 import mods.eln.Eln
 import mods.eln.cable.CableRenderDescriptor
 import mods.eln.misc.Direction
@@ -18,10 +21,20 @@ import java.io.IOException
 import java.lang.reflect.InvocationTargetException
 
 // PORT: 1.7.10 forwarded ISidedInventory to the element inventory for hoppers and pipes; that returns as a Forge
-// item handler capability. The fluid variant (TransparentNodeEntityWithFluid) returns with fluid capabilities.
+// item handler capability.
 open class TransparentNodeEntity(pos: BlockPos, state: BlockState) :
     NodeBlockEntity(TransparentNodeBlock.ENTITY.get(), pos, state) {
     var elementRender: TransparentNodeElementRender? = null
+
+    // The element's tank, as 1.7.10 TransparentNodeEntityWithFluid exposed it. Server side only, like the node.
+    // shortcut: a fresh LazyOptional per query, never invalidated; cache and invalidate it if a pipe mod holds on to it.
+    override fun <T> getCapability(cap: Capability<T>, side: net.minecraft.core.Direction?): LazyOptional<T> {
+        if (cap == ForgeCapabilities.FLUID_HANDLER) {
+            val handler = (node as? TransparentNode)?.fluidHandler
+            if (handler != null) return LazyOptional.of { handler }.cast()
+        }
+        return super.getCapability(cap, side)
+    }
     var elementRenderId: Short = 0
 
     override fun getCableRender(side: Direction, lrdu: LRDU): CableRenderDescriptor? {

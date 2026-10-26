@@ -1,5 +1,7 @@
 package mods.eln
 
+import mods.eln.misc.RecipesList
+import mods.eln.fluid.FuelRegistry
 import net.minecraftforge.fml.loading.FMLEnvironment
 import mods.eln.ghost.GhostBlock
 import mods.eln.ghost.GhostManager
@@ -169,12 +171,20 @@ object Eln {
     val isDevelopmentRun: Boolean
         @JvmStatic get() = !FMLEnvironment.production
     @JvmField val ghostManager = GhostManager()
+    @JvmField val furnaceList = ArrayList<ItemStack>()
+    @JvmField val maceratorRecipes = RecipesList()
+    @JvmField val compressorRecipes = RecipesList()
+    @JvmField val plateMachineRecipes = RecipesList()
+    @JvmField val arcFurnaceRecipes = RecipesList()
+    @JvmField val magnetiserRecipes = RecipesList()
     val ghostBlock: GhostBlock
         @JvmStatic get() = GhostBlock.BLOCK.get()
     lateinit var transparentNodeItem: GenericItemBlockUsingDamage<TransparentNodeDescriptor>
     val transparentNodeBlock: TransparentNodeBlock
         @JvmStatic get() = TransparentNodeBlock.BLOCK.get()
     lateinit var sharedItem: GenericItemUsingDamage<GenericItemUsingDamageDescriptor>
+    // For items that keep per-stack state in NBT (turbine blades), which must not stack.
+    lateinit var sharedItemStackOne: GenericItemUsingDamage<GenericItemUsingDamageDescriptor>
 
     @JvmField val obj = Obj3DFolder()
 
@@ -228,6 +238,7 @@ object Eln {
         config = JsonConfig(FMLPaths.CONFIGDIR.get().resolve("Eln.cfg").toFile())
         config.loadConfig()
         config.writeExampleFile()
+        FuelRegistry.init(FMLPaths.CONFIGDIR.get().resolve("Eln.cfg").toFile())
         simulator = Simulator(
             0.05,
             1 / config.getDoubleOrElse("simulation.electrical.frequency", 20.0),

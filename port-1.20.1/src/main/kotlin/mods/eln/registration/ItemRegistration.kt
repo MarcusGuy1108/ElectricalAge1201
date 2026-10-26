@@ -1,5 +1,7 @@
 package mods.eln.registration
 
+import mods.eln.mechanical.ClutchPinItem
+import mods.eln.mechanical.ClutchPlateItem
 import mods.eln.item.SolarTrackerDescriptor
 import mods.eln.item.CaseItemDescriptor
 import mods.eln.item.DielectricItem
@@ -88,8 +90,8 @@ object ItemRegistration {
         registerMiscItem(120)
         // PORT: registerElectricalTool(121)
         // PORT: registerPortableItem(122)
-        // PORT: registerFuelBurnerItem(124)
-        // PORT: registerTurbineBladeItems(18)
+        registerFuelBurnerItem(124)
+        registerTurbineBladeItems(18)
         registerBasicItems(126)
         // PORT: registerElectricMinecartItems(127)
         // PORT: registerWireToolItems(123)
@@ -1042,6 +1044,70 @@ object ItemRegistration {
         }
     }
 
+    private fun registerTurbineBladeItems(id: Int) {
+        // sharedItemStackOne and not sharedItem because blades store durability in NBT, stacking would corrupt it.
+        Eln.sharedItemStackOne.addElement(
+            0 + (id shl 6), mods.eln.item.TurbineBladeDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Iron Turbine Blade"),
+                tierName = "iron",
+                temperatureResistance = 0.8,
+                corrosionResistance = 0.8,
+                tierDescription = tr("Suitable for mild, clean fuels")
+            )
+        )
+        Eln.sharedItemStackOne.addElement(
+            1 + (id shl 6), mods.eln.item.TurbineBladeDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Steel Turbine Blade"),
+                tierName = "steel",
+                temperatureResistance = 1.2,
+                corrosionResistance = 1.2,
+                tierDescription = tr("Handles moderate conditions")
+            )
+        )
+        Eln.sharedItemStackOne.addElement(
+            2 + (id shl 6), mods.eln.item.TurbineBladeDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Alloy Turbine Blade"),
+                tierName = "alloy",
+                temperatureResistance = 2.0,
+                corrosionResistance = 2.0,
+                tierDescription = tr("Suitable for most fuel types")
+            )
+        )
+        Eln.sharedItemStackOne.addElement(
+            3 + (id shl 6), mods.eln.item.TurbineBladeDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Tungsten Turbine Blade"),
+                tierName = "tungsten",
+                temperatureResistance = 3.5,
+                corrosionResistance = 3.5,
+                tierDescription = tr("Handles extreme conditions")
+            )
+        )
+    }
+
+    private fun registerFuelBurnerItem(id: Int) {
+        val fuelHeatFurnacePowerFactor = Eln.config.getDoubleOrElse("balance.generators.fuelHeatFurnacePowerFactor", 1.0)
+        Eln.sharedItemStackOne.addElement(
+            0 + (id shl 6), FuelBurnerDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Small Fuel Burner"),
+                5000 * fuelHeatFurnacePowerFactor, 2, 1.6f
+            )
+        )
+        Eln.sharedItemStackOne.addElement(
+            1 + (id shl 6), FuelBurnerDescriptor(
+                I18N.TR_NAME(
+                    I18N.Type.NONE,
+                    "Medium Fuel Burner"
+                ), 10000 * fuelHeatFurnacePowerFactor, 1, 1.4f
+            )
+        )
+        Eln.sharedItemStackOne.addElement(
+            2 + (id shl 6), FuelBurnerDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "Big Fuel Burner"),
+                25000 * fuelHeatFurnacePowerFactor, 0, 1f
+            )
+        )
+    }
+
     private fun registerMiscItem(id: Int) {
         var subId: Int
         var name: String?
@@ -1280,12 +1346,37 @@ object ItemRegistration {
 
         val casingDesc = CaseItemDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Casing")).inOresAndMaterialsTab()
         Eln.sharedItem.addElement(53 + (id shl 6), casingDesc)
-        // PORT: Iron Clutch Plate returns with ClutchPlateItem.
-        // PORT: Clutch Pin returns with ClutchPinItem.
-        // PORT: Gold Clutch Plate returns with ClutchPlateItem.
-        // PORT: Copper Clutch Plate returns with ClutchPlateItem.
-        // PORT: Lead Clutch Plate returns with ClutchPlateItem.
-        // PORT: Coal Clutch Plate returns with ClutchPlateItem.
+        Eln.sharedItem.addElement(
+            54 + (id shl 6), ClutchPlateItem(
+                I18N.TR_NAME(I18N.Type.NONE, "Iron Clutch Plate"), 5120f, 640f, 640f, 160f,
+                0.0001f, false
+            ).inOresAndMaterialsTab()
+        )
+        Eln.sharedItem.addElement(55 + (id shl 6), ClutchPinItem(I18N.TR_NAME(I18N.Type.NONE, "Clutch Pin")).inOresAndMaterialsTab())
+        Eln.sharedItem.addElement(
+            56 + (id shl 6), ClutchPlateItem(
+                I18N.TR_NAME(I18N.Type.NONE, "Gold Clutch Plate"), 10240f, 2048f, 1024f, 512f,
+                0.001f, false
+            ).inOresAndMaterialsTab()
+        )
+        Eln.sharedItem.addElement(
+            57 + (id shl 6), ClutchPlateItem(
+                I18N.TR_NAME(I18N.Type.NONE, "Copper Clutch Plate"), 8192f, 4096f, 1024f, 512f,
+                0.0003f, false
+            ).inOresAndMaterialsTab()
+        )
+        Eln.sharedItem.addElement(
+            58 + (id shl 6), ClutchPlateItem(
+                I18N.TR_NAME(I18N.Type.NONE, "Lead Clutch Plate"), 15360f, 1024f, 1536f, 768f,
+                0.0015f, false
+            ).inOresAndMaterialsTab()
+        )
+        Eln.sharedItem.addElement(
+            59 + (id shl 6), ClutchPlateItem(
+                I18N.TR_NAME(I18N.Type.NONE, "Coal Clutch Plate"), 1024f, 128f, 128f, 32f, 0.1f,
+                true
+            ).inOresAndMaterialsTab()
+        )
         run {
             subId = 60
             name = I18N.TR_NAME(I18N.Type.NONE, "Motor Cowling")

@@ -130,7 +130,7 @@ class OneWayDcDcDescriptor(
         super.setParent(item, damage)
     }
 
-    override fun addInformation(itemStack: ItemStack, entityPlayer: Player, list: MutableList<String>, par4: Boolean) {
+    override fun addInformation(itemStack: ItemStack, entityPlayer: Player?, list: MutableList<String>, par4: Boolean) {
         super.addInformation(itemStack, entityPlayer, list, par4)
         Collections.addAll(list, *tr("Moves power from the input side\nto the output side only.").split("\n").toTypedArray())
         if (variable) {

@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState
  * Item for one [GenericItemUsingDamageDescriptor], forwarding the 1.20.1 item callbacks to the descriptor the way
  * 1.7.10's GenericItemUsingDamage did for every damage value.
  */
-open class GenericItem(val descriptor: GenericItemUsingDamageDescriptor) : Item(Properties()) {
+open class GenericItem @JvmOverloads constructor(val descriptor: GenericItemUsingDamageDescriptor, properties: Properties = Properties()) : Item(properties) {
     private val legacyKey = descriptor.name.replace(Regex("\\s+"), "_") + ".name"
 
     override fun getDescriptionId(stack: ItemStack): String = legacyKey

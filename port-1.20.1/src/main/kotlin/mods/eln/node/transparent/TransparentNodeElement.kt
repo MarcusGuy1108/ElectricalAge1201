@@ -1,5 +1,6 @@
 package mods.eln.node.transparent
 
+import net.minecraftforge.fluids.capability.IFluidHandler
 import mods.eln.ghost.GhostObserver
 import mods.eln.sim.SignalLoadSupport
 import mods.eln.compat.*
@@ -185,7 +186,8 @@ abstract class TransparentNodeElement(@JvmField var node: TransparentNode?, @Jvm
         return null
     }
 
-    // PORT: getFluidHandler returns with Forge fluid capabilities.
+    // The tank pipes and buckets see through the Forge fluid capability of the block entity.
+    open fun getFluidHandler(): IFluidHandler? = null
 
     open fun onNeighborBlockChange() {
         checkCanStay(false)

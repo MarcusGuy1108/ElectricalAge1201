@@ -174,4 +174,25 @@ object NodeGameTests {
             Eln.nodeManager.unload(dimension)
         }
     }
+
+    // The creative search index builds every tooltip with no player; a descriptor that needs one crashes the client.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun tooltipsWorkWithoutAPlayer(helper: GameTestHelper) {
+        val failures = ArrayList<String>()
+        fun check(name: String, tooltip: () -> Unit) {
+            try {
+                tooltip()
+            } catch (e: Throwable) {
+                // Tooltips only run on the client; one that reads client state cannot run on this test server.
+                if (e.message?.contains("invalid dist") != true) failures.add("$name: $e")
+            }
+        }
+        for (desc in Eln.sixNodeItem.subItemList.values) check(desc.name) { desc.addInformation(desc.newItemStack(), null, ArrayList(), false) }
+        for (desc in Eln.transparentNodeItem.subItemList.values) check(desc.name) { desc.addInformation(desc.newItemStack(), null, ArrayList(), false) }
+        for (desc in Eln.sharedItem.subItemList.values) check(desc.name) { desc.addInformation(desc.newItemStack(), null, ArrayList(), false) }
+        for (desc in Eln.sharedItemStackOne.subItemList.values) check(desc.name) { desc.addInformation(desc.newItemStack(), null, ArrayList(), false) }
+        helper.assertTrue(failures.isEmpty(), failures.joinToString("; "))
+        helper.succeed()
+    }
 }

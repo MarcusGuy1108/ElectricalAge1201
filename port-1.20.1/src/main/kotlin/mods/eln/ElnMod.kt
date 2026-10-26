@@ -1,5 +1,7 @@
 package mods.eln
 
+import net.minecraft.world.item.Item
+import mods.eln.generic.GenericItem
 import mods.eln.ghost.GhostBlock
 import mods.eln.lightblock.LightBlockEntity
 import mods.eln.sixnode.wirelesssignal.tx.WirelessSignalTxElement
@@ -51,6 +53,7 @@ object ElnMod {
         Eln.sixNodeItem = GenericItemBlockUsingDamage { SixNodeItem(it) }
         Eln.transparentNodeItem = GenericItemBlockUsingDamage { TransparentNodeItem(it) }
         Eln.sharedItem = GenericItemUsingDamage()
+        Eln.sharedItemStackOne = GenericItemUsingDamage { GenericItem(it, Item.Properties().stacksTo(1)) }
         LightBlock.BLOCK
         GhostBlock.BLOCK
         Eln.obj.loadAllElnModels()

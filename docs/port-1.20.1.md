@@ -94,9 +94,15 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      1.7.10 cube/floor/ladder metadata, saved with the node data per dimension. A GameTest places a 2x3 solar panel
      and breaks one of its ghost blocks. Cube ghosts are full blocks; 1.7.10 asked the machine for its collision boxes.
    * [x] Power capacitors and inductors, DC-DC converters (fixed, variable, one-way, legacy), solar panels and the
-     solar tracker, wind and water turbines, the heat furnace, the heat turbines and thermal dissipators. The fuel
-     generator and fuel heat furnace wait for fluid handling on nodes; the shaft network (steam/gas turbines,
-     generators, motors, flywheels) is next.
+     solar tracker, wind and water turbines, the heat furnace, the heat turbines and thermal dissipators.
+   * [x] Fluids: machine tanks are exposed through the Forge fluid handler capability of the transparent node block
+     entity. Fuels are matched by the path of a fluid's registry id (`immersiveengineering:biodiesel` counts as
+     `biodiesel`), as listed in `config/fluids.cfg`. Eln's own hot/cold water fluids and their buckets are not ported.
+   * [x] The shaft network: steam and gas turbines (with turbine blades), generators, motors, radial motors,
+     flywheels, clutches (with plates and pins), joints, hubs, tachometers, fixed and crankable shafts, the rolling
+     shaft machine, plus the fuel generator and fuel heat furnace with fuel burners. A GameTest checks that a gas
+     turbine's tank refuses water; another asks every item for its tooltip without a player, the case that crashed
+     the creative inventory.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
 
 ## References

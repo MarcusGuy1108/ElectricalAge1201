@@ -88,7 +88,7 @@ class LegacyDcDcDescriptor(name: String, objM: Obj3D, coreM: Obj3D, casingM: Obj
         super.setParent(item, damage)
     }
 
-    override fun addInformation(itemStack: ItemStack, entityPlayer: Player, list: MutableList<String>, par4: Boolean) {
+    override fun addInformation(itemStack: ItemStack, entityPlayer: Player?, list: MutableList<String>, par4: Boolean) {
         super.addInformation(itemStack, entityPlayer, list, par4)
         Collections.addAll(list, *tr("Transforms an input voltage to\nan output voltage.")!!.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
     }

@@ -1,5 +1,10 @@
 package mods.eln.gametest
 
+import net.minecraftforge.fluids.capability.IFluidHandler
+import net.minecraft.world.level.material.Fluids
+import net.minecraftforge.fluids.FluidStack
+import net.minecraftforge.common.capabilities.ForgeCapabilities
+import mods.eln.mechanical.GasTurbineDescriptor
 import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.ghost.GhostBlock
 import mods.eln.Eln
@@ -70,5 +75,20 @@ object TransparentNodeGameTests {
             helper.assertBlockNotPresent(TransparentNodeBlock.BLOCK.get(), pos)
             helper.assertTrue(ghosts.none { helper.getBlockState(it).block is GhostBlock }, "ghost blocks left behind")
         }
+    }
+
+    // Machines with a tank expose it to pipes through the Forge fluid capability; a gas turbine only takes fuels.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun gasTurbineTankRefusesWater(helper: GameTestHelper) {
+        val pos = BlockPos(1, 1, 1)
+        helper.setBlock(pos.below(), Blocks.STONE)
+        val desc = Eln.transparentNodeItem.descriptors.filterIsInstance<GasTurbineDescriptor>().first { it.ghostGroup == null }
+        val stack = desc.newItemStack()
+        helper.assertTrue((stack.item as TransparentNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(pos), Direction.YP), "turbine not placed")
+        val tank = helper.level.getBlockEntity(helper.absolutePos(pos))!!.getCapability(ForgeCapabilities.FLUID_HANDLER, null).resolve().orElse(null)
+        helper.assertTrue(tank != null, "no fluid capability")
+        helper.assertTrue(tank!!.fill(FluidStack(Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE) == 0, "water went into the tank")
+        helper.succeed()
     }
 }

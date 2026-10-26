@@ -1,5 +1,6 @@
 package mods.eln.sim.process.destruct
 
+import mods.eln.mechanical.ShaftElement
 import mods.eln.Eln
 import mods.eln.misc.Coordinate
 import mods.eln.node.six.SixNodeElement
@@ -13,7 +14,13 @@ class WorldExplosion : IDestructible {
     private var strength = 0f
     var type: String = ""
 
-    // PORT: the ShaftElement and EnergyConverterElnToOtherNode constructors return with them.
+    // PORT: the EnergyConverterElnToOtherNode constructor returns with the energy converter.
+
+    constructor(e: ShaftElement) {
+        coordinate = e.coordonate()
+        type = e.toString()
+        origin = e
+    }
 
     constructor(e: TransparentNodeElement) {
         coordinate = e.coordinate()

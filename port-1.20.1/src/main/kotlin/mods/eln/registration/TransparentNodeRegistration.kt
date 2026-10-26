@@ -1,5 +1,7 @@
 package mods.eln.registration
 
+import mods.eln.misc.Direction
+import mods.eln.mechanical.*
 import net.minecraft.world.level.Level
 import mods.eln.transparentnode.*
 import mods.eln.sixnode.electricalcable.UtilityCableDescriptor
@@ -36,6 +38,35 @@ import mods.eln.transparentnode.battery.BatteryDescriptor
  * (subId + (group shl 6)) are unchanged because node saves store them.
  */
 object TransparentNodeRegistration {
+    private const val LARGE_MACHINE_VOLUME_SCALE = 27f
+    private val LARGE_MACHINE_MODEL_SCALE = Math.cbrt(LARGE_MACHINE_VOLUME_SCALE.toDouble()).toFloat()
+
+    private fun createLargeMachineGhostGroup(): GhostGroup {
+        val g = GhostGroup()
+        for (x in -1..1) {
+            for (y in 0..2) {
+                for (z in -1..1) {
+                    if (x == 0 && y == 0 && z == 0) continue
+                    if (y == 0 && x != 0) continue
+                    g.addElement(x, y, z)
+                }
+            }
+        }
+        return g
+    }
+
+    private fun <T : SimpleShaftDescriptor> T.applyLargeMachineLayout(): T {
+        ghostGroup = createLargeMachineGhostGroup()
+        ghostGroup?.removeElement(0, 1, -1)
+        ghostGroup?.removeElement(0, 1, 1)
+        addShaftGhostPort(Coordinate(0, 1, -1, Level.OVERWORLD), Direction.ZN, Direction.ZN)
+        addShaftGhostPort(Coordinate(0, 1, 1, Level.OVERWORLD), Direction.ZP, Direction.ZP)
+        modelScale = LARGE_MACHINE_MODEL_SCALE
+        shaftMass *= LARGE_MACHINE_VOLUME_SCALE.toDouble()
+        disableCameraOptimization = true
+        return this
+    }
+
     fun registerTransparent() {
         Eln.transparentNodeItem.setCreativeTabForGroup(1, Eln.creativeTabPowerElectronics)
         Eln.transparentNodeItem.setCreativeTabForGroup(2, Eln.creativeTabPowerElectronics)
@@ -85,7 +116,7 @@ object TransparentNodeRegistration {
         registerThermalDissipatorPassiveAndActive(64)
         // PORT: registerTransparentNodeMisc(65)
         // PORT: registerTurret(66)
-        // PORT: registerFuelGenerator(67)
+        registerFuelGenerator(67)
         // PORT: registerFloodlight(68)
         // PORT: registerFestive(69)
         // PORT: registerFab(70)
@@ -336,7 +367,15 @@ object TransparentNodeRegistration {
             transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
 
-        // PORT: Fuel Heat Furnace returns with FuelHeatFurnaceDescriptor.
+        run {
+            subId = 1
+            name = TR_NAME(I18N.Type.NONE, "Fuel Heat Furnace")
+            val desc = FuelHeatFurnaceDescriptor(
+                name, Eln.obj.getObj("FuelHeater"),
+                ThermalLoadInitializerByPowerDrop(780.0, -100.0, 10.0, 2.0)
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
     }
 
     private fun registerTurbine(id: Int) {
@@ -386,43 +425,267 @@ object TransparentNodeRegistration {
             transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
 
-        // PORT: Steam Turbine returns with SteamTurbineDescriptor.
+        run {
+            subId = 9
+            val desc = SteamTurbineDescriptor(
+                TR_NAME(I18N.Type.NONE, "Steam Turbine"), Eln.obj.getObj(
+                    "Turbine"
+                )
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Generator returns with GeneratorDescriptor.
+        run {
+            subId = 10
+            val nominalRads = 200f
+            val nominalU = NominalVoltage.V480.toFloat()
+            val nominalP = 16000f
+            val desc = GeneratorDescriptor(
+                TR_NAME(I18N.Type.NONE, "Generator"),
+                Eln.obj.getObj(
+                    "Generator"
+                ),
+                instance.highVoltageCableDescriptor,
+                nominalRads,
+                nominalU,
+                nominalP / (nominalU / 25),
+                nominalP,
+                Eln.sixNodeThermalLoadInitializer.copy()
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Gas Turbine returns with GasTurbineDescriptor.
+        run {
+            subId = 11
+            val desc = GasTurbineDescriptor(
+                TR_NAME(I18N.Type.NONE, "Gas Turbine"), Eln.obj.getObj(
+                    "GasTurbine"
+                )
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Joint returns with StraightJointDescriptor.
+        run {
+            subId = 12
+            val desc = StraightJointDescriptor(
+                TR_NAME(I18N.Type.NONE, "Joint"), Eln.obj.getObj(
+                    "StraightJoint"
+                )
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Joint hub returns with VerticalHubDescriptor.
+        run {
+            subId = 13
+            val desc = VerticalHubDescriptor(
+                TR_NAME(I18N.Type.NONE, "Joint hub"), Eln.obj.getObj(
+                    "VerticalHub"
+                )
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Flywheel returns with FlywheelDescriptor.
+        run {
+            subId = 14
+            val desc = FlywheelDescriptor(
+                TR_NAME(I18N.Type.NONE, "Flywheel"),
+                Eln.obj.getObj("Flywheel")
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Tachometer returns with TachometerDescriptor.
+        run {
+            subId = 15
+            val desc = TachometerDescriptor(
+                TR_NAME(I18N.Type.NONE, "Tachometer"), Eln.obj.getObj(
+                    "Tachometer"
+                )
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Shaft Motor returns with MotorDescriptor.
+        run {
+            subId = 16
+            val nominalRads = 200f
+            val nominalU = NominalVoltage.V480.toFloat()
+            val nominalP = 16000f
 
-        // PORT: Clutch returns with ClutchDescriptor.
+            val desc = MotorDescriptor(
+                TR_NAME(I18N.Type.NONE, "Shaft Motor"), Eln.obj.getObj("Motor"),
+                instance.highVoltageCableDescriptor, nominalRads, nominalU, nominalP, 25.0f * nominalP / nominalU,
+                25.0f * nominalP / nominalU, Eln.sixNodeThermalLoadInitializer.copy()
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Fixed Shaft returns with FixedShaftDescriptor.
+        run {
+            subId = 17
+            val desc = ClutchDescriptor(
+                TR_NAME(I18N.Type.NONE, "Clutch"),
+                Eln.obj.getObj("Clutch")
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Radial Motor returns with RadialMotorDescriptor.
-        // PORT: Crank Shaft returns with CrankableShaftDescriptor.
-        // PORT: Rolling Shaft  returns with RollingShaftMachineDescriptor.
+        run {
+            subId = 18
+            val desc = FixedShaftDescriptor(
+                TR_NAME(I18N.Type.NONE, "Fixed Shaft"), Eln.obj.getObj(
+                    "FixedShaft"
+                )
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Large Steam Turbine returns with SteamTurbineDescriptor.
+        run {
+            subId = 19
+            val desc = RadialMotorDescriptor(
+                TR_NAME(I18N.Type.NONE, "Radial Motor"), Eln.obj.getObj(
+                    "Starter_Motor"
+                )
+            )
+            val g = GhostGroup()
+            for (x in -1..1) {
+                for (y in -1..1) {
+                    for (z in -1 downTo -3 + 1) {
+                        g.addElement(x, y, z)
+                    }
+                }
+            }
+            g.removeElement(0, 0, 0)
+            desc.ghostGroup = g
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 20
+            /*
+            Humans generate roughly 75-100 watts of power over time based on Wikipedia, peaking at 1,000 watts
+            for short periods of time if they are _really_ in shape (and using legs). Let's say 200 watts is good?
+         */
+            val desc = CrankableShaftDescriptor(
+                TR_NAME(I18N.Type.NONE, "Crank Shaft"),
+                Eln.obj.getObj("StraightJoint"), 20.0f, 200.0f
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 21
+            val desc = RollingShaftMachineDescriptor(
+                TR_NAME(
+                    I18N.Type.NONE, "Rolling Shaft " +
+                            "Machine"
+                ), Eln.obj.getObj("platemachinea")
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Large Gas Turbine returns with GasTurbineDescriptor.
+        run {
+            subId = 22
+            val desc = SteamTurbineDescriptor(
+                TR_NAME(I18N.Type.NONE, "Large Steam Turbine"),
+                Eln.obj.getObj("Turbine"),
+                LARGE_MACHINE_VOLUME_SCALE
+            ).applyLargeMachineLayout()
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Large Generator returns with GeneratorDescriptor.
+        run {
+            subId = 23
+            val desc = GasTurbineDescriptor(
+                TR_NAME(I18N.Type.NONE, "Large Gas Turbine"),
+                Eln.obj.getObj("GasTurbine"),
+                LARGE_MACHINE_VOLUME_SCALE
+            ).applyLargeMachineLayout()
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Large Shaft Motor returns with MotorDescriptor.
+        run {
+            subId = 24
+            val nominalRads = 200f
+            val nominalU = NominalVoltage.V7200.toFloat()
+            val nominalP = 4000f * LARGE_MACHINE_VOLUME_SCALE
 
-        // PORT: Polarized Shaft Generator returns with GeneratorDescriptor.
+            val desc = GeneratorDescriptor(
+                TR_NAME(I18N.Type.NONE, "Large Generator"),
+                Eln.obj.getObj("Generator"),
+                instance.veryHighVoltageCableDescriptor,
+                nominalRads,
+                nominalU,
+                nominalP / (nominalU / 25),
+                nominalP,
+                Eln.sixNodeThermalLoadInitializer.copy()
+            ).applyLargeMachineLayout()
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
 
-        // PORT: Polarized Shaft Motor returns with MotorDescriptor.
+        run {
+            subId = 25
+            val nominalRads = 200f
+            val nominalU = NominalVoltage.V7200.toFloat()
+            val nominalP = 1200f * LARGE_MACHINE_VOLUME_SCALE
 
-        // PORT: Large Flywheel returns with FlywheelDescriptor.
+            val desc = MotorDescriptor(
+                TR_NAME(I18N.Type.NONE, "Large Shaft Motor"),
+                Eln.obj.getObj("Motor"),
+                instance.veryHighVoltageCableDescriptor,
+                nominalRads,
+                nominalU,
+                nominalP,
+                25.0f * nominalP / nominalU,
+                25.0f * nominalP / nominalU,
+                Eln.sixNodeThermalLoadInitializer.copy()
+            ).applyLargeMachineLayout()
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 26
+            val nominalRads = 200f
+            val nominalU = NominalVoltage.V480.toFloat()
+            val nominalP = 16000f
+            val desc = GeneratorDescriptor(
+                TR_NAME(I18N.Type.NONE, "Polarized Shaft Generator"),
+                Eln.obj.getObj("PolarizedShaftGenerator"),
+                instance.highVoltageCableDescriptor,
+                nominalRads,
+                nominalU,
+                nominalP / (nominalU / 25),
+                nominalP,
+                Eln.sixNodeThermalLoadInitializer.copy(),
+                bipolarTerminals = true
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 27
+            val nominalRads = 200f
+            val nominalU = NominalVoltage.V480.toFloat()
+            val nominalP = 16000f
+            val desc = MotorDescriptor(
+                TR_NAME(I18N.Type.NONE, "Polarized Shaft Motor"),
+                Eln.obj.getObj("PolarizedShaftMotor"),
+                instance.highVoltageCableDescriptor,
+                nominalRads,
+                nominalU,
+                nominalP,
+                25.0f * nominalP / nominalU,
+                25.0f * nominalP / nominalU,
+                Eln.sixNodeThermalLoadInitializer.copy(),
+                bipolarTerminals = true
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 28
+            val desc = FlywheelDescriptor(
+                TR_NAME(I18N.Type.NONE, "Large Flywheel"),
+                Eln.obj.getObj("Flywheel"),
+                LARGE_MACHINE_VOLUME_SCALE
+            ).applyLargeMachineLayout()
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
     }
 
     private fun registerSolarPanel(id: Int) {
@@ -649,6 +912,36 @@ object TransparentNodeRegistration {
             )
             desc.setDefaultIcon("200vactivethermaldissipator")
             transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+    private fun registerFuelGenerator(id: Int) {
+        var subId: Int
+        val fuelGeneratorPowerFactor = Eln.config.getDoubleOrElse("balance.generators.fuelGeneratorPowerFactor", 1.0)
+        val fuelGeneratorTankCapacity = Eln.config.getDoubleOrElse("machines.fuelGenerator.tankCapacitySecondsAtNominalPower", 20.0 * 60.0)
+        run {
+            subId = 1
+            val descriptor = FuelGeneratorDescriptor(
+                TR_NAME(I18N.Type.NONE, "48V Fuel Generator"),
+                Eln.obj.getObj("FuelGenerator50V"),
+                instance.lowVoltageCableDescriptor,
+                fuelGeneratorPowerFactor * 1200,
+                NominalVoltage.V48 * 1.25,
+                fuelGeneratorTankCapacity
+            )
+            descriptor.setDefaultIcon("50vfuelgenerator")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), descriptor)
+        }
+        run {
+            subId = 2
+            val descriptor = FuelGeneratorDescriptor(
+                TR_NAME(
+                    I18N.Type.NONE,
+                    "240V Fuel Generator"
+                ), Eln.obj.getObj("FuelGenerator200V"), instance.meduimVoltageCableDescriptor,
+                fuelGeneratorPowerFactor * 6000, NominalVoltage.V240 * 1.25, fuelGeneratorTankCapacity
+            )
+            descriptor.setDefaultIcon("200vfuelgenerator")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), descriptor)
         }
     }
 }

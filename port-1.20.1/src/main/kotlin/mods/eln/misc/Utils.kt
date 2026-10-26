@@ -665,6 +665,104 @@ object Utils {
         return burnTimeToEnergyFactor * 80000.0 / 1600 * ForgeHooks.getBurnTime(stack, RecipeType.SMELTING)
     }
 
+    // Same item, or sharing an item tag (the 1.7.10 ore dictionary check).
+    @JvmStatic
+    fun areSame(stack: ItemStack, output: ItemStack): Boolean {
+        if (stack.item === output.item) return true
+        return stack.tags.anyMatch { output.`is`(it) }
+    }
+
+    // Whether all of [stackList] fits in the [slotsIdList] slots of [inventory], merging into matching stacks.
+    @JvmStatic
+    fun canPutStackInInventory(stackList: Array<ItemStack>, inventory: Container, slotsIdList: IntArray): Boolean {
+        val limit = inventory.maxStackSize
+        val outputStack = Array(slotsIdList.size) { inventory.getItem(slotsIdList[it]).copy() }
+        for (input in stackList) {
+            val stack = input.copy()
+            var oneStackDone = false
+            for (idx in slotsIdList.indices) {
+                val targetStack = outputStack[idx]
+                if (targetStack.isEmpty) {
+                    outputStack[idx] = stack
+                    oneStackDone = true
+                    break
+                } else if (ItemStack.isSameItemSameTags(targetStack, stack)) {
+                    val transfer = stack.count.coerceAtMost(limit.coerceAtMost(targetStack.maxStackSize) - targetStack.count)
+                    if (transfer > 0) {
+                        targetStack.grow(transfer)
+                        stack.shrink(transfer)
+                    }
+                    if (stack.isEmpty) {
+                        oneStackDone = true
+                        break
+                    }
+                }
+            }
+            if (!oneStackDone) return false
+        }
+        return true
+    }
+
+    // Puts all of [stack] into [inventory] if it fits, merging into matching stacks first; false (and no change) if not.
+    @JvmStatic
+    fun tryPutStackInInventory(stack: ItemStack, inventory: Container?): Boolean {
+        if (inventory == null) return false
+        val limit = inventory.maxStackSize.coerceAtMost(stack.maxStackSize)
+        val slots = ArrayList<Int>(4)
+        var need = stack.count
+        for (i in 0 until inventory.containerSize) {
+            if (need <= 0) break
+            val slot = inventory.getItem(i)
+            if (!slot.isEmpty && slot.count < limit && ItemStack.isSameItemSameTags(slot, stack)) {
+                slots.add(i)
+                need -= limit - slot.count
+            }
+        }
+        for (i in 0 until inventory.containerSize) {
+            if (need <= 0) break
+            if (inventory.getItem(i).isEmpty) {
+                slots.add(i)
+                need -= limit
+            }
+        }
+        if (need > 0) return false
+        var toPut = stack.count
+        for (slot in slots) {
+            val target = inventory.getItem(slot)
+            val amount = toPut.coerceAtMost(if (target.isEmpty) limit else limit - target.count)
+            if (target.isEmpty) inventory.setItem(slot, stack.copyWithCount(amount)) else target.grow(amount)
+            toPut -= amount
+            if (toPut <= 0) break
+        }
+        inventory.setChanged()
+        return true
+    }
+
+    // Moves [stackList] into the [slotsIdList] slots; call canPutStackInInventory first, leftovers are lost as in 1.7.10.
+    @JvmStatic
+    fun tryPutStackInInventory(stackList: Array<ItemStack>, inventory: Container, slotsIdList: IntArray): Boolean {
+        val limit = inventory.maxStackSize
+        for (stack in stackList) {
+            for (slot in slotsIdList) {
+                val targetStack = inventory.getItem(slot)
+                if (targetStack.isEmpty) {
+                    inventory.setItem(slot, stack.copy())
+                    stack.count = 0
+                    break
+                } else if (ItemStack.isSameItemSameTags(targetStack, stack)) {
+                    val transfer = stack.count.coerceAtMost(limit.coerceAtMost(targetStack.maxStackSize) - targetStack.count)
+                    if (transfer > 0) {
+                        targetStack.grow(transfer)
+                        stack.shrink(transfer)
+                    }
+                    if (stack.isEmpty) break
+                }
+            }
+        }
+        inventory.setChanged()
+        return true
+    }
+
     @JvmStatic
     fun getWind(dimension: ResourceKey<Level>, y: Int): Double {
         val world = ServerLifecycleHooks.getCurrentServer()?.getLevel(dimension) ?: return 0.0.coerceAtLeast(Eln.wind.getWind(y))

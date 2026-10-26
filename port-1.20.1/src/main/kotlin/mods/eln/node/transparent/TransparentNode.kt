@@ -1,5 +1,6 @@
 package mods.eln.node.transparent
 
+import net.minecraftforge.fluids.capability.IFluidHandler
 import mods.eln.compat.*
 import mods.eln.Eln
 import mods.eln.misc.Direction
@@ -100,8 +101,10 @@ class TransparentNode : Node() {
         return element!!.thermoMeterString(side)
     }
 
-    // PORT: readConfigTool/writeConfigTool (IConfigurable elements) return with the config copy tool, and the fluid
-    // handler with Forge fluid capabilities.
+    // PORT: readConfigTool/writeConfigTool (IConfigurable elements) return with the config copy tool.
+
+    val fluidHandler: IFluidHandler?
+        get() = element?.getFluidHandler()
 
     override fun publishSerialize(stream: DataOutputStream) {
         super.publishSerialize(stream)
@@ -161,8 +164,8 @@ class TransparentNode : Node() {
         return if (element == null) null else element!!.newContainer(side, player)
     }
 
-    // PORT: blockMetadata picked the tile entity class (EntityMetaTag); there is one transparent node block entity
-    // type until the fluid variant is ported.
+    // 1.7.10 picked a tile entity class per element (EntityMetaTag); here the one block entity type exposes the
+    // element's tank through a capability instead.
 
     override fun networkUnserialize(stream: DataInputStream, player: ServerPlayer?) {
         super.networkUnserialize(stream, player)
