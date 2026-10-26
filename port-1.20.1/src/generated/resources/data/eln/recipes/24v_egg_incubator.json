@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_basic"
+    },
+    "E": {
+      "item": "eln:small_48v_tungsten_heating_element"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "IGG",
+    "E G",
+    "CII"
+  ],
+  "result": {
+    "item": "eln:24v_egg_incubator"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_advanced"
+    },
+    "I": {
+      "tag": "forge:plates/iron"
+    }
+  },
+  "pattern": [
+    "C I",
+    "CI ",
+    "C I"
+  ],
+  "result": {
+    "item": "eln:high_power_transmitter_antenna"
+  },
+  "show_notification": true
+}

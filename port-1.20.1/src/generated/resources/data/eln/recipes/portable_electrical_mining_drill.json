@@ -19,7 +19,7 @@
   ],
   "result": {
     "item": "eln:portable_electrical_mining_drill",
-    "nbt": "{energy:0.0d,powerOn:0b,rand:23288211}"
+    "nbt": "{energy:0.0d,powerOn:0b}"
   },
   "show_notification": true
 }

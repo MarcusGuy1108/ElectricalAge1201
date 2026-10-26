@@ -8,6 +8,13 @@ import mods.eln.mechanical.GasTurbineDescriptor
 import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.ghost.GhostBlock
 import mods.eln.Eln
+import net.minecraft.world.item.Items
+import net.minecraft.world.Container
+import mods.eln.transparentnode.autominer.AutoMinerElement
+import mods.eln.transparentnode.autominer.AutoMinerContainer
+import mods.eln.sim.mna.component.VoltageSource
+import mods.eln.misc.LRDU
+import mods.eln.misc.Coordinate
 import mods.eln.misc.Direction
 import mods.eln.node.transparent.TransparentNode
 import mods.eln.node.transparent.TransparentNodeEntity
@@ -90,5 +97,32 @@ object TransparentNodeGameTests {
         helper.assertTrue(tank != null, "no fluid capability")
         helper.assertTrue(tank!!.fill(FluidStack(Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE) == 0, "water went into the tank")
         helper.succeed()
+    }
+
+    // A powered auto miner with a drill and mining pipes digs the block under it and puts the drops in the chest
+    // at its output.
+    @GameTest(template = "empty3x3x3", timeoutTicks = 400)
+    @JvmStatic
+    fun autoMinerDigsIntoChest(helper: GameTestHelper) {
+        val pos = helper.absolutePos(BlockPos(1, 1, 1))
+        val stack = Eln.findItemStack("Auto Miner", 1)
+        helper.assertTrue((stack.item as TransparentNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, pos, Direction.YP), "auto miner not placed")
+        // The miner sits two blocks in front of and one above the clicked block (its spawn delta).
+        val miner = BlockPos.betweenClosed(pos.offset(-3, 0, -3), pos.offset(3, 2, 3))
+            .firstNotNullOf { ((helper.level.getBlockEntity(it) as? TransparentNodeEntity)?.node as? TransparentNode)?.element as? AutoMinerElement }
+        helper.level.setBlockAndUpdate(miner.node!!.coordinate.blockPos.below(), Blocks.STONE.defaultBlockState())
+        val output = Coordinate(1, -1, 0, helper.level.dimension())
+        output.applyTransformation(miner.front, miner.node!!.coordinate)
+        helper.level.setBlockAndUpdate(output.blockPos, Blocks.CHEST.defaultBlockState())
+        miner.inventory!!.setItem(AutoMinerContainer.electricalDrillSlotId, Eln.findItemStack("Turbo Electrical Drill", 1))
+        miner.inventory!!.setItem(AutoMinerContainer.MiningPipeSlotId, Eln.findItemStack("Mining Pipe", 8))
+        val source = VoltageSource("source", miner.getElectricalLoad(Direction.XN, LRDU.Down), null)
+            .setVoltage(Eln.highVoltageCableDescriptor.electricalNominalVoltage)
+        Eln.simulator.addElectricalComponent(source)
+        helper.succeedWhen {
+            val chest = helper.level.getBlockEntity(output.blockPos) as Container
+            helper.assertTrue((0 until chest.containerSize).any { chest.getItem(it).`is`(Items.COBBLESTONE) }, "no cobblestone in the chest")
+            Eln.simulator.removeElectricalComponent(source)
+        }
     }
 }

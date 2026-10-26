@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "eln:copper_thermal_cable"
+    },
+    "D": {
+      "item": "eln:small_passive_thermal_dissipator"
+    },
+    "R": {
+      "item": "eln:rheostat"
+    }
+  },
+  "pattern": [
+    "   ",
+    " D ",
+    "CRC"
+  ],
+  "result": {
+    "item": "eln:large_rheostat"
+  },
+  "show_notification": true
+}

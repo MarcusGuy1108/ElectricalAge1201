@@ -48,11 +48,11 @@ class ElectricalFlashlightItem(name: String, var lightMin: Int, var rangeMin: In
         }
     }
 
+    // 1.7.10 also stored a random "rand" so these items never stacked; they are stack-of-one items now.
     override fun getDefaultNBT(): CompoundTag? {
         val nbt = CompoundTag()
         nbt.putDouble("energy", 0.0)
         nbt.putBoolean("powerOn", false)
-        nbt.putInt("rand", (Math.random() * 0xFFFFFFF).toInt())
         return nbt
     }
 

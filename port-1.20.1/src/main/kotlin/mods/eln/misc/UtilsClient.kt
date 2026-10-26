@@ -406,7 +406,12 @@ object UtilsClient {
         return sqrt(x * x + y * y + z * z)
     }
 
-    // PORT: clientDistanceTo(TransparentNodeEntity) returns with the transparent nodes.
+    @JvmStatic
+    fun clientDistanceTo(t: BlockEntity?): Double {
+        if (t == null) return 100000000.0
+        val c: Entity = Minecraft.getInstance().player ?: return 100000000.0
+        return sqrt(c.position().distanceToSqr(t.blockPos.x.toDouble(), t.blockPos.y.toDouble(), t.blockPos.z.toDouble()))
+    }
 
     fun getLight(w: Level, x: Int, y: Int, z: Int): Int {
         // Combined block and sky light with the current sky darkening, as 1.7.10 computed by hand.

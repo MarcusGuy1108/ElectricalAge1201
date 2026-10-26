@@ -1,5 +1,11 @@
 package mods.eln.registration
 
+import mods.eln.transparentnode.autominer.AutoMinerDescriptor
+import mods.eln.transparentnode.eggincubator.EggIncubatorDescriptor
+import mods.eln.transparentnode.electricalantennarx.ElectricalAntennaRxDescriptor
+import mods.eln.transparentnode.electricalantennatx.ElectricalAntennaTxDescriptor
+import mods.eln.transparentnode.LargeRheostatDescriptor
+import mods.eln.transparentnode.NixieTubeDescriptor
 import mods.eln.sound.SoundCommand
 import kotlin.math.pow
 import mods.eln.transparentnode.electricalfurnace.ElectricalFurnaceDescriptor
@@ -105,7 +111,7 @@ object TransparentNodeRegistration {
         registerTransformer(2)
         registerHeatFurnace(3)
         registerTurbine(4)
-        // PORT: registerElectricalAntenna(7)
+        registerElectricalAntenna(7)
         registerBattery(16)
         registerElectricalFurnace(32)
         registerMacerator(33)
@@ -113,12 +119,13 @@ object TransparentNodeRegistration {
         registerCompressor(35)
         registerMagnetizer(36)
         registerPlateMachine(37)
-        // PORT: registerEggIncubator(41)
-        // PORT: registerAutoMiner(42)
+        registerEggIncubator(41)
+        registerAutoMiner(42)
         registerSolarPanel(48)
         registerWindTurbine(49)
         registerThermalDissipatorPassiveAndActive(64)
-        // PORT: registerTransparentNodeMisc(65)
+        // PORT: registerTransparentNodeMisc(65) returns with the teleporter and the thermal heat exchanger (its fluid
+        // pairs and their ThermalRegistry config).
         // PORT: registerTurret(66)
         registerFuelGenerator(67)
         // PORT: registerFloodlight(68)
@@ -126,8 +133,8 @@ object TransparentNodeRegistration {
         // PORT: registerFab(70)
         // PORT: registerRailroad(71)
         // PORT: registerWireProcessingMachines(72)
-        // PORT: registerLargeRheostat() // 96, but from the wrong side.
-        // PORT: registerNixieTube() // 117, but from the wrong side.
+        registerLargeRheostat() // 96, but from the wrong side.
+        registerNixieTube() // 117, but from the wrong side.
         // PORT: registerGridDevices(123)
     }
 
@@ -1128,6 +1135,151 @@ object TransparentNodeRegistration {
             desc.setDefaultIcon("200vplatemachine")
             transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
             desc.setRunningSound("eln:plate_machine")
+        }
+    }
+
+    private fun registerElectricalAntenna(id: Int) {
+        var subId: Int
+        var name: String?
+        run {
+            subId = 0
+            val desc: ElectricalAntennaTxDescriptor
+            name = TR_NAME(I18N.Type.NONE, "Low Power Transmitter Antenna")
+            val P = 250.0
+            desc = ElectricalAntennaTxDescriptor(
+                name, Eln.obj.getObj("lowpowertransmitterantenna"), 200, 0.9, 0.7,
+                NominalVoltage.V48, P, NominalVoltage.V48 * 1.3, P * 1.3, instance.lowVoltageCableDescriptor
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 1
+            val desc: ElectricalAntennaRxDescriptor
+            name = TR_NAME(I18N.Type.NONE, "Low Power Receiver Antenna")
+            val P = 250.0
+            desc = ElectricalAntennaRxDescriptor(
+                name, Eln.obj.getObj("lowpowerreceiverantenna"), NominalVoltage.V48, P, NominalVoltage.V48 * 1.3,
+                P * 1.3, instance.lowVoltageCableDescriptor
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 2
+            val desc: ElectricalAntennaTxDescriptor
+            name = TR_NAME(I18N.Type.NONE, "Medium Power Transmitter Antenna")
+            val P = 1000.0
+            desc = ElectricalAntennaTxDescriptor(
+                name, Eln.obj.getObj("lowpowertransmitterantenna"), 250, 0.9, 0.75,
+                NominalVoltage.V240, P, NominalVoltage.V240 * 1.3, P * 1.3, instance.meduimVoltageCableDescriptor
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 3
+            val desc: ElectricalAntennaRxDescriptor
+            name = TR_NAME(I18N.Type.NONE, "Medium Power Receiver Antenna")
+            val P = 1000.0
+            desc = ElectricalAntennaRxDescriptor(
+                name, Eln.obj.getObj("lowpowerreceiverantenna"), NominalVoltage.V240, P, NominalVoltage.V240 * 1.3,
+                P * 1.3, instance.meduimVoltageCableDescriptor
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 4
+            val desc: ElectricalAntennaTxDescriptor
+            name = TR_NAME(I18N.Type.NONE, "High Power Transmitter Antenna")
+            val P = 2000.0
+            desc = ElectricalAntennaTxDescriptor(
+                name, Eln.obj.getObj("lowpowertransmitterantenna"), 300, 0.95, 0.8,
+                NominalVoltage.V480, P, NominalVoltage.V480 * 1.3, P * 1.3, instance.highVoltageCableDescriptor
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 5
+            val desc: ElectricalAntennaRxDescriptor
+            name = TR_NAME(I18N.Type.NONE, "High Power Receiver Antenna")
+            val P = 2000.0
+            desc = ElectricalAntennaRxDescriptor(
+                name, Eln.obj.getObj("lowpowerreceiverantenna"), NominalVoltage.V480, P, NominalVoltage.V480 * 1.3,
+                P * 1.3, instance.highVoltageCableDescriptor
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerEggIncubator(id: Int) {
+        var subId: Int
+        var name: String?
+        run {
+            subId = 0
+            name = TR_NAME(I18N.Type.NONE, "24V Egg Incubator")
+            val desc = EggIncubatorDescriptor(
+                name, Eln.obj.getObj("eggincubator"),
+                instance.lowVoltageCableDescriptor, NominalVoltage.V24, 50.0
+            )
+            desc.setDefaultIcon("50veggincubator")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerAutoMiner(id: Int) {
+        var subId: Int
+        var name: String?
+        run {
+            subId = 0
+            name = TR_NAME(I18N.Type.NONE, "Auto Miner")
+            val powerLoad = arrayOfNulls<Coordinate>(2)
+            powerLoad[0] = Coordinate(-2, -1, 1, Level.OVERWORLD)
+            powerLoad[1] = Coordinate(-2, -1, -1, Level.OVERWORLD)
+            val lightCoord = Coordinate(-3, 0, 0, Level.OVERWORLD)
+            val miningCoord = Coordinate(-1, 0, 1, Level.OVERWORLD)
+            val desc = AutoMinerDescriptor(
+                name, Eln.obj.getObj("AutoMiner"), powerLoad, lightCoord,
+                miningCoord, 2, 1, 0, instance.highVoltageCableDescriptor, 1.0, 50.0
+            )
+            val ghostGroup = GhostGroup()
+            ghostGroup.addRectangle(-2, -1, -1, 0, -1, 1)
+            ghostGroup.addRectangle(1, 1, -1, 0, 1, 1)
+            ghostGroup.addRectangle(1, 1, -1, 0, -1, -1)
+            ghostGroup.addElement(1, 0, 0)
+            ghostGroup.addElement(0, 0, 1)
+            ghostGroup.addElement(0, 1, 0)
+            ghostGroup.addElement(0, 0, -1)
+            ghostGroup.removeElement(-1, -1, 0)
+            desc.ghostGroup = ghostGroup
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerLargeRheostat() {
+        val id = 96
+        run {
+            val subId = 39
+            val name = I18N.TR_NAME(I18N.Type.NONE, "Large Rheostat")
+            val dissipator = ThermalDissipatorPassiveDescriptor(
+                name, Eln.obj.getObj(
+                    "LargeRheostat"
+                ), 1000.0, -100.0, 4000.0, 800.0, 10.0, 1.0
+            )
+            val desc = LargeRheostatDescriptor(
+                name!!, dissipator,
+                instance.highVoltageCableDescriptor, newE12(0.0)
+            )
+            Eln.transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerNixieTube() {
+        run {
+            val id = 117
+            val subId = 7
+            val name = I18N.TR_NAME(I18N.Type.NONE, "Nixie Tube")
+            val desc = NixieTubeDescriptor(name, Eln.obj.getObj("NixieTube"))
+            Eln.transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
     }
 }

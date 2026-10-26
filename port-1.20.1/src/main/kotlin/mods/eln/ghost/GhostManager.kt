@@ -108,6 +108,7 @@ class GhostManager {
         return state.isAir || state.canBeReplaced()
     }
 
+    @JvmOverloads
     fun createGhost(coordinate: Coordinate, observerCoordinate: Coordinate, UUID: Int, state: BlockState = GhostBlock.BLOCK.get().defaultBlockState()) {
         if (coordinate.world().setBlock(coordinate.blockPos, state, Block.UPDATE_ALL)) {
             val element = GhostElement(Coordinate(coordinate), observerCoordinate, UUID)

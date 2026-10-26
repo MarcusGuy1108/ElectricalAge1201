@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_advanced"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "I": {
+      "tag": "forge:plates/iron"
+    }
+  },
+  "pattern": [
+    "I D",
+    " IC",
+    "I D"
+  ],
+  "result": {
+    "item": "eln:high_power_receiver_antenna"
+  },
+  "show_notification": true
+}
