@@ -17,7 +17,14 @@ cd port-1.20.1
 ./gradlew runClient
 ./gradlew runGameTestServer   # runs the GameTests in mods.eln.gametest on a headless server, fails the build on failure
 ./gradlew runData      # regenerates item models and block states into src/generated/resources
+./gradlew assemble     # release jar: build/libs/eln-<version>-all.jar
 ```
+
+The release jar is `eln-<version>-all.jar`: the mod with the libraries it needs at run time bundled through Forge's
+jar-in-jar (Apache Commons Numbers, for the MNA solver). Players also need
+[Kotlin for Forge](https://github.com/thedarkcolour/KotlinForForge) 4.12 or newer. The plain `eln-<version>.jar`
+lacks the bundled library and is for development only. The `-all` jar has been checked on a Forge 47.4.28 dedicated
+server installed with the official installer (`--installServer`): it loads, generates a world and logs no errors.
 
 Rerun `runData` after registering new descriptors and commit `src/generated/resources`. Each descriptor item gets an
 `item/generated` model from its 1.7.10 icon; the voltage level background is a second layer shown only in inventories

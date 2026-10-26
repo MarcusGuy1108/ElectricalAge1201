@@ -91,11 +91,17 @@ repositories {
     }
 }
 
+// The release jar is build/libs/eln-<version>-all.jar: the mod plus the libraries it needs at run time.
+jarJar.enable()
+
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     implementation "thedarkcolour:kotlinforforge:${kff_version}"
-    // shortcut: plain libraries are only on the dev run classpath, not inside the mod jar; add jarJar before the first release.
+    // The MNA solver's double-double arithmetic. On the dev run classpath, and inside the release jar (jarJar below).
     minecraftLibrary 'org.apache.commons:commons-numbers-core:1.2'
+    jarJar(group: 'org.apache.commons', name: 'commons-numbers-core', version: '[1.2,2.0)') {
+        jarJar.pin(it, '1.2')
+    }
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.apache.commons:commons-math3:3.6.1'
@@ -139,6 +145,18 @@ tasks.named('jar', Jar).configure {
         ])
     }
     finalizedBy 'reobfJar'
+}
+
+reobf {
+    jarJar { }
+}
+
+tasks.named('jarJar').configure {
+    finalizedBy 'reobfJarJar'
+}
+
+tasks.named('assemble').configure {
+    dependsOn 'jarJar'
 }
 
 tasks.withType(JavaCompile).configureEach {

@@ -771,12 +771,8 @@ object CraftingRecipes {
             findItemStack("Variable DC-DC Converter"), 'D', findItemStack("Signal Diode"), 'B',
             Eln.config.getStringOrElse("runtime.dictionary.cheapChip", "circuitElnBasic")
         )
-        if (Eln.instance.isDevelopmentRun) {
-            addRecipe(
-                findItemStack("Isolation Transformer"), "GGG", "CDC", "GGG", 'C', findItemStack("Copper Cable"), 'D',
-                findItemStack("One-way DC-DC Converter"), 'G', findItemStack("Ground Cable")
-            )
-        }
+        // 1.7.10 added the Isolation Transformer recipe in development runs only, like the item. Recipes are generated
+        // data now, made in a development run and shipped to every world, so it is left out; dev runs can /give it.
     }
 
     private fun recipeHeatFurnace() {

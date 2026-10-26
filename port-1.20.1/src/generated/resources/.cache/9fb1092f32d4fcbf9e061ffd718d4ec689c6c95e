@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T17:17:53.441757012	Recipes
+// 1.20.1	2026-10-26T17:34:23.298334058	Recipes
 5f826e94a1265cd03a8575f16d2c1a027c47921d data/eln/advancements/recipes/misc/100a_electrical_breaker.json
 7f28d2a5311bc783e994d258e1f42b12dd709496 data/eln/advancements/recipes/misc/100a_switch.json
 17cf0958baf47a85de3d95c712c68a1909013eb3 data/eln/advancements/recipes/misc/10a_diode.json
@@ -218,7 +218,6 @@ e19630755651da9b95a92b274009706be879f9a3 data/eln/advancements/recipes/misc/iner
 c04f945185993480b123f011419820df5cacc827 data/eln/advancements/recipes/misc/iron_clutch_plate.json
 e60b02d355098408411b4307da5ae62332b24358 data/eln/advancements/recipes/misc/iron_turbine_blade.json
 be17c6107e6a14914cab504ddeaaf57a4f378fab data/eln/advancements/recipes/misc/irresponsible_electrical_drill.json
-d93a5a631c25f998a6f6199ebc3574ea20ece035 data/eln/advancements/recipes/misc/isolation_transformer.json
 908f83634e68a80a54b82f039c3567d6bde3a6c0 data/eln/advancements/recipes/misc/jk_flip_flop_chip.json
 e37a30fb0a2b070309132f38a8a15935f94da9be data/eln/advancements/recipes/misc/joint.json
 485edcf5c754aee692151c1fb10ce99f634b1c6c data/eln/advancements/recipes/misc/joint_hub.json
@@ -635,7 +634,6 @@ cc798638ea5cd08c86de73ce6578999ce8fb5071 data/eln/recipes/iron_cable.json
 fa1852df1905520567d5424151ff6f8873608ade data/eln/recipes/iron_clutch_plate.json
 1b5663f1b50d38b73c59ee7e3e08b27a49d7eb92 data/eln/recipes/iron_turbine_blade.json
 60399ee673d6deace78311095bb2b9c8ad083fa2 data/eln/recipes/irresponsible_electrical_drill.json
-4bf44f606334daa58ed14d66d0ee1074f3e44fbb data/eln/recipes/isolation_transformer.json
 da59c2a4b6ec3ae5f87a2a434d4e2af4155fa846 data/eln/recipes/jk_flip_flop_chip.json
 98c2d79735be33f439bfd8e1914c59b91d82a11b data/eln/recipes/joint.json
 f2c0fa193686354daaef1e8f26a5790ef0160bb3 data/eln/recipes/joint_hub.json
