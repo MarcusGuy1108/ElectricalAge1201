@@ -1,5 +1,9 @@
 package mods.eln.registration
 
+import mods.eln.sound.SoundCommand
+import kotlin.math.pow
+import mods.eln.transparentnode.electricalfurnace.ElectricalFurnaceDescriptor
+import mods.eln.transparentnode.electricalmachine.*
 import mods.eln.misc.Direction
 import mods.eln.mechanical.*
 import net.minecraft.world.level.Level
@@ -103,12 +107,12 @@ object TransparentNodeRegistration {
         registerTurbine(4)
         // PORT: registerElectricalAntenna(7)
         registerBattery(16)
-        // PORT: registerElectricalFurnace(32)
-        // PORT: registerMacerator(33)
-        // PORT: registerArcFurnace(34)
-        // PORT: registerCompressor(35)
-        // PORT: registerMagnetizer(36)
-        // PORT: registerPlateMachine(37)
+        registerElectricalFurnace(32)
+        registerMacerator(33)
+        registerArcFurnace(34)
+        registerCompressor(35)
+        registerMagnetizer(36)
+        registerPlateMachine(37)
         // PORT: registerEggIncubator(41)
         // PORT: registerAutoMiner(42)
         registerSolarPanel(48)
@@ -942,6 +946,188 @@ object TransparentNodeRegistration {
             )
             descriptor.setDefaultIcon("200vfuelgenerator")
             transparentNodeItem.addDescriptor(subId + (id shl 6), descriptor)
+        }
+    }
+    private fun registerElectricalFurnace(id: Int) {
+        var subId: Int
+        var name: String?
+        // PORT: furnaceList (the furnaces a recipe viewer shows for smelting) returns with a recipe viewer integration.
+        run {
+            subId = 0
+            name = TR_NAME(I18N.Type.NONE, "Electrical Furnace")
+            val PfTTable =
+                doubleArrayOf(0.0, 20.0, 40.0, 80.0, 160.0, 240.0, 360.0, 540.0, 756.0, 1058.4, 1481.76)
+
+            val thermalPlostfTTable = DoubleArray(PfTTable.size)
+            for (idx in thermalPlostfTTable.indices) {
+                thermalPlostfTTable[idx] =
+                    PfTTable[idx] * (((idx + 1.0) / thermalPlostfTTable.size).pow(2.0)) * 2
+            }
+
+            val PfT = FunctionTableYProtect(PfTTable, 800.0, 0.0, 100000.0)
+
+            val thermalPlostfT = FunctionTableYProtect(
+                thermalPlostfTTable, 800.0, 0.001,
+                10000000.0
+            )
+
+            val desc = ElectricalFurnaceDescriptor(name, PfT, thermalPlostfT, 40.0)
+            Eln.electricalFurnace = desc
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerMacerator(id: Int) {
+        var subId: Int
+        var name: String?
+        run {
+            subId = 0
+            name = TR_NAME(I18N.Type.NONE, "48V Macerator")
+            val desc = MaceratorDescriptor(
+                name, "maceratora", NominalVoltage.V48, 200.0, NominalVoltage.V48 * 1.25,
+                ThermalLoadInitializer(80.0, -100.0, 10.0, 100000.0), instance.lowVoltageCableDescriptor, instance.maceratorRecipes
+            )
+            desc.setDefaultIcon("50vmacerator")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            desc.setRunningSound("eln:macerator")
+        }
+
+        run {
+            subId = 4
+            name = TR_NAME(I18N.Type.NONE, "240V Macerator")
+            val desc = MaceratorDescriptor(
+                name, "maceratorb", NominalVoltage.V240, 2000.0, NominalVoltage.V240 * 1.25,
+                ThermalLoadInitializer(80.0, -100.0, 10.0, 100000.0), instance.meduimVoltageCableDescriptor,  // cable
+                instance.maceratorRecipes
+            )
+            desc.setDefaultIcon("200vmacerator")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            desc.setRunningSound("eln:macerator")
+        }
+    }
+
+    private fun registerArcFurnace(id: Int) {
+        var subId: Int
+        var name: String?
+        run {
+            subId = 0
+            name = TR_NAME(I18N.Type.NONE, "Old 480V Arc Furnace")
+            val desc = OldArcFurnaceDescriptor(
+                name, Eln.obj.getObj("arcfurnaceold"), NominalVoltage.V480, 10000.0,
+                NominalVoltage.V480 * 1.25, ThermalLoadInitializer(80.0, -100.0, 10.0, 100000.0), instance.highVoltageCableDescriptor,
+                instance.arcFurnaceRecipes
+            )
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            desc.setDefaultIcon("old800varcfurnace")
+            desc.setRunningSound("eln:Arcfurnace_loop")
+        }
+        /*
+
+        To be released at a later date. Needs a bit of code in the backend, and there's a rendering bug and some other
+        minor issues to be resolved.
+
+        {
+            subId = 1;
+            name = TR_NAME(Type.NONE, "800V Arc Furnace");
+
+            ArcFurnaceDescriptor desc = new ArcFurnaceDescriptor(name, obj.getObj("arcfurnace"));
+
+            transparentNodeItem.addDescriptor(subId + (id << 6), desc);
+            //desc.setRunningSound("eln:arc_furnace");
+
+        }
+        */
+    }
+
+    private fun registerCompressor(id: Int) {
+        var subId: Int
+        var name: String?
+        run {
+            subId = 0
+            name = TR_NAME(I18N.Type.NONE, "48V Compressor")
+            val desc = CompressorDescriptor(
+                name, Eln.obj.getObj("compressora"), NominalVoltage.V48, 200.0,
+                NominalVoltage.V48 * 1.25, ThermalLoadInitializer(80.0, -100.0, 10.0, 100000.0), instance.lowVoltageCableDescriptor,
+                instance.compressorRecipes
+            )
+            desc.setDefaultIcon("50vcompressor")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            desc.setRunningSound("eln:compressor_run")
+            desc.setEndSound(SoundCommand("eln:compressor_end"))
+        }
+
+        run {
+            subId = 4
+            name = TR_NAME(I18N.Type.NONE, "240V Compressor")
+            val desc = CompressorDescriptor(
+                name, Eln.obj.getObj("compressorb"), NominalVoltage.V240, 2000.0,
+                NominalVoltage.V240 * 1.25, ThermalLoadInitializer(80.0, -100.0, 10.0, 100000.0), instance.meduimVoltageCableDescriptor,
+                instance.compressorRecipes
+            )
+            desc.setDefaultIcon("200vcompressor")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            desc.setRunningSound("eln:compressor_run")
+            desc.setEndSound(SoundCommand("eln:compressor_end"))
+        }
+    }
+
+    private fun registerMagnetizer(id: Int) {
+        var subId: Int
+        var name: String?
+        run {
+            subId = 0
+            name = TR_NAME(I18N.Type.NONE, "48V Magnetizer")
+            val desc = MagnetizerDescriptor(
+                name, Eln.obj.getObj("magnetizera"), NominalVoltage.V48, 200.0,
+                NominalVoltage.V48 * 1.25, ThermalLoadInitializer(80.0, -100.0, 10.0, 100000.0), instance.lowVoltageCableDescriptor,
+                instance.magnetiserRecipes
+            )
+            desc.setDefaultIcon("50vmagnetizer")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            desc.setRunningSound("eln:Motor")
+        }
+
+        run {
+            subId = 4
+            name = TR_NAME(I18N.Type.NONE, "240V Magnetizer")
+            val desc = MagnetizerDescriptor(
+                name, Eln.obj.getObj("magnetizerb"), NominalVoltage.V240, 2000.0,
+                NominalVoltage.V240 * 1.25, ThermalLoadInitializer(80.0, -100.0, 10.0, 100000.0), instance.meduimVoltageCableDescriptor,
+                instance.magnetiserRecipes
+            )
+            desc.setDefaultIcon("200vmagnetizer")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            desc.setRunningSound("eln:Motor")
+        }
+    }
+
+    private fun registerPlateMachine(id: Int) {
+        var subId: Int
+        var name: String?
+        run {
+            subId = 0
+            name = TR_NAME(I18N.Type.NONE, "48V Plate Machine")
+            val desc = PlateMachineDescriptor(
+                name, Eln.obj.getObj("platemachinea"), NominalVoltage.V48, 200.0,
+                NominalVoltage.V48 * 1.25, ThermalLoadInitializer(80.0, -100.0, 10.0, 100000.0), instance.lowVoltageCableDescriptor,
+                instance.plateMachineRecipes
+            )
+            desc.setDefaultIcon("50vplatemachine")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            desc.setRunningSound("eln:plate_machine")
+        }
+
+        run {
+            subId = 4
+            name = TR_NAME(I18N.Type.NONE, "240V Plate Machine")
+            val desc = PlateMachineDescriptor(
+                name, Eln.obj.getObj("platemachineb"), NominalVoltage.V240, 2000.0,
+                NominalVoltage.V240 * 1.25, ThermalLoadInitializer(80.0, -100.0, 10.0, 100000.0), instance.meduimVoltageCableDescriptor,
+                instance.plateMachineRecipes
+            )
+            desc.setDefaultIcon("200vplatemachine")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            desc.setRunningSound("eln:plate_machine")
         }
     }
 }

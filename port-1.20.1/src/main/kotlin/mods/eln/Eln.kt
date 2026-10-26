@@ -1,5 +1,6 @@
 package mods.eln
 
+import mods.eln.transparentnode.electricalfurnace.ElectricalFurnaceDescriptor
 import mods.eln.misc.RecipesList
 import mods.eln.fluid.FuelRegistry
 import net.minecraftforge.fml.loading.FMLEnvironment
@@ -172,6 +173,7 @@ object Eln {
         @JvmStatic get() = !FMLEnvironment.production
     @JvmField val ghostManager = GhostManager()
     @JvmField val furnaceList = ArrayList<ItemStack>()
+    lateinit var electricalFurnace: ElectricalFurnaceDescriptor
     @JvmField val maceratorRecipes = RecipesList()
     @JvmField val compressorRecipes = RecipesList()
     @JvmField val plateMachineRecipes = RecipesList()

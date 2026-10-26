@@ -57,7 +57,18 @@ fun Container.getStackInSlot(slot: Int): ItemStack? = getItem(slot).takeUnless {
 
 fun Container.setInventorySlotContents(slot: Int, stack: ItemStack?) = setItem(slot, stack ?: ItemStack.EMPTY)
 
-fun Container.decrStackSize(slot: Int, amount: Int): ItemStack? = removeItem(slot, amount).takeUnless { it.isEmpty }
+// 1.7.10 code also grew stacks with a negative amount; removeItem ignores those.
+fun Container.decrStackSize(slot: Int, amount: Int): ItemStack? {
+    if (amount < 0) {
+        val stack = getItem(slot)
+        if (!stack.isEmpty) {
+            stack.grow(-amount)
+            setChanged()
+        }
+        return null
+    }
+    return removeItem(slot, amount).takeUnless { it.isEmpty }
+}
 
 fun ItemStack?.orEmpty(): ItemStack = this ?: ItemStack.EMPTY
 

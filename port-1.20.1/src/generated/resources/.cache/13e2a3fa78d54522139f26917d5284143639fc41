@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T11:47:07.652541788	Item Models: eln
+// 1.20.1	2026-10-26T12:02:10.533096633	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -33,6 +33,7 @@ c2f8d953fcea0009dae3603f05e28d36341134d9 assets/eln/models/item/12v_led_light_bu
 ecd45162f2398843b073971f26d809cba86080f8 assets/eln/models/item/240v_active_thermal_dissipator.json
 781d4d65e3ca019722c881b4f1d7f7d04546127d assets/eln/models/item/240v_battery_charger.json
 e15f1b92327d1c6bdca01a822aae00e1f2b39628 assets/eln/models/item/240v_carbon_light_bulb.json
+970765d23b12e4986b31290cb8df43b12df49637 assets/eln/models/item/240v_compressor.json
 ba7d519677ca11f5f3bee0b40147ab04f7c8834c assets/eln/models/item/240v_copper_heating_element.json
 26fa267b04cbd5adec04c6ddc2b105806f221b9f assets/eln/models/item/240v_farming_light_bulb.json
 a4bcd917916e0ced3bf9d24a520aead1150ca8bb assets/eln/models/item/240v_fluorescent_light_bulb.json
@@ -42,6 +43,9 @@ d6f7fc2303916da6ae46d0baaba93522f3bef3fd assets/eln/models/item/240v_halogen_lig
 d3d9a46316d8e57fd7ee42fb7ae5aa6ef91da26e assets/eln/models/item/240v_iron_heating_element.json
 551a92aafe1d55925355566c0e35ad497fb33bda assets/eln/models/item/240v_lamp_supply.json
 60cbd124fc856c17e4b05d8a5468fddef97e8e9b assets/eln/models/item/240v_led_light_bulb.json
+d949ae0cb1ad06e1ebfce5051255221ec018e6c6 assets/eln/models/item/240v_macerator.json
+ba26275fd42289b8b7b7b6ea03abc40c3d8399b3 assets/eln/models/item/240v_magnetizer.json
+e98b32458ae7a6a6e1d204b2f6e7949e9599a5bc assets/eln/models/item/240v_plate_machine.json
 f0185f448cc26b26d847ad69a15ff80ce326e857 assets/eln/models/item/240v_tungsten_heating_element.json
 366bd9b56f1f47a1c33cbfe6842e2d69e87e2c58 assets/eln/models/item/240v_turbine.json
 c05fdb3112ae3f2ab31a7b362092dc812a11c213 assets/eln/models/item/240v_type_e_socket.json
@@ -60,9 +64,13 @@ f5db757ca2201d42ddb7abe990e4723e116ebdc2 assets/eln/models/item/3_3v_ldo_regulat
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/40a_electrical_breaker.json
 ddd54dbeb7dd91a47bb4cd7d5ad6d585106e8153 assets/eln/models/item/480v_heavy_tungsten_heating_element.json
 a0ebd659fd30ad2d58e5595552aa2654d277e395 assets/eln/models/item/480v_tungsten_heating_element.json
+807f47e27d79d4580566b82a8075b8b561cce40e assets/eln/models/item/48v_compressor.json
 d83ce9b71a3f43606dceed237959b47688545452 assets/eln/models/item/48v_copper_heating_element.json
 581b3b019655b2a7f99c124ed59a117ce71dec7d assets/eln/models/item/48v_fuel_generator.json
 99938aaa4941d8a1751e51f89504c99fa53c8c83 assets/eln/models/item/48v_iron_heating_element.json
+3ba99253823cc567edbd936c58c41ea4580580d5 assets/eln/models/item/48v_macerator.json
+70e923f0a245080971159be75e614fd4246bd41a assets/eln/models/item/48v_magnetizer.json
+9ad66cb17af614e2cd85bcf3438f076dabac7d7f assets/eln/models/item/48v_plate_machine.json
 50d8e51e7be9b35968e402cc36e2f4b505685009 assets/eln/models/item/48v_tungsten_heating_element.json
 031da2c18d2a5e05f0af7967ee3f953c98a1610d assets/eln/models/item/48v_turbine.json
 4bfbb451e3bf59142c830b584568f448adcc08e4 assets/eln/models/item/4x_graphite_rods.json
@@ -299,6 +307,7 @@ b746c93fe90ff391c96377bce84477608a92f2c9 assets/eln/models/item/dc_dc_converter.
 08c9852e9013e9ca35433d7596bb5fbc82968c55 assets/eln/models/item/electrical_entity_sensor.json
 b7d8bd3d5ee6f55342c6fe46d709b23a3788bb99 assets/eln/models/item/electrical_fire_buzzer.json
 278fb5c21840c9dcebf02e689ffbe3936d397051 assets/eln/models/item/electrical_fire_detector.json
+5d3b5f60444257aa70263cee4ee6dd652763df12 assets/eln/models/item/electrical_furnace.json
 3a0124c63f5fb8815547bc20e7ae04ee9259b526 assets/eln/models/item/electrical_fuse_holder.json
 9a38fd013ea749bef329724aa158937f97f71243 assets/eln/models/item/electrical_light_sensor.json
 d93ff2cbc6e2f21bef4355393dc09eddd68371b9 assets/eln/models/item/electrical_motor.json
@@ -391,6 +400,7 @@ a8a85f1d8f8d40a38a8e4c5d36e8195e052dea7b assets/eln/models/item/nibble_memory_ch
 e5b37187fec179597e33b0912aa12d4c503e1bf4 assets/eln/models/item/not_chip.json
 09ffdf0437274d56bb90ab2c700c10716275e068 assets/eln/models/item/ntc_thermistor.json
 cfb9845eebefba431fada9b91ab639369387c168 assets/eln/models/item/nuclear_alarm.json
+701df5cdbf8daba83debde0b329b4696a3ca5575 assets/eln/models/item/old_480v_arc_furnace.json
 2f782c14c7178b503271840c71fa63648dbfce10 assets/eln/models/item/on_off_regulator_10_percent.json
 2f782c14c7178b503271840c71fa63648dbfce10 assets/eln/models/item/on_off_regulator_1_percent.json
 df37b5786da1022287b092c365637298171be2fa assets/eln/models/item/one_way_boost_buck_vdc_dc_converter.json

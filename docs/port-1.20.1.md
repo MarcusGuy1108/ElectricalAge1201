@@ -103,6 +103,9 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
      shaft machine, plus the fuel generator and fuel heat furnace with fuel burners. A GameTest checks that a gas
      turbine's tank refuses water; another asks every item for its tooltip without a player, the case that crashed
      the creative inventory.
+   * [x] Processing machines: electrical furnace (smelts with the vanilla smelting recipes), macerators, compressors,
+     magnetizers, plate machines and arc furnaces, with their GUIs and in-world item display. Their machine recipe
+     lists are empty until the recipes are ported (milestone 7).
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
 
 ## References

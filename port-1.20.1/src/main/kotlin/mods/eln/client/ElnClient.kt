@@ -50,6 +50,7 @@ object ElnClient {
         val now = System.nanoTime()
         val deltaT = if (lastFrameNanos == 0L) 0f else ((now - lastFrameNanos) / 1e9f).coerceAtMost(0.1f)
         lastFrameNanos = now
+        FrameTime.deltaT = deltaT
         for (entity in NodeBlockEntity.clientList) {
             entity.clientRefresh(deltaT)
         }

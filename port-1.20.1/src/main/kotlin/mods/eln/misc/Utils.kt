@@ -1,5 +1,6 @@
 package mods.eln.misc
 
+import net.minecraft.world.SimpleContainer
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraftforge.common.ForgeHooks
 import net.minecraft.world.level.block.LiquidBlock
@@ -761,6 +762,14 @@ object Utils {
         }
         inventory.setChanged()
         return true
+    }
+
+    // What a vanilla furnace makes of [stack], or null.
+    @JvmStatic
+    fun getSmeltingResult(world: Level, stack: ItemStack?): ItemStack? {
+        if (stack == null || stack.isEmpty) return null
+        return world.recipeManager.getRecipeFor(RecipeType.SMELTING, SimpleContainer(stack), world)
+            .map { it.getResultItem(world.registryAccess()).copy() }.orElse(null)?.takeUnless { it.isEmpty }
     }
 
     @JvmStatic
