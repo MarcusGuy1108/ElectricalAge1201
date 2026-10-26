@@ -1,0 +1,64 @@
+package mods.eln.sixnode.wirelesssignal.rx;
+
+import mods.eln.Eln;
+import mods.eln.cable.CableRenderDescriptor;
+import mods.eln.misc.Direction;
+import mods.eln.misc.LRDU;
+import mods.eln.node.six.SixNodeDescriptor;
+import mods.eln.node.six.SixNodeElementRender;
+import mods.eln.node.six.SixNodeEntity;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+
+public class WirelessSignalRxRender extends SixNodeElementRender {
+
+    WirelessSignalRxDescriptor descriptor;
+
+    boolean connection;
+
+    String channel;
+    int selectedAggregator;
+
+    public WirelessSignalRxRender(SixNodeEntity tileEntity, Direction side, SixNodeDescriptor descriptor) {
+        super(tileEntity, side, descriptor);
+        this.descriptor = (WirelessSignalRxDescriptor) descriptor;
+    }
+
+    @Nullable
+    @Override
+    public CableRenderDescriptor getCableRender(@NotNull LRDU lrdu) {
+        return Eln.instance.signalCableDescriptor.render;
+    }
+
+    @Override
+    public void draw() {
+        super.draw();
+
+        drawSignalPin(new float[]{2, 2, 2, 2});
+        front.glRotateOnX();
+        descriptor.draw(connection);
+    }
+
+    @Nullable
+    @Override
+    public Screen newGuiDraw(@NotNull Direction side, @NotNull Player player) {
+        return new WirelessSignalRxGui(this);
+    }
+
+    @Override
+    public void publishUnserialize(DataInputStream stream) {
+        super.publishUnserialize(stream);
+        try {
+            channel = stream.readUTF();
+            connection = stream.readBoolean();
+            selectedAggregator = stream.readByte();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

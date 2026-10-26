@@ -1,0 +1,78 @@
+package mods.eln.sixnode.electricalgatesource;
+
+import mods.eln.misc.Direction;
+import mods.eln.misc.LRDU;
+import mods.eln.misc.RealisticEnum;
+import mods.eln.misc.VoltageLevelColor;
+import mods.eln.node.six.SixNodeDescriptor;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import mods.eln.client.GL11;
+
+import java.util.Collections;
+import java.util.List;
+
+import static mods.eln.i18n.I18N.tr;
+
+public class ElectricalGateSourceDescriptor extends SixNodeDescriptor {
+    // PORT: IItemRenderer drawing is replaced by the generated item model.
+
+    // onOffOnly: if true, is a button. Otherwise, it's a signal trimmer.
+    public boolean onOffOnly;
+
+    // autoReset: if true, this button will press and release. Otherwise, it will act like a latch
+    public boolean autoReset = false;
+
+    enum ObjType {Pot, Button}
+
+    // objType is often null... IDEA flags leverTx as unused as well.
+    ObjType objType;
+    float leverTx;
+    ElectricalGateSourceRenderObj render;
+
+    public ElectricalGateSourceDescriptor(String name, ElectricalGateSourceRenderObj render, boolean onOffOnly,
+                                          String iconName) {
+        super(name, ElectricalGateSourceElement.class, ElectricalGateSourceRender.class, iconName);
+        this.render = render;
+        this.onOffOnly = onOffOnly;
+
+        voltageLevelColor = VoltageLevelColor.SignalVoltage;
+    }
+
+    @Override
+    public void addInformation(ItemStack itemStack, Player entityPlayer, List<String> list, boolean par4) {
+        super.addInformation(itemStack, entityPlayer, list, par4);
+        if (!onOffOnly) {
+            Collections.addAll(list, tr("Provides configurable signal\nvoltage.").split("\n"));
+        }else{
+            if (autoReset) {
+                Collections.addAll(list, tr("Acts like a\npush button.").split("\n"));
+            } else {
+                Collections.addAll(list, tr("Acts like a\ntoggle switch.").split("\n"));
+            }
+        }
+    }
+
+    public void setWithAutoReset() {
+        autoReset = true;
+    }
+
+    void draw(float factor, float distance, BlockEntity e) {
+        render.draw(factor, distance, e);
+    }
+
+    @Override
+    public void setParent(Item item, int damage) {
+        super.setParent(item, damage);
+    }
+
+    @Nullable
+    @Override
+    public LRDU getFrontFromPlace(@NotNull Direction side, @NotNull Player player) {
+        return super.getFrontFromPlace(side, player).inverse();
+    }
+}

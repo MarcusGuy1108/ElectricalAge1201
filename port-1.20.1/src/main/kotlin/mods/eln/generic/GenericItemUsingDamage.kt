@@ -33,6 +33,12 @@ class GenericItemUsingDamage<Descriptor : GenericItemUsingDamageDescriptor>(
         }
     }
 
+    // 1.7.10 kept these legacy descriptors loadable but out of the creative list.
+    fun addWithoutRegistry(damage: Int, descriptor: Descriptor) {
+        addElement(damage, descriptor)
+        orderList.remove(damage)
+    }
+
     fun getDescriptor(damage: Int): Descriptor? = subItemList[damage]
 
     @Suppress("UNCHECKED_CAST")

@@ -1,5 +1,7 @@
 package mods.eln.gametest
 
+import mods.eln.sixnode.electricalswitch.ElectricalSwitchElement
+import mods.eln.misc.LRDU
 import net.minecraft.world.InteractionHand
 import java.io.DataOutputStream
 import java.io.DataInputStream
@@ -120,6 +122,40 @@ object SixNodeGameTests {
             helper.assertTrue(lampNode.lightValue >= LampSocketRender.MIN_LIGHT_ON_VALUE, "lamp light ${lampNode.lightValue}, ${socket.electricalLoad.voltage} V")
             helper.assertTrue(helper.getBlockState(BlockPos(2, 1, 1)).getValue(NodeBlock.LIGHT) == lampNode.lightValue, "block light not synced")
         }
+    }
+
+    // Sets up the source -> element -> lamp row of sourcePowersLampSocket with [middle] in the middle; returns the lamp.
+    private fun sourceThroughToLamp(helper: GameTestHelper, middle: ItemStack): Pair<SixNode, SixNode> {
+        val sourceNode = placeOnFloor(helper, BlockPos(0, 1, 1), Eln.sixNodeItem.getDescriptor(3 shl 6)!!.newItemStack())
+        val middleNode = placeOnFloor(helper, BlockPos(1, 1, 1), middle)
+        val lampNode = placeOnFloor(helper, BlockPos(2, 1, 1), Eln.sixNodeItem.getDescriptor(64 shl 6)!!.newItemStack())
+        val bytes = ByteArrayOutputStream()
+        DataOutputStream(bytes).apply {
+            writeByte(ElectricalSourceElement.setVoltageId)
+            writeFloat(12f)
+        }
+        (sourceNode.getElement(Direction.YN) as ElectricalSourceElement).networkUnserialize(DataInputStream(ByteArrayInputStream(bytes.toByteArray())))
+        val socket = lampNode.getElement(Direction.YN) as LampSocketElement
+        socket.inventory.setItem(LampSocketContainer.LAMP_SLOT_ID, Eln.sharedItem.getDescriptor(4 shl 6)!!.newItemStack())
+        socket.inventory.setItem(LampSocketContainer.CABLE_SLOT_ID, Eln.lowVoltageCableDescriptor.newItemStack())
+        socket.poweredByLampSupply = false
+        socket.inventoryChange(socket.inventory)
+        return Pair(middleNode, lampNode)
+    }
+
+    // A switch only passes current along its front axis, so it is turned to face the source, then closed.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun switchControlsLamp(helper: GameTestHelper) {
+        val (switchNode, lampNode) = sourceThroughToLamp(helper, Eln.sixNodeItem.getDescriptor((97 shl 6) + 5)!!.newItemStack())
+        val switch = switchNode.getElement(Direction.YN) as ElectricalSwitchElement
+        switch.front = LRDU.values().first { Direction.YN.applyLRDU(it) == Direction.XN }
+        switchNode.reconnect()
+        helper.startSequence()
+            .thenExecuteAfter(20) { helper.assertTrue(lampNode.lightValue == 0, "lamp lit through an open switch") }
+            .thenExecute { switch.setSwitchState(true) }
+            .thenWaitUntil { helper.assertTrue(lampNode.lightValue >= LampSocketRender.MIN_LIGHT_ON_VALUE, "lamp light ${lampNode.lightValue} with the switch closed") }
+            .thenSucceed()
     }
 
     // Right-clicking a node with the multimeter reads it out instead of opening a GUI or doing nothing.

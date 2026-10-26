@@ -1,5 +1,9 @@
 package mods.eln.server
 
+import net.minecraftforge.event.entity.EntityJoinLevelEvent
+import net.minecraftforge.event.TickEvent
+import net.minecraft.world.entity.LightningBolt
+import mods.eln.misc.Coordinate
 import mods.eln.node.NodeManager
 import mods.eln.misc.Utils
 import net.minecraft.nbt.CompoundTag
@@ -23,9 +27,35 @@ import java.nio.file.StandardCopyOption
  * same temp file + backup rotation 1.7.10 used. The handlers are registered on the Forge event bus by ElnMod.
  */
 class ServerEventListener {
-    // PORT: lightning tracking (getLightningClosestTo) and the TreeCapitation tick return with the items using them.
+    // Lightning bolts that struck during the last tick; wireless signals lose range near them.
+    private var lightningListNext = ArrayList<LightningBolt>()
+    private var lightningList = ArrayList<LightningBolt>()
+
+    // PORT: the TreeCapitation tick (process) returns with the tree-felling tools.
+    fun tick(event: TickEvent.ServerTickEvent) {
+        if (event.phase != TickEvent.Phase.END) return
+        lightningList = lightningListNext
+        lightningListNext = ArrayList()
+    }
+
+    fun onEntityJoin(event: EntityJoinLevelEvent) {
+        val bolt = event.entity as? LightningBolt ?: return
+        if (!event.level.isClientSide) lightningListNext.add(bolt)
+    }
+
+    fun getLightningClosestTo(c: Coordinate): Double {
+        var best = 10000000.0
+        for (l in lightningList) {
+            if (c.dimension != l.level().dimension()) continue
+            val d = Math.sqrt(l.distanceToSqr(c.x.toDouble(), c.y.toDouble(), c.z.toDouble()))
+            if (d < best) best = d
+        }
+        return best
+    }
 
     fun clear() {
+        lightningList.clear()
+        lightningListNext.clear()
     }
 
     private val loadedWorlds = HashSet<ResourceKey<Level>>()

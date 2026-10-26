@@ -1,5 +1,8 @@
 package mods.eln.node.six
 
+import mods.eln.sound.SoundCommand
+import mods.eln.sound.IPlayer
+import mods.eln.sim.SignalLoadSupport
 import mods.eln.Eln
 import mods.eln.misc.Coordinate
 import mods.eln.misc.Direction
@@ -35,7 +38,7 @@ import java.io.DataOutputStream
 import java.io.IOException
 import java.util.*
 
-abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, descriptor: SixNodeDescriptor) : INodeElement {
+abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, descriptor: SixNodeDescriptor) : IPlayer, INodeElement {
     @JvmField
     var slowProcessList = ArrayList<IProcess>(4)
     @JvmField
@@ -66,7 +69,11 @@ abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, d
 
     open fun inventoryChanged() {}
 
-    // PORT: play(SoundCommand) (IPlayer) returns with mods.eln.sound.
+    override fun play(cmd: SoundCommand) {
+        cmd.addUuid(getUuid())
+        cmd.set(sixNode!!.coordinate)
+        cmd.play()
+    }
 
     open val coordinate: Coordinate?
         get() = sixNode!!.coordinate
@@ -110,7 +117,8 @@ abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, d
         if (sixNode != null && sixNode!!.isDestructing) return
         val ownerTag = describeSimOwner()
         electricalComponentList.forEach { it.setOwner(ownerTag) }
-        // PORT: SignalLoadSupport.createReadComponents(electricalLoadList) returns with the signal gate family.
+        signalReadComponentList = SignalLoadSupport.createReadComponents(electricalLoadList)
+        signalReadComponentList.forEach { it.setOwner(ownerTag) }
         electricalLoadList.forEach { it.setOwner(ownerTag) }
         val coord = coordinate
         if (coord != null) {
@@ -210,7 +218,7 @@ abstract class SixNodeElement(sixNode: SixNode, @JvmField var side: Direction, d
     }
 
     open fun initialize() {}
-    fun stop(uuid: Int) {
+    override fun stop(uuid: Int) {
         val bos = ByteArrayOutputStream(8)
         val stream = DataOutputStream(bos)
         try {

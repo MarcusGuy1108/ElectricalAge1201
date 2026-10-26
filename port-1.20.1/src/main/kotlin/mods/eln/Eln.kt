@@ -134,7 +134,7 @@ object Eln {
     @JvmField var tungstenIngot: GenericItemUsingDamageDescriptorWithComment? = null
     @JvmField var dustCopper: GenericItemUsingDamageDescriptorWithComment? = null
     @JvmField var plateCopper: GenericItemUsingDamageDescriptorWithComment? = null
-    @JvmField var copperCableDescriptor: CopperCableDescriptor? = null
+    lateinit var copperCableDescriptor: CopperCableDescriptor
     @JvmField var treeResin: TreeResin? = null
     lateinit var siliconWafer: SiliconWafer
     lateinit var transistor: Transistor
@@ -151,6 +151,7 @@ object Eln {
     @JvmField var thermometerElement: GenericItemUsingDamageDescriptor? = null
     @JvmField var allMeterElement: GenericItemUsingDamageDescriptor? = null
     @JvmField var wrenchDescriptor: GenericItemUsingDamageDescriptor? = null
+    @JvmField var configCopyToolElement: GenericItemUsingDamageDescriptor? = null
 
     lateinit var transparentNodeItem: GenericItemBlockUsingDamage<TransparentNodeDescriptor>
     val transparentNodeBlock: TransparentNodeBlock
@@ -165,12 +166,12 @@ object Eln {
     @JvmField var stdCableRender800V: CableRenderDescriptor? = null
     @JvmField var stdCableRender3200V: CableRenderDescriptor? = null
     @JvmField var stdCableRenderCreative: CableRenderDescriptor? = null
-    @JvmField var signalCableDescriptor: ElectricalCableDescriptor? = null
-    @JvmField var lowVoltageCableDescriptor: ElectricalCableDescriptor? = null
-    @JvmField var meduimVoltageCableDescriptor: ElectricalCableDescriptor? = null
-    @JvmField var highVoltageCableDescriptor: ElectricalCableDescriptor? = null
-    @JvmField var veryHighVoltageCableDescriptor: ElectricalCableDescriptor? = null
-    @JvmField var creativeCableDescriptor: ElectricalCableDescriptor? = null
+    lateinit var signalCableDescriptor: ElectricalCableDescriptor
+    lateinit var lowVoltageCableDescriptor: ElectricalCableDescriptor
+    lateinit var meduimVoltageCableDescriptor: ElectricalCableDescriptor
+    lateinit var highVoltageCableDescriptor: ElectricalCableDescriptor
+    lateinit var veryHighVoltageCableDescriptor: ElectricalCableDescriptor
+    lateinit var creativeCableDescriptor: ElectricalCableDescriptor
     val sixNodeBlock: SixNodeBlock
         @JvmStatic get() = SixNodeBlockRegistration.BLOCK.get()
 

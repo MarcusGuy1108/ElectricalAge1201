@@ -1,5 +1,6 @@
 package mods.eln.node.transparent
 
+import mods.eln.sim.SignalLoadSupport
 import mods.eln.compat.*
 import mods.eln.Eln
 import mods.eln.misc.Coordinate
@@ -73,7 +74,8 @@ abstract class TransparentNodeElement(@JvmField var node: TransparentNode?, @Jvm
         if (node != null && node!!.isDestructing) return
         val ownerTag = describeSimOwner()
         electricalComponentList.forEach { it.setOwner(ownerTag) }
-        // PORT: SignalLoadSupport.createReadComponents(electricalLoadList) returns with the signal gate family.
+        signalReadComponentList = SignalLoadSupport.createReadComponents(electricalLoadList)
+        signalReadComponentList.forEach { it.setOwner(ownerTag) }
         electricalLoadList.forEach { it.setOwner(ownerTag) }
         val coord = node?.coordinate
         if (coord != null) {

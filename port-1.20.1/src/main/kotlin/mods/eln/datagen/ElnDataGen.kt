@@ -1,5 +1,6 @@
 package mods.eln.datagen
 
+import mods.eln.misc.OreDictionaryTags
 import java.util.concurrent.CompletableFuture
 import net.minecraftforge.common.data.BlockTagsProvider
 import net.minecraft.world.level.block.Block
@@ -125,23 +126,8 @@ class ElnItemTags(
 ) : ItemTagsProvider(output, lookup, blockTags, Eln.MODID, files) {
     override fun addTags(provider: HolderLookup.Provider) {
         for ((name, descriptors) in Eln.oreDictionary) {
-            val appender = tag(ItemTags.create(tagFor(name)))
+            val appender = tag(ItemTags.create(OreDictionaryTags.tagFor(name)))
             for (descriptor in descriptors) appender.add(descriptor.parentItem!!)
         }
-    }
-
-    companion object {
-        private val FORGE_PREFIXES = listOf("ingot", "dust", "ore", "plate", "gem", "nugget", "block", "gear", "rod", "wire")
-
-        fun tagFor(oreName: String): ResourceLocation {
-            val prefix = FORGE_PREFIXES.firstOrNull { oreName.startsWith(it) && oreName.length > it.length && oreName[it.length].isUpperCase() }
-            return if (prefix != null) {
-                ResourceLocation("forge", prefix + "s/" + snake(oreName.substring(prefix.length)))
-            } else {
-                ResourceLocation(Eln.MODID, snake(oreName))
-            }
-        }
-
-        private fun snake(name: String) = name.replace(Regex("([a-z0-9])([A-Z])"), "$1_$2").lowercase()
     }
 }

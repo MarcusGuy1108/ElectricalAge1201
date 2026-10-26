@@ -1,5 +1,23 @@
 package mods.eln.registration
 
+import mods.eln.misc.SeriesFunction.Companion.newE6
+import mods.eln.misc.SeriesFunction.Companion.newE12
+import mods.eln.sixnode.*
+import mods.eln.sixnode.wirelesssignal.tx.WirelessSignalTxDescriptor
+import mods.eln.sixnode.wirelesssignal.source.WirelessSignalSourceDescriptor
+import mods.eln.sixnode.wirelesssignal.rx.WirelessSignalRxDescriptor
+import mods.eln.sixnode.wirelesssignal.repeater.WirelessSignalRepeaterDescriptor
+import mods.eln.sixnode.resistor.ResistorDescriptor
+import mods.eln.sixnode.lampsupply.LampSupplyDescriptor
+import mods.eln.sixnode.electricalswitch.ElectricalSwitchDescriptor
+import mods.eln.sixnode.electricalrelay.ElectricalRelayDescriptor
+import mods.eln.sixnode.electricalgatesource.ElectricalGateSourceRenderObj
+import mods.eln.sixnode.electricalgatesource.ElectricalGateSourceDescriptor
+import mods.eln.sixnode.diode.DiodeDescriptor
+import mods.eln.sixnode.signalinductor.SignalInductorDescriptor
+import mods.eln.misc.NominalVoltage
+import mods.eln.misc.IFunction
+import mods.eln.misc.FunctionTableYProtect
 import mods.eln.sixnode.groundcable.GroundCableDescriptor
 import mods.eln.sixnode.lampsocket.objrender.LampSocketSuspendedObjRender
 import mods.eln.sixnode.lampsocket.objrender.LampSocketStandardObjRender
@@ -82,14 +100,14 @@ object SixNodeRegistration {
         // PORT: registerConduit(127)
         registerLampSocket(64)
         // PORT: registerPowerSocket(67)
-        // PORT: registerLampSupply(65)
+        registerLampSupply(65)
 
-        // PORT: registerWirelessSignal(92)
+        registerWirelessSignal(92)
         // PORT: registerElectricalDataLogger(93)
-        // PORT: registerElectricalRelay(94)
-        // PORT: registerElectricalGateSource(95)
-        // PORT: registerPassiveComponent(96)
-        // PORT: registerSwitch(97)
+        registerElectricalRelay(94)
+        registerElectricalGateSource(95)
+        registerPassiveComponent(96)
+        registerSwitch(97)
         // PORT: registerElectricalManager(98)
         // PORT: registerElectricalSensor(100)
         // PORT: registerThermalSensor(101)
@@ -444,5 +462,461 @@ object SixNodeRegistration {
 
         // PORT: Streetlight (subId 8, needs ghost blocks) and the 120V/240V Emergency Lamps (subIds 15, 16) return with
         // mods.eln.ghost and EmergencyLampDescriptor.
+    }
+
+    private fun registerLampSupply(id: Int) {
+        var subId: Int
+
+        run {
+            subId = 0
+            val name = I18N.TR_NAME(I18N.Type.NONE, "120V Lamp Supply")
+            val desc = LampSupplyDescriptor(name, Eln.obj.getObj("DistributionBoard"), 32, NominalVoltage.V120).lighting()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 1
+            val name = I18N.TR_NAME(I18N.Type.NONE, "240V Lamp Supply")
+            val desc = LampSupplyDescriptor(name, Eln.obj.getObj("DistributionBoard"), 32, NominalVoltage.V240).lighting()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerSwitch(id: Int) {
+        var subId: Int
+        var name: String?
+        var desc: ElectricalSwitchDescriptor
+
+        run {
+            subId = 5
+            name = I18N.TR_NAME(I18N.Type.NONE, "5A Switch")
+            desc = ElectricalSwitchDescriptor(
+                name, Eln.instance.stdCableRender50V, Eln.obj.getObj("LowVoltageSwitch"), 300.0,
+                300.0 * 5.0, 0.04, 300.0, 300.0 * 5.0, Eln.cableThermalLoadInitializer.copy(), false
+            ).power()
+            desc.setDefaultIcon("switch")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 6
+            name = I18N.TR_NAME(I18N.Type.NONE, "20A Switch")
+            desc = ElectricalSwitchDescriptor(
+                name, Eln.instance.stdCableRender200V, Eln.obj.getObj("LowVoltageSwitch"), 600.0,
+                600.0 * 20.0, 0.01, 600.0, 600.0 * 20.0, Eln.cableThermalLoadInitializer.copy(), false
+            ).power()
+            desc.setDefaultIcon("switch")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 7
+            name = I18N.TR_NAME(I18N.Type.NONE, "50A Switch")
+            desc = ElectricalSwitchDescriptor(
+                name, Eln.instance.stdCableRender800V, Eln.obj.getObj("HighVoltageSwitch"), 600.0,
+                600.0 * 50.0, 0.005, 600.0, 600.0 * 50.0, Eln.cableThermalLoadInitializer.copy(), false
+            ).power()
+            desc.setDefaultIcon("switch")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 9
+            name = I18N.TR_NAME(I18N.Type.NONE, "100A Switch")
+            desc = ElectricalSwitchDescriptor(
+                name, Eln.instance.stdCableRender3200V, Eln.obj.getObj("HighVoltageSwitch"), 600.0,
+                600.0 * 100.0, 0.0025, 600.0, 600.0 * 100.0, Eln.cableThermalLoadInitializer.copy(), false
+            ).power()
+            desc.setDefaultIcon("switch")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 4
+            name = I18N.TR_NAME(I18N.Type.NONE, "Very High Voltage Switch")
+            desc = ElectricalSwitchDescriptor(
+                name, Eln.instance.stdCableRender3200V, Eln.obj.getObj("HighVoltageSwitch"), Eln.VVU,
+                Eln.instance.VVP(), Eln.instance.veryHighVoltageCableDescriptor.electricalRs * 2, Eln.VVU * 1.5, Eln.instance.VVP() * 1.2,
+                Eln.cableThermalLoadInitializer.copy(), false
+            ).power()
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 0
+            name = I18N.TR_NAME(I18N.Type.NONE, "High Voltage Switch")
+            desc = ElectricalSwitchDescriptor(
+                name, Eln.instance.stdCableRender800V, Eln.obj.getObj("HighVoltageSwitch"), Eln.HVU,
+                Eln.instance.HVP(), Eln.instance.highVoltageCableDescriptor.electricalRs * 2, Eln.HVU * 1.5, Eln.instance.HVP() * 1.2,
+                Eln.cableThermalLoadInitializer.copy(), false
+            ).power()
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 1
+            name = I18N.TR_NAME(I18N.Type.NONE, "Low Voltage Switch")
+            desc = ElectricalSwitchDescriptor(
+                name,
+                Eln.instance.stdCableRender50V,
+                Eln.obj.getObj("LowVoltageSwitch"),
+                Eln.LVU,
+                Eln.instance.LVP(),
+                Eln.instance.lowVoltageCableDescriptor.electricalRs * 2,
+                Eln.LVU * 1.5,
+                Eln.instance.LVP() * 1.2,
+                Eln.cableThermalLoadInitializer.copy(),
+                false
+            ).power()
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 2
+            name = I18N.TR_NAME(I18N.Type.NONE, "Medium Voltage Switch")
+            desc = ElectricalSwitchDescriptor(
+                name, Eln.instance.stdCableRender200V, Eln.obj.getObj("LowVoltageSwitch"), Eln.MVU,
+                Eln.instance.MVP(), Eln.instance.meduimVoltageCableDescriptor.electricalRs * 2, Eln.MVU * 1.5, Eln.instance.MVP() * 1.2,
+                Eln.cableThermalLoadInitializer.copy(), false
+            ).power()
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 3
+            name = I18N.TR_NAME(I18N.Type.NONE, "Signal Switch")
+            desc = ElectricalSwitchDescriptor(
+                name, Eln.instance.stdCableRenderSignal, Eln.obj.getObj("LowVoltageSwitch"), Eln.SVU,
+                Eln.SVP, 0.02, Eln.SVU * 1.5, Eln.SVP * 1.2, Eln.cableThermalLoadInitializer.copy(), true
+            ).signal()
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addWithoutRegistry(subId + (id shl 6), desc)
+        }
+        // 4 taken
+        run {
+            subId = 8
+            name = I18N.TR_NAME(I18N.Type.NONE, "Signal Switch with LED")
+            desc = ElectricalSwitchDescriptor(
+                name, Eln.instance.stdCableRenderSignal, Eln.obj.getObj("ledswitch"), Eln.SVU, Eln.SVP, 0.02,
+                Eln.SVU * 1.5, Eln.SVP * 1.2, Eln.cableThermalLoadInitializer.copy(), true
+            ).signal()
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addWithoutRegistry(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerPassiveComponent(id: Int) {
+        var subId: Int
+        var name: String
+        var function: IFunction
+        val baseFunction = FunctionTableYProtect(
+            doubleArrayOf(
+                0.0, 0.01, 0.03, 0.1, 0.2, 0.4,
+                0.8, 1.2
+            ), 1.0, 0.0, 5.0
+        )
+
+        run {
+            subId = 0
+            name = I18N.TR_NAME(I18N.Type.NONE, "10A Diode")
+            function = FunctionTableYProtect(doubleArrayOf(0.0, 0.1, 0.3, 1.0, 2.0, 4.0, 8.0, 12.0), 1.0, 0.0, 100.0)
+            val desc = DiodeDescriptor(
+                name,
+                function,
+                10.0,
+                1.0,
+                10.0,
+                Eln.sixNodeThermalLoadInitializer.copy(),
+                Eln.instance.lowVoltageCableDescriptor,
+                Eln.obj.getObj("PowerElectricPrimitives")
+            ).power()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 1
+            name = I18N.TR_NAME(I18N.Type.NONE, "25A Diode")
+            function = FunctionTableYProtect(
+                doubleArrayOf(0.0, 0.25, 0.75, 2.5, 5.0, 10.0, 20.0, 30.0), 1.0, 0.0,
+                100.0
+            )
+            val desc = DiodeDescriptor(
+                name,
+                function,
+                25.0,
+                1.0,
+                25.0,
+                Eln.sixNodeThermalLoadInitializer.copy(),
+                Eln.instance.lowVoltageCableDescriptor,
+                Eln.obj.getObj("PowerElectricPrimitives")
+            ).power()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 8
+            name = I18N.TR_NAME(I18N.Type.NONE, "Signal Diode")
+            function = baseFunction.duplicate(1.0, 0.1)
+            val desc = DiodeDescriptor(
+                name,
+                function,
+                0.1,
+                1.0,
+                0.1,
+                Eln.sixNodeThermalLoadInitializer.copy(),
+                Eln.instance.signalCableDescriptor,
+                Eln.obj.getObj("PowerElectricPrimitives")
+            ).signal()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 16
+            name = I18N.TR_NAME(I18N.Type.NONE, "Signal 20H inductor")
+            val desc = SignalInductorDescriptor(name, 20.0, Eln.instance.lowVoltageCableDescriptor).signal()
+            desc.setDefaultIcon("empty-texture")
+            Eln.sixNodeItem.addWithoutRegistry(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 32
+            name = I18N.TR_NAME(I18N.Type.NONE, "Power Capacitor")
+            val desc = PowerCapacitorSixDescriptor(
+                name, Eln.obj.getObj(
+                    "PowerElectricPrimitives"
+                ), newE6(-1.0), (60 * 2000).toDouble()
+            ).power()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 34
+            name = I18N.TR_NAME(I18N.Type.NONE, "Power Inductor")
+            val desc = PowerInductorSixDescriptor(
+                name, Eln.obj.getObj(
+                    "PowerElectricPrimitives"
+                ), newE6(-1.0)
+            ).power()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 35
+            name = I18N.TR_NAME(I18N.Type.NONE, "Variable inductor")
+            val desc = VariableInductorSixDescriptor(
+                name,
+                Eln.obj.getObj("PowerElectricPrimitives"),
+                newE6(-1.0),
+                PowerInductorSixContainer.cableStackLimit
+            ).power()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 36
+            name = I18N.TR_NAME(I18N.Type.NONE, "Power Resistor")
+            val desc = ResistorDescriptor(
+                name, Eln.obj.getObj("PowerElectricPrimitives"),
+                newE12(-2.0), 0.0, false
+            ).power()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 37
+            name = I18N.TR_NAME(I18N.Type.NONE, "Rheostat")
+            val desc = ResistorDescriptor(
+                name, Eln.obj.getObj("PowerElectricPrimitives"),
+                newE12(-2.0), 0.0, true
+            ).power()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 38
+            name = I18N.TR_NAME(I18N.Type.NONE, "Thermistor")
+            val desc = ResistorDescriptor(
+                name, Eln.obj.getObj("PowerElectricPrimitives"),
+                newE12(-2.0), -0.01, false
+            ).power()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 39
+            name = I18N.TR_NAME(I18N.Type.NONE, "Creative Power Capacitor")
+            val desc = CreativePowerCapacitorDescriptor(name, Eln.obj.getObj("PowerElectricPrimitives")).creative()
+            desc.setDefaultIcon("powercapacitor")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 40
+            name = I18N.TR_NAME(I18N.Type.NONE, "Creative Power Inductor")
+            val desc = CreativePowerInductorDescriptor(name, Eln.obj.getObj("PowerElectricPrimitives")).creative()
+            desc.setDefaultIcon("powerinductor")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 41
+            name = I18N.TR_NAME(I18N.Type.NONE, "Creative Power Resistor")
+            val desc = CreativePowerResistorDescriptor(name, Eln.obj.getObj("PowerElectricPrimitives")).creative()
+            desc.setDefaultIcon("powerresistor")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerElectricalRelay(id: Int) {
+        var subId: Int
+        var name: String?
+        var desc: ElectricalRelayDescriptor
+
+        run {
+            subId = 5
+            name = I18N.TR_NAME(I18N.Type.NONE, "5V Control Relay 10A")
+            desc = ElectricalRelayDescriptor(name, Eln.obj.getObj("RelaySmall"), NominalVoltage.V120, 10.0, 0.04, NominalVoltage.V5)
+            desc.setDefaultIcon("lowvoltagerelay")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 6
+            name = I18N.TR_NAME(I18N.Type.NONE, "12V Control Relay 20A")
+            desc = ElectricalRelayDescriptor(name, Eln.obj.getObj("RelayBig"), 600.0, 20.0, 0.01, NominalVoltage.V12)
+            desc.setDefaultIcon("mediumvoltagerelay")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 7
+            name = I18N.TR_NAME(I18N.Type.NONE, "12V Control Relay 50A")
+            desc = ElectricalRelayDescriptor(name, Eln.obj.getObj("relay800"), 600.0, 50.0, 0.005, NominalVoltage.V12)
+            desc.setDefaultIcon("highvoltagerelay")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 8
+            name = I18N.TR_NAME(I18N.Type.NONE, "12V Control Relay 100A")
+            desc = ElectricalRelayDescriptor(name, Eln.obj.getObj("relay800"), 600.0, 100.0, 0.0025, NominalVoltage.V12)
+            desc.setDefaultIcon("veryhighvoltagerelay")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 0
+            name = I18N.TR_NAME(I18N.Type.NONE, "Low Voltage Relay")
+            desc = ElectricalRelayDescriptor(name, Eln.obj.getObj("RelayBig"), Eln.instance.lowVoltageCableDescriptor)
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 1
+            name = I18N.TR_NAME(I18N.Type.NONE, "Medium Voltage Relay")
+            desc = ElectricalRelayDescriptor(name, Eln.obj.getObj("RelayBig"), Eln.instance.meduimVoltageCableDescriptor)
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 2
+            name = I18N.TR_NAME(I18N.Type.NONE, "High Voltage Relay")
+            desc = ElectricalRelayDescriptor(name, Eln.obj.getObj("relay800"), Eln.instance.highVoltageCableDescriptor)
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 3
+            name = I18N.TR_NAME(I18N.Type.NONE, "Very High Voltage Relay")
+            desc = ElectricalRelayDescriptor(name, Eln.obj.getObj("relay800"), Eln.instance.veryHighVoltageCableDescriptor)
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 4
+            name = I18N.TR_NAME(I18N.Type.NONE, "Signal Relay")
+            desc = ElectricalRelayDescriptor(name, Eln.obj.getObj("RelaySmall"), Eln.instance.signalCableDescriptor)
+            desc.hideFromCreative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerElectricalGateSource(id: Int) {
+        var subId: Int
+        var name: String?
+
+        val signalsourcepot = ElectricalGateSourceRenderObj(
+            Eln.obj.getObj(
+                "signalsourcepot"
+            )
+        )
+        val ledswitch = ElectricalGateSourceRenderObj(Eln.obj.getObj("ledswitch"))
+
+        run {
+            subId = 0
+            name = I18N.TR_NAME(I18N.Type.NONE, "Signal Trimmer")
+            val desc = ElectricalGateSourceDescriptor(
+                name, signalsourcepot, false,
+                "trimmer"
+            )
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 1
+            name = I18N.TR_NAME(I18N.Type.NONE, "Signal Switch")
+            val desc = ElectricalGateSourceDescriptor(
+                name, ledswitch, true,
+                if (Eln.config.getBooleanOrElse("ui.icons.noSymbols", false)) "signalswitch" else "switch"
+            )
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 8
+            name = I18N.TR_NAME(I18N.Type.NONE, "Signal Button")
+            val desc = ElectricalGateSourceDescriptor(name, ledswitch, true, "button")
+            desc.setWithAutoReset()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 12
+            name = I18N.TR_NAME(I18N.Type.NONE, "Wireless Button")
+            val desc = WirelessSignalSourceDescriptor(
+                name, ledswitch, Eln.config.getIntOrElse("wireless.transmitter.maxRangeBlocks", 32),
+                true
+            )
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 16
+            name = I18N.TR_NAME(I18N.Type.NONE, "Wireless Switch")
+            val desc = WirelessSignalSourceDescriptor(
+                name, ledswitch, Eln.config.getIntOrElse("wireless.transmitter.maxRangeBlocks", 32),
+                false
+            )
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerWirelessSignal(id: Int) {
+        var subId: Int
+        var name: String?
+
+        run {
+            subId = 0
+            name = I18N.TR_NAME(I18N.Type.NONE, "Wireless Signal Receiver")
+            val desc = WirelessSignalRxDescriptor(name, Eln.obj.getObj("wirelesssignalrx"))
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 8
+            name = I18N.TR_NAME(I18N.Type.NONE, "Wireless Signal Transmitter")
+            val desc =
+                WirelessSignalTxDescriptor(name, Eln.obj.getObj("wirelesssignaltx"), Eln.config.getIntOrElse("wireless.transmitter.maxRangeBlocks", 32))
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 16
+            name = I18N.TR_NAME(I18N.Type.NONE, "Wireless Signal Repeater")
+            val desc =
+                WirelessSignalRepeaterDescriptor(name, Eln.obj.getObj("wirelesssignalrepeater"), Eln.config.getIntOrElse("wireless.transmitter.maxRangeBlocks", 32))
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
     }
 }

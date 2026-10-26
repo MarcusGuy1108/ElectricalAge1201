@@ -805,7 +805,14 @@ object ItemRegistration {
             Eln.allMeterElement = element
         }
         // PORT: Wireless Analyser returns with WirelessSignalAnalyserItemDescriptor.
-        // PORT: Config Copy Tool returns with ConfigCopyToolDescriptor.
+        run {
+            subId = 16
+            completId = subId + (id shl 6)
+            element =
+                ConfigCopyToolDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Config Copy Tool"))
+            Eln.sharedItem.addElement(completId, element)
+            Eln.configCopyToolElement = element
+        }
         // PORT: Falstad Import Tool returns with FalstadImportToolDescriptor.
     }
 

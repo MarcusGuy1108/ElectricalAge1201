@@ -1,5 +1,7 @@
 package mods.eln.misc
 
+import mods.eln.misc.Obj3D
+import net.minecraft.world.phys.AABB
 import java.io.IOException
 import net.minecraft.world.item.Item
 import mods.eln.generic.IDescriptorItem
@@ -637,5 +639,22 @@ object Utils {
             idx++
         }
         println("********")
+    }
+
+    @JvmStatic
+    fun playerHasMeter(entityPlayer: Player): Boolean {
+        val cur = entityPlayer.mainHandItem
+        return listOf(Eln.multiMeterElement, Eln.thermometerElement, Eln.allMeterElement, Eln.configCopyToolElement)
+            .any { it?.checkSameItemStack(cur) == true }
+    }
+
+    @JvmStatic
+    fun isPlayerAround(world: Level, axisAlignedBB: AABB): Boolean {
+        return world.getEntitiesOfClass(Player::class.java, axisAlignedBB).isNotEmpty()
+    }
+
+    @JvmStatic
+    fun getSixNodePinDistance(obj: Obj3D.Obj3DPart): FloatArray {
+        return floatArrayOf(abs(obj.zMin * 16), abs(obj.zMax * 16), abs(obj.yMin * 16), abs(obj.yMax * 16))
     }
 }

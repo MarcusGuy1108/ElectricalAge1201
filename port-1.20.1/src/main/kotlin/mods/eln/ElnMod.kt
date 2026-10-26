@@ -49,9 +49,10 @@ object ElnMod {
         LightBlock.BLOCK
         Eln.obj.loadAllElnModels()
         LampLists.translateLampTypes() // Lamp sockets list the translated lamp types, so before registration.
-        ItemRegistration.registerItem()
+        // Same order as 1.7.10: items such as heating corps refer to the cable descriptors.
         SixNodeRegistration.registerSix()
         TransparentNodeRegistration.registerTransparent()
+        ItemRegistration.registerItem()
         ElnRegistries.register(MOD_BUS)
         ElnMenus.MENUS.register(MOD_BUS)
         MOD_BUS.addListener(ElnDataGen::gatherData)
@@ -66,6 +67,8 @@ object ElnMod {
             Eln.simulator.tick(event)
             Eln.nodeServer.tick(event)
         }
+        bus.addListener(Eln.serverEventListener::tick)
+        bus.addListener(Eln.serverEventListener::onEntityJoin)
         bus.addListener(Eln.serverEventListener::onWorldLoad)
         bus.addListener(Eln.serverEventListener::onWorldSave)
         bus.addListener(Eln.serverEventListener::onWorldUnload)

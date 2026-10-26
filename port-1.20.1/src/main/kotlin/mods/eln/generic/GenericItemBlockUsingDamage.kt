@@ -37,6 +37,12 @@ class GenericItemBlockUsingDamage<Descriptor : GenericItemBlockUsingDamageDescri
         }
     }
 
+    // 1.7.10 kept these legacy descriptors loadable but out of the creative list.
+    fun addWithoutRegistry(damage: Int, descriptor: Descriptor) {
+        addDescriptor(damage, descriptor)
+        orderList.remove(damage)
+    }
+
     fun getDescriptor(damage: Int): Descriptor? {
         return subItemList[damage]
     }

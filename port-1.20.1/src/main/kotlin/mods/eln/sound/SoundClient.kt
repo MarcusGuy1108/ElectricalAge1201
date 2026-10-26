@@ -13,6 +13,9 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 object SoundClient {
+    // 1.7.10 vanilla sound names Eln plays, renamed in 1.20.1.
+    private val LEGACY_VANILLA_SOUNDS = mapOf("random.click" to "block.lever.click")
+
     fun play(p: SoundCommand) {
         val player = Minecraft.getInstance().player ?: return
         if (p.world!!.dimension() != player.level().dimension()) return
@@ -30,7 +33,7 @@ object SoundClient {
         if (p.volume <= 0) return
         // Played 2 blocks from the player towards the source, as 1.7.10 did, so its own attenuation stays out of the way.
         val sound = SimpleSoundInstance(
-            SoundEvent.createVariableRangeEvent(Utils.resourceLocation(p.track!!)), SoundSource.BLOCKS, p.volume, p.pitch,
+            SoundEvent.createVariableRangeEvent(Utils.resourceLocation(LEGACY_VANILLA_SOUNDS[p.track!!] ?: p.track!!)), SoundSource.BLOCKS, p.volume, p.pitch,
             SoundInstance.createUnseededRandom(),
             player.x + 2 * (p.x - player.x) / distance,
             player.y + 2 * (p.y - player.y) / distance,
