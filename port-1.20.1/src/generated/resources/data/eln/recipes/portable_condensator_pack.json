@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "eln:portable_condensator"
+    },
+    {
+      "item": "eln:portable_condensator"
+    },
+    {
+      "item": "eln:portable_condensator"
+    },
+    {
+      "item": "eln:portable_condensator"
+    }
+  ],
+  "result": {
+    "item": "eln:portable_condensator_pack",
+    "nbt": "{energy:0.0d}"
+  }
+}

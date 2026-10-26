@@ -21,6 +21,7 @@ import mods.eln.misc.OreDictionaryTags
 import com.google.gson.JsonObject
 import mods.eln.compat.*
 import mods.eln.Eln
+import mods.eln.item.CopperGear
 import mods.eln.i18n.I18N
 import mods.eln.misc.Recipe
 import net.minecraft.world.level.block.Blocks
@@ -180,8 +181,9 @@ object CraftingRecipes {
     private fun itemCrafting() {
 
         //
-        // PORT: recipeEnergyConverter, recipeComputerProbe, recipeArmor and recipeTool return with the energy converter,
-        // the ComputerCraft probe and the copper armor and tools.
+        // PORT: recipeEnergyConverter and recipeComputerProbe return with the energy converter and the ComputerCraft probe.
+        recipeArmor()
+        recipeTool()
 
         recipeGround()
         recipeElectricalSource()
@@ -2769,6 +2771,21 @@ object CraftingRecipes {
 
 
 
+
+    private fun recipeArmor() {
+        addRecipe(ItemStack(CopperGear.get("copper_helmet")), "CCC", "C C", 'C', "ingotCopper")
+        addRecipe(ItemStack(CopperGear.get("copper_chestplate")), "C C", "CCC", "CCC", 'C', "ingotCopper")
+        addRecipe(ItemStack(CopperGear.get("copper_leggings")), "CCC", "C C", "C C", 'C', "ingotCopper")
+        addRecipe(ItemStack(CopperGear.get("copper_boots")), "C C", "C C", 'C', "ingotCopper")
+    }
+
+    private fun recipeTool() {
+        addRecipe(ItemStack(CopperGear.get("copper_shovel")), "i", "s", "s", 'i', "ingotCopper", 's', ItemStack(Items.STICK))
+        addRecipe(ItemStack(CopperGear.get("copper_axe")), "ii", "is", " s", 'i', "ingotCopper", 's', ItemStack(Items.STICK))
+        addRecipe(ItemStack(CopperGear.get("copper_hoe")), "ii", " s", " s", 'i', "ingotCopper", 's', ItemStack(Items.STICK))
+        addRecipe(ItemStack(CopperGear.get("copper_pickaxe")), "iii", " s ", " s ", 'i', "ingotCopper", 's', ItemStack(Items.STICK))
+        addRecipe(ItemStack(CopperGear.get("copper_sword")), "i", "i", "s", 'i', "ingotCopper", 's', ItemStack(Items.STICK))
+    }
 
     private fun recipeDisplays() {
         addRecipe(

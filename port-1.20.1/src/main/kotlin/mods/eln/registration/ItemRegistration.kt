@@ -1,5 +1,8 @@
 package mods.eln.registration
 
+import mods.eln.item.electricalitem.BatteryItem
+import mods.eln.item.electricalitem.ElectricalPickaxe
+import mods.eln.item.electricalitem.ElectricalFlashlightItem
 import mods.eln.sixnode.wirelesssignal.WirelessSignalAnalyserItemDescriptor
 import mods.eln.item.OverHeatingProtectionDescriptor
 import mods.eln.item.OverVoltageProtectionDescriptor
@@ -9,6 +12,9 @@ import mods.eln.item.SolarTrackerDescriptor
 import mods.eln.item.CaseItemDescriptor
 import mods.eln.item.DielectricItem
 import mods.eln.item.MachineBoosterDescriptor
+import mods.eln.item.ElectricalDrillDescriptor
+import mods.eln.item.MiningPipeDescriptor
+import mods.eln.item.OreScanner
 import mods.eln.item.EntitySensorFilterDescriptor
 import mods.eln.sixnode.electricaldatalogger.DataLogsPrintDescriptor
 import mods.eln.item.BrushDescriptor
@@ -83,16 +89,16 @@ object ItemRegistration {
         registerElectricalMotor(10)
         registerSolarTracker(11)
         registerMeter(14)
-        // PORT: registerElectricalDrill(15)
-        // PORT: registerOreScanner(16)
-        // PORT: registerMiningPipe(17)
+        registerElectricalDrill(15)
+        registerOreScanner(16)
+        registerMiningPipe(17)
         registerTreeResinAndRubber(64)
         registerRawCable(65)
         registerArc(69)
         registerBrush(119)
         registerMiscItem(120)
-        // PORT: registerElectricalTool(121)
-        // PORT: registerPortableItem(122)
+        registerElectricalTool(121)
+        registerPortableItem(122)
         registerFuelBurnerItem(124)
         registerTurbineBladeItems(18)
         registerBasicItems(126)
@@ -1142,6 +1148,142 @@ object ItemRegistration {
             )
             Eln.sharedItem.addElement(completId, element)
         }
+    }
+
+    private fun registerElectricalDrill(id: Int) {
+        var subId: Int
+        var completId: Int
+        var name: String?
+
+        var descriptor: ElectricalDrillDescriptor
+        run {
+            subId = 0
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "Cheap Electrical Drill")
+            descriptor = ElectricalDrillDescriptor(name, 8.0, 4000.0)
+            Eln.sharedItem.addElement(completId, descriptor)
+        }
+        run {
+            subId = 1
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "Average Electrical Drill")
+            descriptor = ElectricalDrillDescriptor(name, 5.0, 5000.0)
+            Eln.sharedItem.addElement(completId, descriptor)
+        }
+        run {
+            subId = 2
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "Fast Electrical Drill")
+            descriptor = ElectricalDrillDescriptor(name, 3.0, 6000.0)
+            Eln.sharedItem.addElement(completId, descriptor)
+        }
+        run {
+            subId = 3
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "Turbo Electrical Drill")
+
+            descriptor = ElectricalDrillDescriptor(name, 1.0, 10000.0)
+            Eln.sharedItem.addElement(completId, descriptor)
+        }
+        run {
+            subId = 4
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "Irresponsible Electrical Drill")
+            descriptor = ElectricalDrillDescriptor(name, 0.1, 20000.0)
+            Eln.sharedItem.addElement(completId, descriptor)
+        }
+    }
+
+    private fun registerOreScanner(id: Int) {
+        var subId: Int
+        var completId: Int
+        var name: String?
+
+        var descriptor: OreScanner
+        run {
+            subId = 0
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "Ore Scanner")
+            descriptor = OreScanner(name)
+            Eln.sharedItem.addElement(completId, descriptor)
+        }
+    }
+
+    private fun registerMiningPipe(id: Int) {
+        var subId: Int
+        var completId: Int
+        var name: String?
+
+        var descriptor: MiningPipeDescriptor
+        run {
+            subId = 0
+            completId = subId + (id shl 6)
+            name = I18N.TR_NAME(I18N.Type.NONE, "Mining Pipe")
+            descriptor = MiningPipeDescriptor(name)
+            Eln.sharedItem.addElement(completId, descriptor)
+            Eln.miningPipeDescriptor = descriptor
+        }
+    }
+
+    private fun registerElectricalTool(id: Int) {
+        var subId: Int
+        var name: String
+        run {
+            subId = 0
+            name = I18N.TR_NAME(I18N.Type.NONE, "Small Flashlight")
+            val desc = ElectricalFlashlightItem(name, 10, 6, 20.0, 12, 8, 50.0, 6000.0, 100.0)
+            Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 1
+            name = I18N.TR_NAME(I18N.Type.NONE, "Improved Flashlight")
+            val desc = ElectricalFlashlightItem(name, 15, 8, 20.0, 15, 12, 50.0, 24000.0, 400.0)
+            Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 8
+            name = I18N.TR_NAME(I18N.Type.NONE, "Portable Electrical Mining Drill")
+            // About the power of Efficiency 4
+            val desc = ElectricalPickaxe(name, 22f, 1f, 120000.0, 200.0, 10000.0)
+            Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
+        }
+
+        // PORT: Portable Electrical Axe returns with ElectricalAxe.
+        // PORT: The Nope Wand returns with NopeWandDescriptor.
+    }
+
+    private fun registerPortableItem(id: Int) {
+        var subId: Int
+        var name: String
+        run {
+            subId = 0
+            name = I18N.TR_NAME(I18N.Type.NONE, "Portable Battery")
+            val desc = BatteryItem(name, 40000.0, 125.0, 250.0, 2)
+            Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 1
+            name = I18N.TR_NAME(I18N.Type.NONE, "Portable Battery Pack")
+            val desc = BatteryItem(name, 160000.0, 500.0, 1000.0, 2)
+            Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
+        }
+
+        run {
+            subId = 16
+            name = I18N.TR_NAME(I18N.Type.NONE, "Portable Condensator")
+            val desc = BatteryItem(name, 4000.0, 2000.0, 2000.0, 1)
+            Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 17
+            name = I18N.TR_NAME(I18N.Type.NONE, "Portable Condensator Pack")
+            val desc = BatteryItem(name, 16000.0, 8000.0, 8000.0, 1)
+            Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
+        }
+
+        // PORT: X-Ray Scanner returns with PortableOreScannerItem.
     }
 
     private fun registerMiscItem(id: Int) {

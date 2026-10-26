@@ -1,5 +1,6 @@
 package mods.eln
 
+import mods.eln.item.electricalinterface.ItemEnergyInventoryProcess
 import mods.eln.ore.ElnOre
 import mods.eln.transparentnode.electricalfurnace.ElectricalFurnaceDescriptor
 import mods.eln.misc.RecipesList
@@ -165,9 +166,11 @@ object Eln {
     @JvmField var configCopyToolElement: GenericItemUsingDamageDescriptor? = null
     @JvmField var whiteDesc: BrushDescriptor? = null
     lateinit var dataLogsPrintDescriptor: DataLogsPrintDescriptor
+    lateinit var miningPipeDescriptor: mods.eln.item.MiningPipeDescriptor
     @JvmField var brushSubNames: List<String> = emptyList()
 
     @JvmStatic lateinit var wind: WindProcess
+    @JvmStatic lateinit var itemEnergyInventoryProcess: ItemEnergyInventoryProcess
 
     /**
      * A stack of the Eln item named [name] (descriptor name, ore dictionary name or ore name, as 1.7.10 found them

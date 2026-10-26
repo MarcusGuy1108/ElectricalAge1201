@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:ingots/alloy"
+    }
+  },
+  "pattern": [
+    "A",
+    "A"
+  ],
+  "result": {
+    "count": 12,
+    "item": "eln:mining_pipe"
+  },
+  "show_notification": true
+}

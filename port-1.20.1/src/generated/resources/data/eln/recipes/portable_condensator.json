@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "eln:dielectric"
+    },
+    "c": {
+      "item": "eln:iron_cable"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " r ",
+    "cDc",
+    " r "
+  ],
+  "result": {
+    "item": "eln:portable_condensator",
+    "nbt": "{energy:0.0d}"
+  },
+  "show_notification": true
+}

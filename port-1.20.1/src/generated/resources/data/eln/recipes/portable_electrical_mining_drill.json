@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "eln:portable_battery"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "T": {
+      "item": "eln:average_electrical_drill"
+    }
+  },
+  "pattern": [
+    " T ",
+    "IBI",
+    " I "
+  ],
+  "result": {
+    "item": "eln:portable_electrical_mining_drill",
+    "nbt": "{energy:0.0d,powerOn:0b,rand:23288211}"
+  },
+  "show_notification": true
+}

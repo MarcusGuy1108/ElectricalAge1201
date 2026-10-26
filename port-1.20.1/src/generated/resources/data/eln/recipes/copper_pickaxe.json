@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "i": {
+      "tag": "forge:ingots/copper"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "iii",
+    " s ",
+    " s "
+  ],
+  "result": {
+    "item": "eln:copper_pickaxe",
+    "nbt": "{Damage:0}"
+  },
+  "show_notification": true
+}

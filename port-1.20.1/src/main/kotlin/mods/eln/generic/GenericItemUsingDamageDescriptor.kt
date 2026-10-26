@@ -1,5 +1,6 @@
 package mods.eln.generic
 
+import net.minecraft.world.level.block.state.BlockState
 import mods.eln.misc.RealisticEnum
 import mods.eln.misc.VoltageLevelColor
 import net.minecraft.nbt.CompoundTag
@@ -96,6 +97,9 @@ open class GenericItemUsingDamageDescriptor {
         }
         return nbt
     }
+
+    // Whether mining [state] with this item yields drops; 1.7.10 let every Eln item harvest everything.
+    open fun isCorrectToolForDrops(stack: ItemStack, state: BlockState): Boolean = false
 
     open fun getStrVsBlock(stack: ItemStack, block: Block?): Float {
         return 0.2f

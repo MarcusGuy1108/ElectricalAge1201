@@ -51,6 +51,10 @@ open class GenericItem @JvmOverloads constructor(val descriptor: GenericItemUsin
         descriptor.onUpdate(stack, level, entity, slot, selected)
     }
 
+    override fun isCorrectToolForDrops(stack: ItemStack, state: BlockState): Boolean {
+        return descriptor.isCorrectToolForDrops(stack, state)
+    }
+
     override fun getDestroySpeed(stack: ItemStack, state: BlockState): Float {
         return descriptor.getStrVsBlock(stack, state.block)
     }

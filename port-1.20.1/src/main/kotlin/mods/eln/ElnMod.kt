@@ -1,7 +1,9 @@
 package mods.eln
 
+import mods.eln.item.electricalinterface.ItemEnergyInventoryProcess
 import mods.eln.craft.CraftingRecipes
 import mods.eln.ore.ElnOre
+import mods.eln.item.CopperGear
 import net.minecraft.world.item.Item
 import mods.eln.generic.GenericItem
 import mods.eln.ghost.GhostBlock
@@ -59,6 +61,7 @@ object ElnMod {
         LightBlock.BLOCK
         GhostBlock.BLOCK
         ElnOre.register(MOD_BUS)
+        CopperGear.register()
         Eln.obj.loadAllElnModels()
         LampLists.translateLampTypes() // Lamp sockets list the translated lamp types, so before registration.
         // Same order as 1.7.10: items such as heating corps refer to the cable descriptors.
@@ -83,6 +86,9 @@ object ElnMod {
             // shortcut: the wind state starts fresh each server start; 1.7.10 kept it in a SaveConfig world data entry.
             Eln.wind = WindProcess()
             Eln.simulator.addSlowProcess(Eln.wind)
+            // Charges and drains the electrical items players carry (portable batteries, tools, flashlights).
+            Eln.itemEnergyInventoryProcess = ItemEnergyInventoryProcess()
+            Eln.simulator.addSlowProcess(Eln.itemEnergyInventoryProcess)
         }
         bus.addListener { event: TickEvent.ServerTickEvent ->
             Eln.simulator.tick(event)

@@ -7,6 +7,9 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.resources.ResourceKey
 import net.minecraft.core.registries.Registries
 import mods.eln.Eln
+import mods.eln.item.electricalitem.ElectricalPickaxe
+import mods.eln.item.CopperGear
+import mods.eln.generic.GenericItemUsingDamageDescriptor
 import mods.eln.misc.Coordinate
 import mods.eln.misc.Direction
 import mods.eln.misc.LRDU
@@ -235,6 +238,22 @@ object NodeGameTests {
         helper.assertTrue(recipes.byKey(ResourceLocation(Eln.MODID, "low_voltage_cable")).isPresent, "no low voltage cable recipe")
         helper.assertTrue(recipes.byKey(ResourceLocation(Eln.MODID, "smelting/copper_ingot")).isPresent, "no copper smelting recipe")
         helper.assertTrue(Eln.maceratorRecipes.getRecipe(ItemStack(ElnOre.COPPER.block.get())) != null, "no macerator recipe for copper ore")
+        helper.succeed()
+    }
+
+    // The drill digs at full speed only while charged, pays for each block, and drops what it digs.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun miningDrillUsesEnergy(helper: GameTestHelper) {
+        val drill = Eln.findItemStack("Portable Electrical Mining Drill", 1)
+        val descriptor = GenericItemUsingDamageDescriptor.getDescriptor(drill) as ElectricalPickaxe
+        val stone = Blocks.STONE.defaultBlockState()
+        helper.assertTrue(drill.getDestroySpeed(stone) == descriptor.strengthOff, "empty drill should dig slowly")
+        descriptor.setEnergy(drill, descriptor.energyStorage)
+        helper.assertTrue(drill.getDestroySpeed(stone) == descriptor.strengthOn, "charged drill should dig fast")
+        helper.assertTrue(drill.isCorrectToolForDrops(Blocks.IRON_ORE.defaultBlockState()), "drill should drop iron ore")
+        helper.assertFalse(drill.isCorrectToolForDrops(Blocks.OAK_LOG.defaultBlockState()), "drill should not count as an axe")
+        helper.assertTrue(ItemStack(CopperGear.get("copper_pickaxe")).isCorrectToolForDrops(Blocks.DIAMOND_ORE.defaultBlockState()), "copper pickaxe should be iron grade")
         helper.succeed()
     }
 }

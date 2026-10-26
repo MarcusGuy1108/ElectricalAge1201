@@ -106,6 +106,12 @@ GameTests use the empty `data/eln/structures/empty3x3x3.nbt` template.
    * [x] Processing machines: electrical furnace (smelts with the vanilla smelting recipes), macerators, compressors,
      magnetizers, plate machines and arc furnaces, with their GUIs and in-world item display. Their machine recipe
      lists are empty until the recipes are ported (milestone 7).
+   * [x] Tools and portable items: copper armor and tools (separate `eln:copper_*` items on the vanilla iron tier and
+     armor material, as 1.7.10 used the iron materials), the flashlights, the portable mining drill (digs whatever
+     the pickaxe and shovel block tags list, as fast as its charge allows), portable batteries and condensators,
+     the electrical drills, ore scanner and mining pipe items, and charging of items in player inventories. A
+     GameTest checks the drill's charged and empty dig speed. The E-coal armor (1.7.10 `ISpecialArmor` is gone), the
+     portable electrical axe, the X-ray scanner and the Nope wand are not ported.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
    * [x] Ores and world generation: copper, lead, tungsten and cinnabar ore are separate blocks (`eln:<name>_ore`)
      that drop themselves and sit in `forge:ores/<name>`. World generation is data (`ElnWorldGen` writes configured

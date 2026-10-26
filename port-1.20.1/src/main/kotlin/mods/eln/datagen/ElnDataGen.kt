@@ -6,6 +6,7 @@ import net.minecraft.data.recipes.RecipeProvider
 import mods.eln.craft.CraftingRecipes
 import net.minecraftforge.common.Tags
 import net.minecraft.tags.BlockTags
+import mods.eln.item.CopperGear
 import mods.eln.ore.ElnOre
 import mods.eln.ghost.GhostBlock
 import mods.eln.misc.OreDictionaryTags
@@ -79,6 +80,9 @@ class ElnItemModels(output: PackOutput, files: ExistingFileHelper) : ItemModelPr
         }
         // The block models come from ElnBlockStates in the same run, so they cannot be checked for yet.
         for (ore in ElnOre.values()) getBuilder(ore.id).parent(ModelFile.UncheckedModelFile(modLoc("block/" + ore.id)))
+        for (id in CopperGear.ids) {
+            withExistingParent(id, mcLoc(if (id in CopperGear.tools) "item/handheld" else "item/generated")).texture("layer0", modLoc("items/$id"))
+        }
     }
 
     private fun descriptorModel(item: Item, voltage: VoltageLevelColor, icon: String) {

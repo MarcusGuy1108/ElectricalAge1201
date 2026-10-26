@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "eln:portable_battery_pack"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "L": {
+      "item": "eln:12v_led_light_bulb"
+    }
+  },
+  "pattern": [
+    "GLG",
+    "IBI",
+    " I "
+  ],
+  "result": {
+    "item": "eln:improved_flashlight",
+    "nbt": "{energy:0.0d,powerOn:0b,rand:31927089}"
+  },
+  "show_notification": true
+}
