@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.transparentnode.FabricatorDescriptor
 import mods.eln.transparentnode.turret.TurretDescriptor
 import mods.eln.transparentnode.floodlight.FloodlightDescriptor
 import mods.eln.generic.GenericItemBlockUsingDamageDescriptor
@@ -73,6 +74,10 @@ object TransparentNodeRegistration {
         return g
     }
 
+    private fun <T : GenericItemBlockUsingDamageDescriptor> T.machines() = apply {
+        creativeTab = Eln.creativeTabMachines
+    }
+
     private fun <T : GenericItemBlockUsingDamageDescriptor> T.powerDistribution() = apply {
         creativeTab = Eln.creativeTabPowerDistribution
     }
@@ -142,7 +147,7 @@ object TransparentNodeRegistration {
         registerFuelGenerator(67)
         registerFloodlight(68)
         // PORT: registerFestive(69)
-        // PORT: registerFab(70)
+        registerFab(70)
         // PORT: registerRailroad(71)
         // PORT: registerWireProcessingMachines(72)
         registerLargeRheostat() // 96, but from the wrong side.
@@ -1449,6 +1454,17 @@ object TransparentNodeRegistration {
             val name = TR_NAME(I18N.Type.NONE, "480V Defence Turret")
             val desc = TurretDescriptor(name, "Turret")
             desc.setDefaultIcon("800vdefenceturret")
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+    }
+
+    private fun registerFab(id: Int) {
+        var subId: Int
+        run {
+            subId = 0
+            val desc =
+                FabricatorDescriptor(TR_NAME(I18N.Type.NONE, "Fabricator")).machines()
+            desc.setDefaultIcon("machineblock")
             transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
     }

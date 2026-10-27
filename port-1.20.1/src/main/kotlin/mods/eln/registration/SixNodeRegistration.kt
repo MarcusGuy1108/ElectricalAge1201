@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.sixnode.PortableNaNDescriptor
 import mods.eln.sixnode.electricalcable.ElectricalSignalBusCableElement
 import mods.eln.sixnode.EmergencyLampDescriptor
 import mods.eln.ghost.GhostGroup
@@ -163,7 +164,7 @@ object SixNodeRegistration {
         registerBatteryCharger(66)
 
         registerTreeResinCollector(116)
-        // PORT: registerPortableNaN()
+        registerPortableNaN()
     }
 
     private fun registerElectricalCable(id: Int) {
@@ -372,7 +373,7 @@ object SixNodeRegistration {
                 material,
                 render("sprites/cable_melted.png", 2.4f, 0.9f)
             ).also { desc ->
-                desc.setDefaultIcon("arcmetalblock")
+                desc.setDefaultIcon("arc_metal_block")
                 desc.hideFromCreative()
             }
         }
@@ -2278,6 +2279,19 @@ object SixNodeRegistration {
             name = I18N.TR_NAME(I18N.Type.NONE, "Tree Resin Collector")
             descriptor = TreeResinCollectorDescriptor(name, Eln.obj.getObj("treeresincolector")).machines()
             Eln.sixNodeItem.addDescriptor(completId, descriptor)
+        }
+    }
+
+    fun registerPortableNaN() {
+        var subId: Int
+        var name: String
+        val id = 125
+        run {
+            subId = 0
+            name = I18N.TR_NAME(I18N.Type.NONE, "Portable NaN")
+            Eln.stdPortableNaN = CableRenderDescriptor("eln", "sprites/nan.png", 3.95f, 0.95f)
+            Eln.portableNaNDescriptor = PortableNaNDescriptor(name, Eln.stdPortableNaN!!).creative()
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), Eln.portableNaNDescriptor!!)
         }
     }
 }

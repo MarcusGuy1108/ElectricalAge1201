@@ -17,6 +17,7 @@ import mods.eln.sixnode.lampsocket.LampSocketContainer
 import mods.eln.sixnode.electricalsource.ElectricalSourceElement
 import mods.eln.node.NodeBlock
 import mods.eln.Eln
+import mods.eln.generic.GenericItemUsingDamageDescriptor
 import net.minecraftforge.common.util.FakePlayerFactory
 import mods.eln.misc.Direction
 import mods.eln.node.NodeManager
@@ -256,6 +257,24 @@ object SixNodeGameTests {
         helper.assertTrue((stack.item as SixNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, sidePos, Direction.XN), "side cable not placed")
         val side = (helper.level.getBlockEntity(sidePos) as SixNodeEntity).node as SixNode
         helper.assertTrue(top.nodeConnectionList.any { it.N1 === side || it.N2 === side }, "cables did not connect around the edge")
+        helper.succeed()
+    }
+
+    // The Nope Wand removes Eln nodes around a creative player without drops. Own batch: its 10-block reach would clear
+    // the neighbouring tests' nodes too.
+    @GameTest(template = "empty3x3x3", batch = "nope")
+    @JvmStatic
+    fun nopeWandRemovesNodes(helper: GameTestHelper) {
+        placeOnFloor(helper, BlockPos(1, 1, 1), Eln.lowVoltageCableDescriptor!!.newItemStack())
+        // Its own fake player: the shared one would carry creative mode into other tests.
+        val player = FakePlayerFactory.get(helper.level, com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "eln_nope_wand"))
+        val at = helper.absolutePos(BlockPos(1, 1, 1))
+        player.setPos(at.x + 0.5, at.y.toDouble(), at.z + 0.5)
+        player.setGameMode(net.minecraft.world.level.GameType.CREATIVE) // as in 1.7.10, survival players still get the parts back
+        val wand = Eln.findItemStack("The Nope Wand", 1)
+        GenericItemUsingDamageDescriptor.getDescriptor(wand)!!.onItemRightClick(wand, helper.level, player)
+        helper.assertBlockNotPresent(Eln.sixNodeBlock, BlockPos(1, 1, 1))
+        helper.assertTrue(helper.level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity::class.java, net.minecraft.world.phys.AABB(at).inflate(3.0)).isEmpty(), "items dropped")
         helper.succeed()
     }
 }

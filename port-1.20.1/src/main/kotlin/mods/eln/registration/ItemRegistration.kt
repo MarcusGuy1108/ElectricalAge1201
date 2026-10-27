@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.item.NopeWandDescriptor
 import mods.eln.item.electricalitem.ElectricalAxe
 import mods.eln.item.electricalitem.BatteryItem
 import mods.eln.item.electricalitem.ElectricalPickaxe
@@ -1254,7 +1255,13 @@ object ItemRegistration {
             val desc = ElectricalAxe(name, 22f, 1f, 40000.0, 200.0, 10000.0)
             Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
         }
-        // PORT: The Nope Wand returns with NopeWandDescriptor.
+        run {
+            subId = 16
+            name = I18N.TR_NAME(I18N.Type.NONE, "The Nope Wand")
+            val desc = NopeWandDescriptor(name)
+            desc.creativeTab = Eln.creativeTabToolsArmor
+            Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
+        }
     }
 
     private fun registerPortableItem(id: Int) {

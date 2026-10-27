@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T20:43:44.491165605	Item Models: eln
+// 1.20.1	2026-10-27T10:15:46.553140842	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -127,7 +127,7 @@ df3e88eded654c9fa658c35f024a682a8e6c68de assets/eln/models/item/alloy_ingot.json
 6cdb1f044650f81320bbb56d753f88c10af83ff2 assets/eln/models/item/aluminum_750_kcmil_cable_1000v.json
 9305b0bf8de1323c7874aaf3392b51b69e3e366a assets/eln/models/item/aluminum_750_kcmil_cable_bare.json
 6cdb1f044650f81320bbb56d753f88c10af83ff2 assets/eln/models/item/aluminum_750_kcmil_cable_melted.json
-a163c9ce1e63e428f3fa804b66e491b455f18540 assets/eln/models/item/aluminum_molten_metal_pile.json
+645eb0f560f04ac796d62bd8e172495a41494cfc assets/eln/models/item/aluminum_molten_metal_pile.json
 6cdb1f044650f81320bbb56d753f88c10af83ff2 assets/eln/models/item/aluminum_quadruplex_1_0_cable_600v.json
 6cdb1f044650f81320bbb56d753f88c10af83ff2 assets/eln/models/item/aluminum_quadruplex_1_0_cable_melted.json
 6cdb1f044650f81320bbb56d753f88c10af83ff2 assets/eln/models/item/aluminum_quadruplex_4_0_cable_600v.json
@@ -292,7 +292,7 @@ ba5d26cd72b94bbb6fd7ddc32ea937ca040499f8 assets/eln/models/item/copper_helmet.js
 cae3cad220a20ca8de9de9f261ceef479566b0f4 assets/eln/models/item/copper_hoe.json
 6a3f4c81f8c460c7cf87e70f7c916b73dc5ba32e assets/eln/models/item/copper_ingot.json
 8dcc07206d733700fce0e86e0527c3033942e6c7 assets/eln/models/item/copper_leggings.json
-a163c9ce1e63e428f3fa804b66e491b455f18540 assets/eln/models/item/copper_molten_metal_pile.json
+645eb0f560f04ac796d62bd8e172495a41494cfc assets/eln/models/item/copper_molten_metal_pile.json
 173d8e28779805493fef537c2e659d01ee253d22 assets/eln/models/item/copper_ore.json
 35f91c61dff7f3386636e2bb1df970dfbc8d1321 assets/eln/models/item/copper_pickaxe.json
 211e4624393ff74fc02ef2d6b21231c1b7db716d assets/eln/models/item/copper_plate.json
@@ -345,6 +345,7 @@ d04f067ade578b576a8d6ee73a60214ae9324ec0 assets/eln/models/item/electrical_probe
 3e08cd82b4f0a7ef0aef2a278e9770022022a8af assets/eln/models/item/electrical_weather_sensor.json
 2425ce6b2373c6ef04a9138fff8aed162a359498 assets/eln/models/item/energy_meter.json
 747503cf6d57ffdfcf37ae189795402167608d3b assets/eln/models/item/experimental_battery.json
+d3c4e920877835907e95280a83aceb1cf65f369c assets/eln/models/item/fabricator.json
 cbe25243f6276ccec689438109ec97ac0d3dc301 assets/eln/models/item/fast_electrical_drill.json
 72ee6520f271c506d176d32c67ebcaf97f7e1f28 assets/eln/models/item/ferrite_ingot.json
 5553bb60d5b4db7df23e6ba5ae7d2c83b9f23715 assets/eln/models/item/fixed_shaft.json
@@ -469,6 +470,7 @@ db7ce14add9344949696e2cb2b6fb7603698b5cc assets/eln/models/item/portable_condens
 468b7634e70d288364589506ec9b7b93cb05e2ea assets/eln/models/item/portable_condensator_pack.json
 d9dc7b63a9ff5396556b59869227362704c608b3 assets/eln/models/item/portable_electrical_axe.json
 ac97af4a75d7640ac752bf4e50805ff2364e7c0b assets/eln/models/item/portable_electrical_mining_drill.json
+2865510729b7cfa8a1ded3fe97f133293a34e001 assets/eln/models/item/portable_nan.json
 907333efdc8ae2b1e2c030ed3c446ff972d50682 assets/eln/models/item/power_capacitor.json
 7bb591911b2a045475b1694941a82612bc8cfee4 assets/eln/models/item/power_capacitor_84.json
 fe42afc225ee66366d6033486cf78e4a7885bef2 assets/eln/models/item/power_inductor.json
@@ -534,6 +536,7 @@ d29cb577bd1612961ea2de46552e1a43563c9fe7 assets/eln/models/item/suspended_lamp_s
 04e983c309d539385b78134c87aaa3d6b52557e0 assets/eln/models/item/synthetic_diamond.json
 f86f6444977cc28ee09135b661915bdae80c3660 assets/eln/models/item/tachometer.json
 0de08020c048303f5aa631b77431f86bfc67e77d assets/eln/models/item/temperature_probe.json
+2c6adefec5f503a695849e0b29a47425927af57d assets/eln/models/item/the_nope_wand.json
 23bffbda2cec89de0e69c528350d861367eca2b5 assets/eln/models/item/thermal_insulation.json
 74fb87f1bb81213f6c0f8bbb5ca60453764e6139 assets/eln/models/item/thermal_probe.json
 5cbf1dd26dd3c8fccef4f9e87e93047f76bd3fce assets/eln/models/item/thermal_probe_chip.json

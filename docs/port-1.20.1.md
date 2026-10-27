@@ -150,6 +150,8 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
    * [x] The 480 V defence turret, aimed by the player, monster and animal filters. A GameTest powers one and checks
      that it shoots a monster in front of it. Light levels above 15 (the turret's muzzle flash asks for 25) are
      clamped, as 1.7.10 did.
+   * [x] The fabricator (creative only, as in 1.7.10: it has no recipe), the portable NaN and the Nope wand (removes
+     Eln nodes within 10 blocks; a creative player gets no drops). GameTest for the wand.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
    * [x] Ores and world generation: copper, lead, tungsten and cinnabar ore are separate blocks (`eln:<name>_ore`)
      that drop themselves and sit in `forge:ores/<name>`. World generation is data (`ElnWorldGen` writes configured

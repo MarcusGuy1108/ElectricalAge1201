@@ -94,7 +94,8 @@ class ElnItemModels(output: PackOutput, files: ExistingFileHelper) : ItemModelPr
 
     private fun descriptorModel(item: Item, voltage: VoltageLevelColor, icon: String) {
         val name = ForgeRegistries.ITEMS.getKey(item)!!.path
-        val iconLayer = texture(icon)
+        // A few block items borrow an item texture (the fabricator's machine block icon).
+        val iconLayer = texture(icon) ?: texture(icon.replaceFirst("blocks/", "items/"))
         if (iconLayer == null) Eln.logger.warn("No icon texture $icon for item $name")
         val background = voltage.backgroundTexture?.let { texture(it) }
         val base = layers(nested(), listOfNotNull(iconLayer))

@@ -225,6 +225,8 @@ object Eln {
     lateinit var highCurrentCableDescriptor: CurrentCableDescriptor
     lateinit var signalCableDescriptor: ElectricalCableDescriptor
     lateinit var signalBusCableDescriptor: ElectricalCableDescriptor
+    @JvmField var portableNaNDescriptor: mods.eln.sixnode.PortableNaNDescriptor? = null
+    @JvmField var stdPortableNaN: CableRenderDescriptor? = null
     @JvmField var stdCableRenderSignalBus: CableRenderDescriptor? = null
     lateinit var lowVoltageCableDescriptor: ElectricalCableDescriptor
     lateinit var meduimVoltageCableDescriptor: ElectricalCableDescriptor
