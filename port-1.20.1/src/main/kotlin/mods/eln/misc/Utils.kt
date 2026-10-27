@@ -668,6 +668,19 @@ object Utils {
     }
 
     // Same item, or sharing an item tag (the 1.7.10 ore dictionary check).
+    // Modbus registers are 16 bits: a float travels as its raw bits, high half first.
+    @JvmStatic
+    fun modbusToShort(outputNormalized: Double, i: Int): Short {
+        val bit = java.lang.Float.floatToRawIntBits(outputNormalized.toFloat())
+        return if (i == 1) bit.toShort() else (bit ushr 16).toShort()
+    }
+
+    @JvmStatic
+    fun modbusToFloat(first: Short, second: Short): Float {
+        val bit = (first.toInt() and 0xFFFF shl 16) + (second.toInt() and 0xFFFF)
+        return java.lang.Float.intBitsToFloat(bit)
+    }
+
     @JvmStatic
     fun areSame(stack: ItemStack, output: ItemStack): Boolean {
         if (stack.item === output.item) return true

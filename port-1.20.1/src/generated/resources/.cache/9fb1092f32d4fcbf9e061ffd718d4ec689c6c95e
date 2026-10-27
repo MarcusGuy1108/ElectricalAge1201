@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-27T11:11:30.626466109	Recipes
+// 1.20.1	2026-10-27T12:01:02.904598433	Recipes
 5f826e94a1265cd03a8575f16d2c1a027c47921d data/eln/advancements/recipes/misc/100a_electrical_breaker.json
 7f28d2a5311bc783e994d258e1f42b12dd709496 data/eln/advancements/recipes/misc/100a_switch.json
 17cf0958baf47a85de3d95c712c68a1909013eb3 data/eln/advancements/recipes/misc/10a_diode.json
@@ -266,6 +266,7 @@ b5761fc99aa320abba2df5221a6fcef8102f51ad data/eln/advancements/recipes/misc/medi
 a040c111cf5a95e2e383f23a86853762e27de260 data/eln/advancements/recipes/misc/modern_data_logger.json
 2208e75335a5bd59c817873b6870cc107b95d1da data/eln/advancements/recipes/misc/monster_filter.json
 66b46491427fd1b0f6533abf0a042313706886ea data/eln/advancements/recipes/misc/motor_cowling.json
+35f1bddd2643a8e0859a74c5708d80ba81ad4a9e data/eln/advancements/recipes/misc/mqtt_energy_meter.json
 ed7893e2a333d6ee9dd0137af5c6c29325dc51bc data/eln/advancements/recipes/misc/multicolor_led_vumeter.json
 d89c422764f8593da795e9d4b6cf9b3257d2284a data/eln/advancements/recipes/misc/multimeter.json
 4bd8d9b25422b3521848deba82ebae466d7cfe7f data/eln/advancements/recipes/misc/nand_chip.json
@@ -688,6 +689,7 @@ a3d787b3652a82a733f5d95b4dd67f58392273a9 data/eln/recipes/medium_fuel_burner.jso
 a79886164feac4c5f1d4f8ace1152eb43517bf9a data/eln/recipes/modern_data_logger.json
 14d0f172d5bc728dca0d15182010e43457e3358c data/eln/recipes/monster_filter.json
 bc7ff24b06fcabd66e3aebbfbd47685ffa95d989 data/eln/recipes/motor_cowling.json
+0014f99b11815297626767c7d2286cfba9b11ae9 data/eln/recipes/mqtt_energy_meter.json
 8bb9a74bd38bf8091f67bb34d86ddfcc09b50ca9 data/eln/recipes/multicolor_led_vumeter.json
 ae97b23cca9b811914e377005fb8bc17f794df35 data/eln/recipes/multimeter.json
 26e36af8ada22cf2a6d45371cbfeeef5813d7bd3 data/eln/recipes/nand_chip.json

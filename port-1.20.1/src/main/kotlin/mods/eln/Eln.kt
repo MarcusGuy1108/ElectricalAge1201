@@ -1,5 +1,8 @@
 package mods.eln
 
+import mods.eln.sixnode.modbusrtu.ModbusTcpServer
+import mods.eln.metrics.MetricsSubsystem
+import mods.eln.mqtt.MqttManager
 import mods.eln.item.electricalinterface.ItemEnergyInventoryProcess
 import mods.eln.ore.ElnOre
 import mods.eln.transparentnode.electricalfurnace.ElectricalFurnaceDescriptor
@@ -103,6 +106,8 @@ object Eln {
     @JvmField var config = JsonConfig(File("config/Eln.cfg"))
 
     @JvmField var mqttEnabled = false
+    // Started at server start; it only listens when integrations.modbus.enabled is set.
+    @JvmField var modbusServer: ModbusTcpServer? = null
     @JvmField var simMetricsEnabled = false
     @JvmField var simMetricsMqttServer = ""
     @JvmField var simMetricsId = "server"
@@ -265,6 +270,8 @@ object Eln {
         config = JsonConfig(FMLPaths.CONFIGDIR.get().resolve("Eln.cfg").toFile())
         config.loadConfig()
         config.writeExampleFile()
+        MqttManager.init()
+        MetricsSubsystem.refreshFromConfig()
         FuelRegistry.init(FMLPaths.CONFIGDIR.get().resolve("Eln.cfg").toFile())
         simulator = Simulator(
             0.05,

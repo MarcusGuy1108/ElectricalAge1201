@@ -172,6 +172,11 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      rooms leak heat through their walls and open doors, and the thermometer reads the room temperature inside one.
      Block changes next to a room rescan it; rooms are saved with the Eln world data. A GameTest warms a closed
      stone room with a hot thermal cable.
+   * [x] MQTT and Modbus: the MQTT energy meter and MQTT signal controller, the MQTT client and its
+     `config/eln/mqtt.json`, the MQTT simulator metrics, and the Modbus RTU with its Modbus TCP server, all
+     unchanged from 1.7.10 and off unless `integrations.mqtt.enabled` / `integrations.modbus.enabled` are set. The
+     Modbus RTU screen's scrolling panel (`GuiVerticalExtender`) now lives in `mods.eln.gui`. The smoke test places
+     them; talking to a real broker or Modbus client is not tested.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,

@@ -1,5 +1,9 @@
 package mods.eln.registration
 
+import mods.eln.sixnode.modbusrtu.ModbusRtuDescriptor
+import mods.eln.sixnode.mqttmeter.MqttEnergyMeterElement
+import mods.eln.sixnode.mqttmeter.MqttEnergyMeterRender
+import mods.eln.sixnode.mqttsignal.MqttSignalControllerDescriptor
 import mods.eln.sixnode.PortableNaNDescriptor
 import mods.eln.sixnode.electricalcable.ElectricalSignalBusCableElement
 import mods.eln.sixnode.EmergencyLampDescriptor
@@ -1685,13 +1689,27 @@ object SixNodeRegistration {
             val desc = ElectricalMathDescriptor(name, Eln.obj.getObj("PLC"))
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
-        // PORT: MQTT Signal Controller returns with MqttSignalControllerDescriptor.
+        run {
+            subId = 5
+            name = I18N.TR_NAME(I18N.Type.NONE, "MQTT Signal Controller")
+            val desc = MqttSignalControllerDescriptor(name, Eln.obj.getObj("MqttSignalController"))
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
     }
 
     private fun registerSixNodeMisc(id: Int) {
         var subId: Int
         var name: String
-        // PORT: Modbus RTU returns with ModbusRtuDescriptor.
+        run {
+            subId = 0
+            name = I18N.TR_NAME(I18N.Type.NONE, "Modbus RTU")
+            val desc = ModbusRtuDescriptor(name, Eln.obj.getObj("RTU"))
+            if (Eln.config.getBooleanOrElse("integrations.modbus.enabled", false)) {
+                Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+            } else {
+                Eln.sixNodeItem.addWithoutRegistry(subId + (id shl 6), desc)
+            }
+        }
 
         run {
             subId = 4
@@ -2118,7 +2136,19 @@ object SixNodeRegistration {
             val desc = EnergyMeterDescriptor(name, Eln.obj.getObj("AdvancedEnergyMeter"), 7, 8)
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
-        // PORT: MQTT Energy Meter returns with MqttEnergyMeterElement, MqttEnergyMeterRender.
+        run {
+            subId = 12
+            name = I18N.TR_NAME(I18N.Type.NONE, "MQTT Energy Meter")
+            val desc = EnergyMeterDescriptor(
+                name,
+                Eln.obj.getObj("MqttEnergyMeter"),
+                8,
+                0,
+                MqttEnergyMeterElement::class.java,
+                MqttEnergyMeterRender::class.java
+            )
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
         run {
             subId = 6
             name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Fuse Holder")

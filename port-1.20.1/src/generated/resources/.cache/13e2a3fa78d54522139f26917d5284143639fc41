@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-27T11:14:10.156985745	Item Models: eln
+// 1.20.1	2026-10-27T12:01:02.917478089	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -436,9 +436,12 @@ eccc726faf5e9ed2a4d729b120178f60d03c4077 assets/eln/models/item/medium_voltage_r
 20938aed86594fc8c890657f6057564d14f44cc1 assets/eln/models/item/medium_voltage_switch.json
 9c1acb6e0a6fca3f995702f8ee20cd025d5e02f1 assets/eln/models/item/mercury.json
 ab91de09d0274a9f17bb0e8b83f84ed72ef39224 assets/eln/models/item/mining_pipe.json
+eadb69618723fdc049ccef6fe32b5891dc2fbc9d assets/eln/models/item/modbus_rtu.json
 e2a73b13563c9cecedd12ad536235956c50d9f69 assets/eln/models/item/modern_data_logger.json
 caa0d1dedb0f06fdd7d770aa8a2abeeea9e4a5c1 assets/eln/models/item/monster_filter.json
 008208eed6966220b0d0b5db769ce3e48c05c388 assets/eln/models/item/motor_cowling.json
+6bec231e8b8d5ec54072755dd72252fad8bf5dd9 assets/eln/models/item/mqtt_energy_meter.json
+a234ccabaf77f37857b2ea815208df470ae1262a assets/eln/models/item/mqtt_signal_controller.json
 ef85e46a519e5b40670214a34317c182255e32b5 assets/eln/models/item/multicolor_led_vumeter.json
 f6652e2ad4729eaa26976b1fd358c8c8f82dab9f assets/eln/models/item/multimeter.json
 55903847f979a11c53e92b23dd8880b1bbd747c0 assets/eln/models/item/nand_chip.json

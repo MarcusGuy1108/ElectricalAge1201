@@ -1,5 +1,7 @@
 package mods.eln
 
+import mods.eln.sixnode.modbusrtu.ModbusTcpServer
+import mods.eln.mqtt.MqttManager
 import mods.eln.item.electricalinterface.ItemEnergyInventoryProcess
 import mods.eln.craft.CraftingRecipes
 import mods.eln.ore.ElnOre
@@ -109,6 +111,7 @@ object ElnMod {
             Eln.itemEnergyInventoryProcess = ItemEnergyInventoryProcess()
             Eln.simulator.addSlowProcess(Eln.itemEnergyInventoryProcess)
             PoweredMinecartSimulationSingleton.reset()
+            Eln.modbusServer = ModbusTcpServer(Eln.config.getIntOrElse("integrations.modbus.port", 1502))
         }
         bus.addListener { event: TickEvent.ServerTickEvent ->
             Eln.simulator.tick(event)
@@ -125,6 +128,9 @@ object ElnMod {
             Eln.serverEventListener.clear()
             Eln.nodeServer.stop()
             Eln.simulator.stop()
+            Eln.modbusServer?.destroy()
+            Eln.modbusServer = null
+            MqttManager.shutdown()
             MetricsSubsystem.shutdown()
         }
         Eln.logger.info("Electrical Age loading")

@@ -1,5 +1,6 @@
 package mods.eln.server
 
+import mods.eln.mqtt.MqttManager
 import mods.eln.environment.RoomThermalManager
 import mods.eln.item.electricalitem.TreeCapitation
 import mods.eln.Eln
@@ -163,11 +164,15 @@ class ServerEventListener {
                 e.printStackTrace()
             }
             try {
+                MqttManager.readWorldData(nbt.getCompound("mqtt"))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            try {
                 RoomThermalManager.readFromNbt(nbt, dim)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            // PORT: MqttManager world data returns with MQTT.
         }
 
         fun writeToEaWorldNBT(nbt: CompoundTag?, dim: ResourceKey<Level>) {
@@ -182,11 +187,15 @@ class ServerEventListener {
                 e.printStackTrace()
             }
             try {
+                MqttManager.writeWorldData(Utils.newNbtTagCompund(nbt, "mqtt"))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            try {
                 RoomThermalManager.writeToNbt(nbt!!, dim)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            // PORT: MqttManager world data returns with MQTT.
         }
     }
 }
