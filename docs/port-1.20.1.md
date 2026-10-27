@@ -85,7 +85,8 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      GameTest and an in-game check light a 12 V lamp that way. Hoppers and pipes reach machine inventories and
      tanks through the Forge item and fluid handler capabilities of the block entity, with the 1.7.10 side rules
      (machines take input from the top and give output from the other sides); a GameTest feeds a macerator from a
-     hopper. Custom collision boxes are not ported yet.
+     hopper. The egg incubator and fixed solar panels are half a block high (`TransparentNodeDescriptor.getShape`);
+     their ghost blocks stay full cubes, as 1.7.10's client saw them.
 6. [ ] Six-node blocks, transparent-node machines and the remaining content, family by family.
    * [x] Meters, wrench, config copy tool, brushes and the basic material items (ingots, dusts, plates, chips).
      The config copy tool copies a node's settings on shift-click and pastes them on click (GameTest).
@@ -135,8 +136,7 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
    * [x] Auto miner, egg incubator, large rheostat, nixie tube and the power antennas. The auto miner digs down to
      three blocks above the world's minimum build height (1.7.10 stopped at y = 3), treats everything in
      `forge:ores` as ore and fills a chest at its output (double chests included); a GameTest powers one and checks
-     the chest. Its screen shows the log but not the X-ray ore picture, and the egg incubator is a full block
-     instead of half height. The experimental transporter and the thermal heat exchanger (it converts modded fluids
+     the chest. Its screen shows the log but not the X-ray ore picture. The experimental transporter and the thermal heat exchanger (it converts modded fluids
      such as steam, which vanilla 1.20.1 lacks) are not ported.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables

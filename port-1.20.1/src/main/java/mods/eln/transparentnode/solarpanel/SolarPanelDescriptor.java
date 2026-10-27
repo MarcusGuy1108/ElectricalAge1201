@@ -1,5 +1,7 @@
 package mods.eln.transparentnode.solarpanel;
 
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.block.Block;
 import mods.eln.cable.CableRenderDescriptor;
 import mods.eln.ghost.GhostGroup;
 import mods.eln.misc.*;
@@ -120,5 +122,9 @@ public class SolarPanelDescriptor extends TransparentNodeDescriptor {
         if (canRotate) list.add(tr("Can be geared towards the sun."));
     }
 
-    // PORT: the half-height collision box of fixed panels returns with custom node collision shapes.
+    // Fixed panels are half a block high; rotating ones keep the full block.
+    @Override
+    public VoxelShape getShape() {
+        return canRotate ? super.getShape() : Block.box(0, 0, 0, 16, 8, 16);
+    }
 }

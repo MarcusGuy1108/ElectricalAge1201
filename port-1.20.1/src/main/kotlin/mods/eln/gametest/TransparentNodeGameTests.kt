@@ -224,4 +224,18 @@ object TransparentNodeGameTests {
             Eln.simulator.removeElectricalComponent(source)
         }
     }
+
+    // The egg incubator is half a block high, as its 1.7.10 collision box was.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun eggIncubatorIsHalfHigh(helper: GameTestHelper) {
+        val pos = BlockPos(1, 1, 1)
+        helper.setBlock(pos.below(), Blocks.STONE)
+        val stack = Eln.findItemStack("24V Egg Incubator", 1)
+        helper.assertTrue((stack.item as TransparentNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(pos), Direction.YP), "incubator not placed")
+        val abs = helper.absolutePos(pos)
+        val top = helper.level.getBlockState(abs).getCollisionShape(helper.level, abs).max(net.minecraft.core.Direction.Axis.Y)
+        helper.assertTrue(top == 0.5, "collision top at $top")
+        helper.succeed()
+    }
 }

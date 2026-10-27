@@ -1,5 +1,7 @@
 package mods.eln.node.transparent
 
+import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.phys.shapes.Shapes
 import mods.eln.ghost.GhostGroup
 import mods.eln.generic.GenericItemBlockUsingDamageDescriptor
 import mods.eln.i18n.I18N.tr
@@ -99,6 +101,6 @@ open class TransparentNodeDescriptor @JvmOverloads constructor(
     open val spawnDeltaZ: Int
         get() = 0
 
-    // PORT: addCollisionBoxesToList (custom collision boxes) returns as a VoxelShape when a machine needs one; every
-    // transparent node is a full block until then.
+    // 1.7.10 addCollisionBoxesToList; the outline and collision box of the machine's own block.
+    open fun getShape(): VoxelShape = Shapes.block()
 }

@@ -1,5 +1,7 @@
 package mods.eln.transparentnode.eggincubator;
 
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.block.Block;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.UtilsClient;
@@ -78,5 +80,8 @@ public class EggIncubatorDescriptor extends TransparentNodeDescriptor {
             powerLoad.setResistance(MnaConst.highImpedance);
     }
 
-    // PORT: the half-height collision box (addCollisionBoxesToList) returns with transparent node VoxelShapes.
+    @Override
+    public VoxelShape getShape() {
+        return Block.box(0, 0, 0, 16, 8, 16);
+    }
 }

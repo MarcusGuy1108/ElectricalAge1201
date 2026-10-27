@@ -1,5 +1,8 @@
 package mods.eln.node.transparent
 
+import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.phys.shapes.Shapes
+import net.minecraft.world.phys.shapes.CollisionContext
 import mods.eln.node.NodeBlock
 import mods.eln.node.NodeBlockEntity
 import mods.eln.registry.ElnRegistries
@@ -21,7 +24,7 @@ import net.minecraftforge.registries.RegistryObject
  * so the block has no loot table, as 1.7.10 dropped nothing itself.
  */
 class TransparentNodeBlock : NodeBlock(
-    Properties.of().strength(1.0f).noOcclusion().noLootTable().sound(SoundType.METAL),
+    Properties.of().strength(1.0f).noOcclusion().noLootTable().sound(SoundType.METAL).dynamicShape(),
     { pos, state -> TransparentNodeEntity(pos, state) },
     0
 ) {
@@ -34,6 +37,14 @@ class TransparentNodeBlock : NodeBlock(
             }
         }
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid)
+    }
+
+    // The shape comes from the machine: the server reads it from the node, the client from the element render.
+    override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
+        val entity = level.getBlockEntity(pos) as? TransparentNodeEntity ?: return Shapes.block()
+        val descriptor = (entity.node as? TransparentNode)?.element?.transparentNodeDescriptor
+            ?: entity.elementRender?.transparentNodeDescriptor
+        return descriptor?.getShape() ?: Shapes.block()
     }
 
     override fun getCloneItemStack(state: BlockState, target: HitResult, level: BlockGetter, pos: BlockPos, player: Player): ItemStack {
