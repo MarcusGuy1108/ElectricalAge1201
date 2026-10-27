@@ -167,6 +167,11 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      recipes are data, so JEI lists those without help. A client on a dedicated server fills the machine lists
      itself, since they are otherwise filled at server start. JEI is a compile-only dependency from the BlameJared
      maven and runs in the dev client.
+   * [x] Room thermal system: closed rooms around a player (up to the configured span and volume) that hold Eln
+     thermal nodes become simulated air volumes; thermal loads exchange heat with the room instead of the ambient,
+     rooms leak heat through their walls and open doors, and the thermometer reads the room temperature inside one.
+     Block changes next to a room rescan it; rooms are saved with the Eln world data. A GameTest warms a closed
+     stone room with a hot thermal cable.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,

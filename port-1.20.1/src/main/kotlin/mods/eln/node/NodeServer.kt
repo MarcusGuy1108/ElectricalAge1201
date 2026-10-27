@@ -1,5 +1,6 @@
 package mods.eln.node
 
+import mods.eln.environment.RoomThermalManager
 import net.minecraftforge.event.TickEvent
 import net.minecraftforge.event.TickEvent.ServerTickEvent
 import net.minecraftforge.server.ServerLifecycleHooks
@@ -11,7 +12,7 @@ class NodeServer {
 
     fun stop() {
         //	NodeBlockEntity.nodeAddedList.clear();
-        // PORT: RoomThermalManager.clear() returns with mods.eln.environment.
+        RoomThermalManager.clear()
     }
 
     var counter = 0
@@ -21,7 +22,7 @@ class NodeServer {
         if (event.phase != TickEvent.Phase.START) return
         val server = ServerLifecycleHooks.getCurrentServer()
         if (server != null) {
-            // PORT: RoomThermalManager.tick(server) returns with mods.eln.environment.
+            RoomThermalManager.tick(server)
             for (node in NodeManager.instance!!.nodeList) {
                 if (node.needPublish) {
                     node.publishToAllPlayer()

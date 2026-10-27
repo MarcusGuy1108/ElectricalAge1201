@@ -1,5 +1,6 @@
 package mods.eln.server
 
+import mods.eln.environment.RoomThermalManager
 import mods.eln.item.electricalitem.TreeCapitation
 import mods.eln.Eln
 import net.minecraftforge.event.entity.EntityJoinLevelEvent
@@ -95,7 +96,7 @@ class ServerEventListener {
         try {
             NodeManager.instance!!.unload(level.dimension())
             Eln.ghostManager.unload(level.dimension())
-            // PORT: RoomThermalManager.unloadDimension returns with that system.
+            RoomThermalManager.unloadDimension(level.dimension())
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -161,7 +162,12 @@ class ServerEventListener {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            // PORT: MqttManager and RoomThermalManager world data return with those systems.
+            try {
+                RoomThermalManager.readFromNbt(nbt, dim)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            // PORT: MqttManager world data returns with MQTT.
         }
 
         fun writeToEaWorldNBT(nbt: CompoundTag?, dim: ResourceKey<Level>) {
@@ -175,7 +181,12 @@ class ServerEventListener {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            // PORT: MqttManager and RoomThermalManager world data return with those systems.
+            try {
+                RoomThermalManager.writeToNbt(nbt!!, dim)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            // PORT: MqttManager world data returns with MQTT.
         }
     }
 }

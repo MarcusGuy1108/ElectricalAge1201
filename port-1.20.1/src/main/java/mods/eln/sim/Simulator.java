@@ -1,5 +1,6 @@
 package mods.eln.sim;
 
+import mods.eln.environment.RoomThermalManager;
 import mods.eln.Eln;
 import mods.eln.metrics.MetricsSubsystem;
 import mods.eln.misc.Utils;
@@ -500,9 +501,21 @@ public class Simulator /* ,IPacketHandler */ {
             }
         }
 
-        // PORT: RoomThermalManager room exchange returns with the world/node layer; until then every load uses ambient.
+        RoomThermalManager.INSTANCE.advanceRoomAmbientExchange(dt);
+
         for (ThermalLoad load : loadList) {
             Double roomPower = null;
+            if (load.hasSimCoordinate()) {
+                roomPower = RoomThermalManager.INSTANCE.exchangeLoadWithRoom(
+                    load.getSimDimension(),
+                    load.getSimX(),
+                    load.getSimY(),
+                    load.getSimZ(),
+                    load.temperatureCelsius,
+                    load.Rp,
+                    dt
+                );
+            }
 
             if (roomPower != null) {
                 load.PcTemp -= roomPower;

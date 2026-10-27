@@ -32,7 +32,6 @@ abstract class TransparentNodeElementRender(var tileEntity: TransparentNodeEntit
     @JvmField
     var front: Direction? = null
     var grounded = false
-    // PORT: unserializeItemStackToEntityItem/drawEntityItem (machines showing their items) return with item rendering.
 
     // 1.7.10 kept a fake EntityItem per displayed stack; 1.20.1 keeps the stack and draws it directly.
     protected fun unserializeItemStackToEntityItem(stream: DataInputStream, @Suppress("UNUSED_PARAMETER") old: ItemStack?): ItemStack? {

@@ -1,5 +1,6 @@
 package mods.eln.gametest
 
+import mods.eln.environment.RoomThermalManager
 import mods.eln.sixnode.electricalbreaker.ElectricalBreakerElement
 import mods.eln.sixnode.logicgate.LogicGateElement
 import mods.eln.sixnode.electricalcable.UtilityCableDescriptor
@@ -281,6 +282,27 @@ object SixNodeGameTests {
         helper.assertTrue(cable.getSideEnable(Direction.YN), "cable gone")
         helper.assertTrue(helper.level.getBlockState(at).getLightBlock(helper.level, at) < 15, "light still blocked")
         helper.succeed()
+    }
+
+    // A hot thermal cable inside a closed stone room warms the room's air, which the thermometer then reads.
+    @GameTest(template = "empty3x3x3", timeoutTicks = 200)
+    @JvmStatic
+    fun hotCableWarmsClosedRoom(helper: GameTestHelper) {
+        // Stone shell x/z 0..4, y 1..5 around a 3x3x3 air room; z = -1 holds the test's structure block.
+        for (x in 0..4) for (y in 1..5) for (z in 0..4) {
+            val inside = x in 1..3 && y in 2..4 && z in 1..3
+            helper.setBlock(BlockPos(x, y, z), if (inside) Blocks.AIR else Blocks.STONE)
+        }
+        val cable = placeOnFloor(helper, BlockPos(2, 2, 2), Eln.findItemStack("Copper Thermal Cable", 1))
+        val load = cable.getElement(Direction.YN)!!.thermalLoadList.first()
+        RoomThermalManager.detectRoomAt(helper.level, helper.absolutePos(BlockPos(2, 3, 2)))
+        val roomAt = helper.absolutePos(BlockPos(2, 3, 2))
+        helper.assertTrue(RoomThermalManager.getRoomAt(helper.level, roomAt.x, roomAt.y, roomAt.z) != null, "room not detected")
+        helper.onEachTick { load.temperatureCelsius = 200.0 }
+        helper.succeedWhen {
+            val room = RoomThermalManager.getRoomAt(helper.level, roomAt.x, roomAt.y, roomAt.z)
+            helper.assertTrue(room != null && room.temperatureCelsius > 0.0, "room at ${room?.temperatureCelsius} C over ambient")
+        }
     }
 
     // The Nope Wand removes Eln nodes around a creative player without drops. Own batch: its 10-block reach would clear

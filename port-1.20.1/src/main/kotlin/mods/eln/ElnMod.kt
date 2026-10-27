@@ -36,6 +36,7 @@ import mods.eln.node.six.SixNode
 import mods.eln.node.six.SixNodeBlockRegistration
 import mods.eln.registration.SixNodeRegistration
 import mods.eln.registry.ElnRegistries
+import mods.eln.eventhandlers.RoomThermalBlockEventsHandler
 import mods.eln.railroad.ElectricMinecartChargeReporter
 import mods.eln.railroad.EntityElectricMinecart
 import mods.eln.railroad.PoweredMinecartSimulationSingleton
@@ -92,6 +93,9 @@ object ElnMod {
         if (!FMLEnvironment.production) bus.addListener(SmokeCommands::registerServer)
         bus.addListener(ElnConsoleCommands::register)
         bus.addListener(ElectricMinecartChargeReporter::onRightClickItem)
+        bus.addListener(RoomThermalBlockEventsHandler::onBlockBreak)
+        bus.addListener(RoomThermalBlockEventsHandler::onBlockPlace)
+        bus.addListener(RoomThermalBlockEventsHandler::onExplosionDetonate)
         bus.addListener { _: ServerAboutToStartEvent ->
             LightBlockEntity.observers.clear()
             WirelessSignalTxElement.channelMap.clear()

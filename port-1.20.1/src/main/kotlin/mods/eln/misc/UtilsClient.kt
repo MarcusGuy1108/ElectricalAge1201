@@ -321,7 +321,6 @@ object UtilsClient {
         GL11.glColor4f(1f, 1f, 1f, 1f)
     }
 
-    // PORT: drawEntityItem (item entity rendering inside machines) returns with the machine renderers.
 
     fun drawConnectionPinSixNode(d: Float, w: Float, h: Float) {
         var d = d
