@@ -4,7 +4,7 @@ The NeoForge 1.21.1 port lives in [`port-1.21.1/`](../port-1.21.1). It started a
 [`port-1.20.1/`](port-1.20.1.md) with every API change applied, so the layout, package names, asset pipeline,
 lang conversion and GameTests described there apply here too. This page only lists what differs.
 
-* Minecraft 1.21.1, NeoForge 21.1.219, ModDevGradle 2.0, Kotlin for Forge (NeoForge) 5.11, Java 21.
+* Minecraft 1.21.1, NeoForge 21.1.219, ModDevGradle 2.0, Kotlin for Forge (NeoForge) 5.10, Java 21.
 * Same mod id (`eln`) and the same item and block ids as the 1.20.1 port. Worlds do not move between the two
   versions (Minecraft itself changed the item stack format).
 
@@ -26,7 +26,7 @@ cd port-1.21.1
 ```
 
 ModDevGradle has no reobfuscation step, so there is a single jar, and it already carries Apache Commons Numbers
-through jar-in-jar. Players need Kotlin for Forge 5.11 or newer for NeoForge: install the `kotlinforforge-<v>-all.jar`
+through jar-in-jar. Players need Kotlin for Forge 5.10 or newer for NeoForge: install the `kotlinforforge-<v>-all.jar`
 release from Modrinth or CurseForge. The `kotlinforforge-neoforge` Maven artifact only bundles the Kotlin libraries,
 not the language loader, so the game refuses to load Eln with it. The jar has been checked on a NeoForge 21.1.219
 dedicated server installed with the official installer (`--install-server`): it loads and generates a world with no
