@@ -1,5 +1,9 @@
 package mods.eln.generic
 
+import mods.eln.client.ElnItemRenderer
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer
+import net.minecraftforge.client.extensions.common.IClientItemExtensions
+import java.util.function.Consumer
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
 import net.minecraft.world.InteractionHand
@@ -21,6 +25,13 @@ import net.minecraft.world.level.block.state.BlockState
  */
 open class GenericItem @JvmOverloads constructor(val descriptor: GenericItemUsingDamageDescriptor, properties: Properties = Properties()) : Item(properties) {
     private val legacyKey = descriptor.name.replace(Regex("\\s+"), "_") + ".name"
+
+    // Called from Item's constructor, before descriptor is set; the renderer is only used by builtin/entity models.
+    override fun initializeClient(consumer: Consumer<IClientItemExtensions>) {
+        consumer.accept(object : IClientItemExtensions {
+            override fun getCustomRenderer(): BlockEntityWithoutLevelRenderer = ElnItemRenderer
+        })
+    }
 
     override fun getDescriptionId(stack: ItemStack): String = legacyKey
     override fun getDescriptionId(): String = legacyKey

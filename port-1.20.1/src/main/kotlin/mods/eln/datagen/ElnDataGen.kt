@@ -1,5 +1,6 @@
 package mods.eln.datagen
 
+import mods.eln.generic.ICustomItemRender
 import java.util.function.Consumer
 import net.minecraft.data.recipes.FinishedRecipe
 import net.minecraft.data.recipes.RecipeProvider
@@ -77,7 +78,7 @@ class ElnItemModels(output: PackOutput, files: ExistingFileHelper) : ItemModelPr
         }
         for (registrar in CreativeTabPopulator.genericItems) {
             for (descriptor in registrar.subItemList.values) {
-                descriptorModel(descriptor.parentItem!!, descriptor.voltageLevelColor, "items/" + descriptor.IconName!!.removePrefix("eln:"))
+                descriptorModel(descriptor.parentItem!!, descriptor.voltageLevelColor, "items/" + descriptor.IconName!!.removePrefix("eln:"), descriptor is ICustomItemRender)
             }
         }
         // The block models come from ElnBlockStates in the same run, so they cannot be checked for yet.
@@ -92,14 +93,15 @@ class ElnItemModels(output: PackOutput, files: ExistingFileHelper) : ItemModelPr
         }
     }
 
-    private fun descriptorModel(item: Item, voltage: VoltageLevelColor, icon: String) {
+    // customRender: drawn by ElnItemRenderer everywhere but in the GUI, which keeps the icon.
+    private fun descriptorModel(item: Item, voltage: VoltageLevelColor, icon: String, customRender: Boolean = false) {
         val name = ForgeRegistries.ITEMS.getKey(item)!!.path
         // A few block items borrow an item texture (the fabricator's machine block icon).
         val iconLayer = texture(icon) ?: texture(icon.replaceFirst("blocks/", "items/"))
         if (iconLayer == null) Eln.logger.warn("No icon texture $icon for item $name")
         val background = voltage.backgroundTexture?.let { texture(it) }
-        val base = layers(nested(), listOfNotNull(iconLayer))
-        if (background == null) {
+        val base = if (customRender) nested().parent(ModelFile.UncheckedModelFile("builtin/entity")) else layers(nested(), listOfNotNull(iconLayer))
+        if (background == null && !customRender) {
             layers(getBuilder(name), listOfNotNull(iconLayer))
             return
         }

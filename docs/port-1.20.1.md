@@ -131,8 +131,7 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      1.7.10 rule (each charged piece takes its share of the damage, the full set all of it, at 500 J per point;
      damage that bypasses armor is not absorbed). It shows no armor points in the HUD. A GameTest checks the
      absorbed damage and the energy paid. The portable electrical axe fells whole trees (logs and leaves found
-     through the `logs` and `leaves` block tags); a GameTest chops a tree. The X-ray scanner and the Nope wand are not
-     ported.
+     through the `logs` and `leaves` block tags); a GameTest chops a tree.
    * [x] Auto miner, egg incubator, large rheostat, nixie tube and the power antennas. The auto miner digs down to
      three blocks above the world's minimum build height (1.7.10 stopped at y = 3), treats everything in
      `forge:ores` as ore and fills a chest at its output (double chests included); a GameTest powers one and checks
@@ -177,6 +176,11 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      unchanged from 1.7.10 and off unless `integrations.mqtt.enabled` / `integrations.modbus.enabled` are set. The
      Modbus RTU screen's scrolling panel (`GuiVerticalExtender`) now lives in `mods.eln.gui`. The smoke test places
      them; talking to a real broker or Modbus client is not tested.
+   * [x] X-ray scanner: its in-hand screen shows the live scan again (ores in green, by
+     `tools.xrayScanner.oreFactors`, vanilla ores covering their deepslate twins, then anything in `forge:ores`).
+     Descriptors implementing `ICustomItemRender` are drawn by `ElnItemRenderer` (a Forge custom item renderer that
+     runs the 1.7.10 GL code) in hand, on the ground and in frames, and keep their icon in the GUI. Only the local
+     player's own scan is computed, so another player's scanner shows a dark screen.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,

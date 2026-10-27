@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-27T12:01:02.904598433	Recipes
+// 1.20.1	2026-10-27T12:09:48.400863088	Recipes
 5f826e94a1265cd03a8575f16d2c1a027c47921d data/eln/advancements/recipes/misc/100a_electrical_breaker.json
 7f28d2a5311bc783e994d258e1f42b12dd709496 data/eln/advancements/recipes/misc/100a_switch.json
 17cf0958baf47a85de3d95c712c68a1909013eb3 data/eln/advancements/recipes/misc/10a_diode.json
@@ -419,6 +419,7 @@ dbcddc7fdec2bf56964e502e716d02cdfbf169fb data/eln/advancements/recipes/misc/wire
 1cc321383c691e7f9dd2c4c1e106daabddd579f4 data/eln/advancements/recipes/misc/wireless_signal_transmitter.json
 7881271b669cb9692cb7ccf03de929897d8e119b data/eln/advancements/recipes/misc/wireless_switch.json
 95f57fe7e951ffc5765483a37edc06850300bc9b data/eln/advancements/recipes/misc/wrench.json
+633ce1bd119b5c04d85502ef0fb0abf20d06afd0 data/eln/advancements/recipes/misc/x_ray_scanner.json
 5424a3a61029792d44b2bea88a9ae18673c8325a data/eln/advancements/recipes/misc/xnor_chip.json
 9ddc8c9de49475c4b1d0f6ba28b109d98bf1538a data/eln/advancements/recipes/misc/xor_chip.json
 add193e41b70cf165ca07c3bfbca803b147d647b data/eln/advancements/recipes/misc/yellow_brush.json
@@ -842,6 +843,7 @@ d1c34c1ab6971eceb9b4f520053f9eece45855a3 data/eln/recipes/wireless_signal_repeat
 6555001b447d0a8f7e106c0897ad39edd0015144 data/eln/recipes/wireless_signal_transmitter.json
 f3804b7d88d21f5a26037e94c1f305d636630a71 data/eln/recipes/wireless_switch.json
 94d2363018e951b454037bc336d80c56bef84c48 data/eln/recipes/wrench.json
+b58aa9b04fbf99f2ffe53f0a29120bffb7d0146f data/eln/recipes/x_ray_scanner.json
 b9ec2d2799010143422640d007332a0fea72cd85 data/eln/recipes/xnor_chip.json
 f6ae0f052d185bb84ec8a2afbc10cb4e792c215d data/eln/recipes/xor_chip.json
 bdf6871ae8c203d8821d32d23eeb88409c8de532 data/eln/recipes/yellow_brush.json

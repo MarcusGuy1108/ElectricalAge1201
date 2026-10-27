@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.item.electricalitem.PortableOreScannerItem
 import mods.eln.railroad.ElectricMinecartItem
 import mods.eln.item.NopeWandDescriptor
 import mods.eln.item.electricalitem.ElectricalAxe
@@ -1295,7 +1296,19 @@ object ItemRegistration {
             Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
         }
 
-        // PORT: X-Ray Scanner returns with PortableOreScannerItem.
+        run {
+            subId = 32
+            name = I18N.TR_NAME(I18N.Type.NONE, "X-Ray Scanner")
+            val desc = PortableOreScannerItem(
+                name, Eln.obj.getObj("XRayScanner")!!, 100000.0, 400.0,
+                300.0,
+                Eln.config.getDoubleOrElse("runtime.tools.xrayScanner.rangeBlocks.clamped", 5.0).toFloat(),
+                (Math.PI / 2).toFloat(),
+                32,
+                20
+            )
+            Eln.sharedItemStackOne.addElement(subId + (id shl 6), desc)
+        }
     }
 
     private fun registerMiscItem(id: Int) {
