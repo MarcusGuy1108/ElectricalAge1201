@@ -12,8 +12,11 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.level.material.FluidState
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.HitResult
@@ -31,9 +34,13 @@ class SixNodeBlock : NodeBlock(
     { pos, state -> SixNodeEntity(pos, state) },
     0
 ) {
+    init {
+        registerDefaultState(defaultBlockState().setValue(CACHED, false))
+    }
+
     override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
         val entity = level.getBlockEntity(pos) as? SixNodeEntity ?: return Shapes.block()
-        if (entity.hasVolume()) return Shapes.block()
+        if (entity.hasVolume() || !entity.cacheBlock().isAir) return Shapes.block()
         var shape = Shapes.empty()
         for (direction in Direction.values()) {
             if (entity.isSideEnabled(direction)) shape = Shapes.or(shape, FACE_SHAPES[direction.int])
@@ -44,7 +51,22 @@ class SixNodeBlock : NodeBlock(
 
     override fun getCollisionShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
         val entity = level.getBlockEntity(pos) as? SixNodeEntity ?: return Shapes.empty()
-        return if (entity.hasVolume()) Shapes.block() else Shapes.empty()
+        return if (entity.hasVolume() || !entity.cacheBlock().isAir) Shapes.block() else Shapes.empty()
+    }
+
+    // A hidden node blocks light like a full block. A state property, not the block entity: the server's light
+    // engine reads blocks off the main thread, where block entities are not visible.
+    override fun getLightBlock(state: BlockState, level: BlockGetter, pos: BlockPos): Int {
+        return if (state.getValue(CACHED)) level.maxLightLevel else super.getLightBlock(state, level, pos)
+    }
+
+    override fun propagatesSkylightDown(state: BlockState, level: BlockGetter, pos: BlockPos): Boolean {
+        return !state.getValue(CACHED) && super.propagatesSkylightDown(state, level, pos)
+    }
+
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
+        super.createBlockStateDefinition(builder)
+        builder.add(CACHED)
     }
 
     override fun getCloneItemStack(state: BlockState, target: HitResult, level: BlockGetter, pos: BlockPos, player: Player): ItemStack {
@@ -67,6 +89,12 @@ class SixNodeBlock : NodeBlock(
         if (level.isClientSide) return false
         val entity = level.getBlockEntity(pos) as? SixNodeEntity ?: return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid)
         val sixNode = entity.node as SixNode? ?: return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid)
+        // Breaking a hidden node first takes the cache block off, as in 1.7.10.
+        if (!sixNode.sixNodeCacheBlock.isAir) {
+            if (!player.abilities.instabuild) sixNode.dropItem(ItemStack(sixNode.sixNodeCacheBlock.block))
+            sixNode.setCacheBlock(Blocks.AIR.defaultBlockState())
+            return false
+        }
         val breakDirection = resolveBreakDirection(entity, pos, player, sixNode) ?: return false
         if (!sixNode.playerAskToBreakSubBlock(player as? ServerPlayer, breakDirection)) return false
         return if (sixNode.ifSideRemain) true else super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid)
@@ -151,6 +179,10 @@ class SixNodeBlock : NodeBlock(
 
     companion object {
         const val NODE_UUID = "s"
+
+        /** True while a wrench cache block hides the node. */
+        @JvmField
+        val CACHED: BooleanProperty = BooleanProperty.create("cached")
 
         private const val FACE_THICKNESS = 0.2
 

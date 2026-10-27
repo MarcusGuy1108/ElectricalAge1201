@@ -4,7 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack
 import mods.eln.client.GL11
 import mods.eln.misc.Direction.Companion.fromInt
 import mods.eln.misc.UtilsClient.glDefaultColor
+import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.MultiBufferSource
+import net.minecraft.util.RandomSource
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraftforge.client.RenderTypeHelper
+import net.minecraftforge.client.model.data.ModelData
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 
 /**
@@ -14,6 +19,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
  */
 class SixNodeRender : BlockEntityRenderer<SixNodeEntity> {
     override fun render(tileEntity: SixNodeEntity, partialTick: Float, poseStack: PoseStack, buffers: MultiBufferSource, light: Int, overlay: Int) {
+        val cache = tileEntity.sixNodeCacheBlock
+        if (!cache.isAir) {
+            renderCacheBlock(tileEntity, cache, poseStack, buffers, overlay)
+            // Elements inside an opaque cache block are hidden anyway; glass and the like still show them.
+            if (cache.canOcclude()) return
+        }
         GL11.beginRender(poseStack, buffers, light, overlay)
         try {
             GL11.glPushMatrix()
@@ -31,6 +42,21 @@ class SixNodeRender : BlockEntityRenderer<SixNodeEntity> {
             GL11.glPopMatrix()
         } finally {
             GL11.endRender()
+        }
+    }
+
+    // Drawn like a moving piston block: the block model, lit and face-culled from the world around it.
+    private fun renderCacheBlock(tileEntity: SixNodeEntity, cache: BlockState, poseStack: PoseStack, buffers: MultiBufferSource, overlay: Int) {
+        val level = tileEntity.level ?: return
+        val pos = tileEntity.blockPos
+        val dispatcher = Minecraft.getInstance().blockRenderer
+        val model = dispatcher.getBlockModel(cache)
+        val random = RandomSource.create()
+        for (renderType in model.getRenderTypes(cache, random, ModelData.EMPTY)) {
+            dispatcher.modelRenderer.tesselateBlock(
+                level, model, cache, pos, poseStack, buffers.getBuffer(RenderTypeHelper.getMovingBlockRenderType(renderType)),
+                true, random, cache.getSeed(pos), overlay, ModelData.EMPTY, renderType
+            )
         }
     }
 

@@ -260,6 +260,29 @@ object SixNodeGameTests {
         helper.succeed()
     }
 
+    // A wrench in the off hand and a block in the main hand hide a cable inside that block; breaking it once takes
+    // the block back off and leaves the cable.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun wrenchHidesCableInBlock(helper: GameTestHelper) {
+        val cable = placeOnFloor(helper, BlockPos(1, 1, 1), Eln.lowVoltageCableDescriptor!!.newItemStack())
+        val at = helper.absolutePos(BlockPos(1, 1, 1))
+        val player = FakePlayerFactory.get(helper.level, com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "eln_cache_block"))
+        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack(Blocks.STONE_BRICKS, 2))
+        player.setItemInHand(InteractionHand.OFF_HAND, Eln.wrenchDescriptor!!.newItemStack())
+        cable.onBlockActivated(player, Direction.YN, 0.5f, 0.1f, 0.5f)
+        helper.assertTrue(cable.sixNodeCacheBlock.`is`(Blocks.STONE_BRICKS), "cache block ${cable.sixNodeCacheBlock}")
+        helper.assertTrue(player.mainHandItem.count == 1, "${player.mainHandItem.count} bricks left")
+        val state = helper.level.getBlockState(at)
+        helper.assertTrue(state.getLightBlock(helper.level, at) == 15, "hidden cable lets light through")
+        helper.assertTrue(state.getCollisionShape(helper.level, at).max(net.minecraft.core.Direction.Axis.Y) == 1.0, "hidden cable is not solid")
+        helper.assertFalse(Eln.sixNodeBlock.onDestroyedByPlayer(state, helper.level, at, player, true, helper.level.getFluidState(at)), "block broken")
+        helper.assertTrue(cable.sixNodeCacheBlock.isAir, "cache block still there")
+        helper.assertTrue(cable.getSideEnable(Direction.YN), "cable gone")
+        helper.assertTrue(helper.level.getBlockState(at).getLightBlock(helper.level, at) < 15, "light still blocked")
+        helper.succeed()
+    }
+
     // The Nope Wand removes Eln nodes around a creative player without drops. Own batch: its 10-block reach would clear
     // the neighbouring tests' nodes too.
     @GameTest(template = "empty3x3x3", batch = "nope")

@@ -145,6 +145,11 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      spends it pushing itself along; a multimeter used while riding reports the stored energy. The cart drops itself
      (1.7.10 dropped a plain minecart). Under track power is commented out in 1.7.10 and is not registered. A
      GameTest charges a cart.
+   * [x] Cache blocks: right-clicking a cable block with a plain full block in the main hand and the wrench in the
+     off hand hides the block's six-nodes inside it (1.7.10 held the wrench key, C, instead). The block entity
+     renderer draws the hiding block like a moving piston block; a `cached` block state blocks light, since the
+     server's light engine cannot see block entities. Breaking it first drops the block and leaves the cables. A
+     GameTest hides a cable and breaks the block off again.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,

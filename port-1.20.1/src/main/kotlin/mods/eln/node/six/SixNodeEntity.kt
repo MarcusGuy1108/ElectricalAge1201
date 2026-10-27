@@ -27,13 +27,12 @@ class SixNodeEntity(pos: BlockPos, state: BlockState) : NodeBlockEntity(SixNodeB
     var elementRenderList = arrayOfNulls<SixNodeElementRender>(6)
     @JvmField
     var elementRenderIdList = ShortArray(6)
-    var sixNodeCacheBlock: Block = Blocks.AIR
-    var sixNodeCacheBlockMeta: Byte = 0
+    @JvmField
+    var sixNodeCacheBlock: BlockState = Blocks.AIR.defaultBlockState()
     override fun serverPublishUnserialize(stream: DataInputStream) {
         super.serverPublishUnserialize(stream)
         try {
-            stream.readInt() // PORT: cache block id; the disguise feature is not ported yet.
-            sixNodeCacheBlockMeta = stream.readByte()
+            sixNodeCacheBlock = Block.stateById(stream.readInt())
             var idx: Int
             idx = 0
             while (idx < 6) {
@@ -165,6 +164,11 @@ class SixNodeEntity(pos: BlockPos, state: BlockState) : NodeBlockEntity(SixNodeB
     }
 
     // Client: from the synced render list; server: from the node. SixNodeBlock shapes use it on both sides.
+    /** The block hiding this node (wrench "cache block"), air when there is none. */
+    fun cacheBlock(): BlockState {
+        return if (level!!.isClientSide) sixNodeCacheBlock else (node as SixNode?)?.sixNodeCacheBlock ?: Blocks.AIR.defaultBlockState()
+    }
+
     fun isSideEnabled(direction: Direction): Boolean {
         return if (level!!.isClientSide) {
             elementRenderList[direction.int] != null

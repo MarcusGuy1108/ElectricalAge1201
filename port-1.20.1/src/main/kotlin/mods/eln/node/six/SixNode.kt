@@ -22,6 +22,13 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.EntityBlock
+import net.minecraft.world.level.block.RenderShape
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.item.BlockItem
+import net.minecraft.nbt.NbtUtils
+import net.minecraft.core.registries.BuiltInRegistries
+import mods.eln.misc.Utils
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.Container
 import net.minecraft.world.item.ItemStack
@@ -39,11 +46,9 @@ class SixNode : Node() {
     var sideElementIdList = IntArray(6)
     var internalElectricalConnectionList = ArrayList<ElectricalConnection>(1)
     var internalThermalConnectionList = ArrayList<ThermalConnection>(1)
-    // PORT: the wrench "cache block" disguise is not ported; the fields stay so saves and packets keep their shape.
+    // The block hiding this node (1.7.10's wrench "cache block"); air when there is none.
     @JvmField
-    var sixNodeCacheBlock: Block = Blocks.AIR
-    @JvmField
-    var sixNodeCacheBlockMeta: Byte = 0
+    var sixNodeCacheBlock: BlockState = Blocks.AIR.defaultBlockState()
     @JvmField
     var lrduElementMask = LRDUCubeMask()
     fun getElement(side: Direction): SixNodeElement? {
@@ -135,8 +140,7 @@ class SixNode : Node() {
 
     override fun readFromNBT(nbt: CompoundTag) {
         super.readFromNBT(nbt.getCompound("node"))
-        sixNodeCacheBlock = Blocks.AIR
-        sixNodeCacheBlockMeta = nbt.getByte("cacheBlockMeta")
+        sixNodeCacheBlock = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), nbt.getCompound("cacheBlock"))
         var idx: Int
         idx = 0
         while (idx < 6) {
@@ -176,8 +180,7 @@ class SixNode : Node() {
 
     override fun writeToNBT(nbt: CompoundTag) {
         var idx = 0
-        nbt.putInt("cacheBlockId", 0)
-        nbt.putByte("cacheBlockMeta", sixNodeCacheBlockMeta)
+        nbt.put("cacheBlock", NbtUtils.writeBlockState(sixNodeCacheBlock))
         for (sideElement in sideElementList) {
             if (sideElement == null) {
                 nbt.putShort("EID$idx", 0.toShort())
@@ -255,8 +258,7 @@ class SixNode : Node() {
         super.publishSerialize(stream)
         try {
             var idx = 0
-            stream.writeInt(0)
-            stream.writeByte(sixNodeCacheBlockMeta.toInt())
+            stream.writeInt(Block.getId(sixNodeCacheBlock))
             for (sideElement in sideElementList) {
                 if (sideElement == null) {
                     stream.writeShort((0).toInt())
@@ -415,9 +417,34 @@ class SixNode : Node() {
     }
 
     override fun onBlockActivated(entityPlayer: Player, side: Direction, vx: Float, vy: Float, vz: Float): Boolean {
-        // PORT: wrench + block in hand turning the six-node into a "cache block" disguise returns with ServerKeyHandler.
+        if (!sixNodeCacheBlock.isAir) return false
+        // 1.7.10 held the wrench key (C); here the wrench sits in the off hand and the block in the main hand.
+        val stack = entityPlayer.mainHandItem
+        if (Utils.isWrench(entityPlayer.offhandItem) && isCacheBlock(stack)) {
+            setCacheBlock((stack.item as BlockItem).block.defaultBlockState())
+            if (!entityPlayer.abilities.instabuild) stack.shrink(1)
+            return true
+        }
         val element = sideElementList[side.int] ?: return false
         return if (element.onBlockActivated(entityPlayer, side, vx, vy, vz)) true else super.onBlockActivated(entityPlayer, side, vx, vy, vz)
+    }
+
+    // 1.7.10 SixNodeCacheStd: plain full blocks only, no block entities (which includes Eln nodes).
+    private fun isCacheBlock(stack: ItemStack): Boolean {
+        val block = (stack.item as? BlockItem)?.block ?: return false
+        if (block is EntityBlock) return false
+        val state = block.defaultBlockState()
+        return state.renderShape == RenderShape.MODEL && state.isCollisionShapeFullBlock(coordinate.world(), coordinate.blockPos)
+    }
+
+    fun setCacheBlock(state: BlockState) {
+        sixNodeCacheBlock = state
+        needPublish = true
+        val level = coordinate.world()
+        val blockState = level.getBlockState(coordinate.blockPos)
+        if (blockState.hasProperty(SixNodeBlock.CACHED)) {
+            level.setBlock(coordinate.blockPos, blockState.setValue(SixNodeBlock.CACHED, !state.isAir), Block.UPDATE_ALL)
+        }
     }
 
     override fun hasGui(side: Direction): Boolean {
