@@ -3,6 +3,7 @@ package mods.eln.gametest
 import mods.eln.Eln
 import mods.eln.generic.GenericItemBlockUsingDamageDescriptor
 import mods.eln.misc.Direction
+import mods.eln.node.NodeBlockEntity
 import mods.eln.node.six.SixNodeItem
 import mods.eln.node.transparent.TransparentNodeItem
 import net.minecraft.core.BlockPos
@@ -32,15 +33,19 @@ object SmokeGameTests {
         val total = queue.size
         val failures = ArrayList<String>()
         var placed = 0
+        val refused = ArrayList<String>()
         var ticks = 0
         helper.onEachTick {
             if (ticks++ % TICKS_PER_NODE != 0) return@onEachTick
-            helper.level.destroyBlock(helper.absolutePos(pos), false)
+            // Some machines sit a few blocks from the clicked spot (their spawn delta); break whichever node is there.
+            for (at in BlockPos.betweenClosed(helper.absolutePos(pos).offset(-6, -1, -6), helper.absolutePos(pos).offset(6, 3, 6))) {
+                if (helper.level.getBlockEntity(at) is NodeBlockEntity) helper.level.destroyBlock(at, false)
+            }
             val descriptor = queue.removeFirstOrNull()
             if (descriptor == null) {
                 helper.assertTrue(failures.isEmpty(), "${failures.size} failed: ${failures.joinToString("; ")}")
                 helper.assertTrue(placed > 0, "nothing placed")
-                Eln.logger.info("Smoke test placed $placed of $total nodes")
+                Eln.logger.info("Smoke test placed $placed of $total nodes; refused: ${refused.joinToString()}")
                 helper.succeed()
                 return@onEachTick
             }
@@ -51,7 +56,7 @@ object SmokeGameTests {
                     is SixNodeItem -> item.placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(pos), Direction.YN)
                     else -> false
                 }
-                if (ok) placed++
+                if (ok) placed++ else refused.add(descriptor.name)
             } catch (e: Exception) {
                 failures.add("${descriptor.name}: $e")
             }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "eln:advanced_machine_block"
+    },
+    "R": {
+      "tag": "eln:circuit_advanced"
+    }
+  },
+  "pattern": [
+    "RMR",
+    "RMR",
+    " R "
+  ],
+  "result": {
+    "item": "eln:experimental_transporter"
+  },
+  "show_notification": true
+}

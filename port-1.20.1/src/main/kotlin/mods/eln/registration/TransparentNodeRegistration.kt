@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.transparentnode.teleporter.TeleporterDescriptor
 import mods.eln.transparentnode.FabricatorDescriptor
 import mods.eln.transparentnode.turret.TurretDescriptor
 import mods.eln.transparentnode.floodlight.FloodlightDescriptor
@@ -141,8 +142,7 @@ object TransparentNodeRegistration {
         registerSolarPanel(48)
         registerWindTurbine(49)
         registerThermalDissipatorPassiveAndActive(64)
-        // PORT: registerTransparentNodeMisc(65) returns with the teleporter and the thermal heat exchanger (its fluid
-        // pairs and their ThermalRegistry config).
+        registerTransparentNodeMisc(65)
         registerTurret(66)
         registerFuelGenerator(67)
         registerFloodlight(68)
@@ -1467,5 +1467,43 @@ object TransparentNodeRegistration {
             desc.setDefaultIcon("machineblock")
             transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
+    }
+
+    private fun registerTransparentNodeMisc(id: Int) {
+        var subId: Int
+        var name: String
+        run {
+            subId = 0
+            name = TR_NAME(I18N.Type.NONE, "Experimental Transporter")
+
+            val powerLoad = arrayOfNulls<Coordinate>(2)
+            powerLoad[0] = Coordinate(-1, 0, 1, Level.OVERWORLD)
+            powerLoad[1] = Coordinate(-1, 0, -1, Level.OVERWORLD)
+
+            val doorOpen = GhostGroup()
+            doorOpen.addRectangle(-4, -3, 2, 2, 0, 0)
+
+            val doorClose = GhostGroup()
+            doorClose.addRectangle(-2, -2, 0, 1, 0, 0)
+
+            val desc = TeleporterDescriptor(
+                name, Eln.obj.getObj("Transporter"),
+                instance.highVoltageCableDescriptor, Coordinate(-1, 0, 0, Level.OVERWORLD), Coordinate(-1, 1, 0, Level.OVERWORLD), 2,  // int areaH
+                powerLoad, doorOpen, doorClose
+            )
+            desc.setChargeSound("eln:transporter", 0.5f)
+            val g = GhostGroup()
+            g.addRectangle(-2, 0, 0, 1, -1, -1)
+            g.addRectangle(-2, 0, 0, 1, 1, 1)
+            g.addRectangle(-4, -1, 2, 2, 0, 0)
+            g.addElement(0, 1, 0)
+            g.addElement(-1, 0, 0, null, GhostBlock.tFloor)
+            g.addRectangle(-3, -3, 0, 1, -1, -1)
+            g.addRectangle(-3, -3, 0, 1, 1, 1)
+            desc.ghostGroup = g
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        // PORT: the thermal heat exchanger (subId 2) returns with its fluid pairs (ThermalRegistry); its default pairs
+        // are all modded fluids (steam, coolants), which vanilla 1.20.1 lacks.
     }
 }

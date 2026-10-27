@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-26T20:43:44.482307783	Recipes
+// 1.20.1	2026-10-27T10:25:44.637791	Recipes
 5f826e94a1265cd03a8575f16d2c1a027c47921d data/eln/advancements/recipes/misc/100a_electrical_breaker.json
 7f28d2a5311bc783e994d258e1f42b12dd709496 data/eln/advancements/recipes/misc/100a_switch.json
 17cf0958baf47a85de3d95c712c68a1909013eb3 data/eln/advancements/recipes/misc/10a_diode.json
@@ -184,6 +184,7 @@ c08452038d13b1204d37784f5a34b0d501ce4adc data/eln/advancements/recipes/misc/elec
 fd0a118f0a26d85e6ce9263c30b7eca31d3bf746 data/eln/advancements/recipes/misc/electrical_timer.json
 0a0daa8811f72668a4b78eca2c4a82bd25026a51 data/eln/advancements/recipes/misc/energy_meter.json
 e872a9cef0728da62a26952c9218f0c3da297a11 data/eln/advancements/recipes/misc/experimental_battery.json
+2d0fb71019487c4ccfb059dfe8a7a3db1fb5d20a data/eln/advancements/recipes/misc/experimental_transporter.json
 1061733f79f597fb2876a0034a973e81aeaf5a81 data/eln/advancements/recipes/misc/fast_electrical_drill.json
 55897fd2dcc0f38e6332127e49dc8c1eec32f3cb data/eln/advancements/recipes/misc/fixed_shaft.json
 70388e0730baf3e7bc70f8f590622f6450387425 data/eln/advancements/recipes/misc/flat_lamp_socket.json
@@ -601,6 +602,7 @@ c885333b619c310b7a1ff14b6c49ca91b8dba4cd data/eln/recipes/electrical_motor.json
 d9ed0644fe7211cf20f57a37e2d277f044b22c8c data/eln/recipes/electrical_timer.json
 2b0bc59ccfce5a0c02098bb9e0fe0771e8e0d6d1 data/eln/recipes/energy_meter.json
 15dcffe5aedda7a761f77e148f20b37ae0310fb5 data/eln/recipes/experimental_battery.json
+db30b411347e72c954ef8b1f6d6e9da944ad36a9 data/eln/recipes/experimental_transporter.json
 68d5955d62783e5c781347e1b396b0db4045e6fd data/eln/recipes/fast_electrical_drill.json
 fc83c02010f0c25117c54b6bd15ece1a41159413 data/eln/recipes/fixed_shaft.json
 abf6c189c2270782f6f4c70e781455e7e6552eed data/eln/recipes/flat_lamp_socket.json

@@ -136,8 +136,8 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
    * [x] Auto miner, egg incubator, large rheostat, nixie tube and the power antennas. The auto miner digs down to
      three blocks above the world's minimum build height (1.7.10 stopped at y = 3), treats everything in
      `forge:ores` as ore and fills a chest at its output (double chests included); a GameTest powers one and checks
-     the chest. Its screen shows the log but not the X-ray ore picture. The experimental transporter and the thermal heat exchanger (it converts modded fluids
-     such as steam, which vanilla 1.20.1 lacks) are not ported.
+     the chest. Its screen shows the log but not the X-ray ore picture. The experimental transporter (teleporter) is
+     ported; the thermal heat exchanger (it converts modded fluids such as steam, which vanilla 1.20.1 lacks) is not.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,

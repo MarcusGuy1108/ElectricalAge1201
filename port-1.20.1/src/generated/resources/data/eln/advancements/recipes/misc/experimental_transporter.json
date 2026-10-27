@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_crafting_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crafting_table"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "eln:experimental_transporter"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_crafting_table",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "eln:experimental_transporter"
+    ]
+  },
+  "sends_telemetry_event": false
+}

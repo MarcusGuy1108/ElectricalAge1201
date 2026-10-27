@@ -30,6 +30,7 @@ import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -787,6 +788,11 @@ object Utils {
     fun getWorldTime(world: Level): Double = world.dayTime / 23999.0
 
     // The block states every metre along the ray, skipping unloaded positions.
+    @JvmStatic
+    fun serverTeleport(e: Entity, x: Double, y: Double, z: Double) {
+        if (e is ServerPlayer) e.teleportTo(x, y, z) else e.setPos(x, y, z)
+    }
+
     @JvmStatic
     fun traceRay(world: Level, x: Double, y: Double, z: Double, tx: Double, ty: Double, tz: Double): List<BlockState> {
         val norm = sqrt((tx - x) * (tx - x) + (ty - y) * (ty - y) + (tz - z) * (tz - z))
