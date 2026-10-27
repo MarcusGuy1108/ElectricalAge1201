@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "eln:120v_led_light_bulb"
+    },
+    {
+      "tag": "forge:string"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "eln:string_lights"
+  }
+}

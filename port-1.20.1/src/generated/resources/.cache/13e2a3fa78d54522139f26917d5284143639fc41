@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-27T10:25:44.650453843	Item Models: eln
+// 1.20.1	2026-10-27T10:41:41.426056988	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -163,6 +163,7 @@ f10ec40a879d809692ef8f6541856de64845ecf4 assets/eln/models/item/casing.json
 f119241069014405f2e28f747ef2d8a9dea44536 assets/eln/models/item/cheap_chip.json
 2ed5cea6f0b93b12686655bee66edf74ba5614c7 assets/eln/models/item/cheap_electrical_drill.json
 fddcf789c5224c4c27eb7e7dd708ff86aabd0271 assets/eln/models/item/cheap_ferromagnetic_core.json
+c6e31315135d7c223d5cba7d65cb0f697aac5aee assets/eln/models/item/christmas_tree.json
 0ee89c396310e429f031cdb268d351a73c1f4fda assets/eln/models/item/cinnabar_dust.json
 9e6e685a8d8015ff477a218ef7ff1dc4157f4718 assets/eln/models/item/cinnabar_ore.json
 c7832fe137aad4f03afc1fb24815a3c29d8f84d1 assets/eln/models/item/classic_lamp_socket.json
@@ -373,6 +374,7 @@ bde0c889276e5be9181ac1f702b9a48261f17f17 assets/eln/models/item/high_current_rel
 09a7ce2886adcb72eb4a88e54c61afd368462110 assets/eln/models/item/high_voltage_cable.json
 10917e1eb2c1e68162ec8ac793437eb0628c19f8 assets/eln/models/item/high_voltage_relay.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/high_voltage_switch.json
+8da18159d4f321bf4b508ec3b2018aca9d13b5df assets/eln/models/item/holiday_candle.json
 2b4ab352e2fa46be4e042f694b44405a9d7aaaef assets/eln/models/item/hub.json
 cb76a1b2c741d90402b65d8898f381dfdf664290 assets/eln/models/item/humidity_sensor.json
 c251aef626220cc513018d7aecb58814136c6d38 assets/eln/models/item/improved_flashlight.json
@@ -532,6 +534,7 @@ cfb9845eebefba431fada9b91ab639369387c168 assets/eln/models/item/standard_alarm.j
 457cbef041b48856870af0f02d063e19b504dddb assets/eln/models/item/steel_turbine_blade.json
 a3ebda6238609da5b720e98bce6721b8e1747dbc assets/eln/models/item/stone_heat_furnace.json
 b7de6f55502a4dbeed48b6fb93ca2b03c5c74ac8 assets/eln/models/item/streetlight.json
+7765043ab1e7054703dda0e89caad604a035fa88 assets/eln/models/item/string_lights.json
 5a167c249d02eb2dc02da5186f7e7329bfeef3f8 assets/eln/models/item/suspended_lamp_socket.json
 d29cb577bd1612961ea2de46552e1a43563c9fe7 assets/eln/models/item/suspended_lamp_socket_no_swing.json
 04e983c309d539385b78134c87aaa3d6b52557e0 assets/eln/models/item/synthetic_diamond.json

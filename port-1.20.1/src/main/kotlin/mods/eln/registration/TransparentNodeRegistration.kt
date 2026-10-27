@@ -1,5 +1,8 @@
 package mods.eln.registration
 
+import mods.eln.transparentnode.festive.ChristmasTreeDescriptor
+import mods.eln.transparentnode.festive.HolidayCandleDescriptor
+import mods.eln.transparentnode.festive.StringLightsDescriptor
 import mods.eln.transparentnode.teleporter.TeleporterDescriptor
 import mods.eln.transparentnode.FabricatorDescriptor
 import mods.eln.transparentnode.turret.TurretDescriptor
@@ -146,7 +149,7 @@ object TransparentNodeRegistration {
         registerTurret(66)
         registerFuelGenerator(67)
         registerFloodlight(68)
-        // PORT: registerFestive(69)
+        registerFestive(69)
         registerFab(70)
         // PORT: registerRailroad(71)
         // PORT: registerWireProcessingMachines(72)
@@ -1505,5 +1508,40 @@ object TransparentNodeRegistration {
         }
         // PORT: the thermal heat exchanger (subId 2) returns with its fluid pairs (ThermalRegistry); its default pairs
         // are all modded fluids (steam, coolants), which vanilla 1.20.1 lacks.
+    }
+
+    private fun registerFestive(id: Int) {
+        var subId: Int
+        var name: String
+        run {
+            subId = 0
+            name = TR_NAME(I18N.Type.NONE, "Christmas Tree")
+            val desc = ChristmasTreeDescriptor(name, Eln.obj.getObj("Christmas_Tree"))
+            if (Eln.config.getBooleanOrElse("gameplay.seasonal.enableFestiveItems", true)) {
+                transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            } else {
+                transparentNodeItem.addWithoutRegistry(subId + (id shl 6), desc)
+            }
+        }
+        run {
+            subId = 1
+            name = TR_NAME(I18N.Type.NONE, "Holiday Candle")
+            val desc = HolidayCandleDescriptor(name, Eln.obj.getObj("Candle_Light"))
+            if (Eln.config.getBooleanOrElse("gameplay.seasonal.enableFestiveItems", true)) {
+                transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            } else {
+                transparentNodeItem.addWithoutRegistry(subId + (id shl 6), desc)
+            }
+        }
+        run {
+            subId = 2
+            name = TR_NAME(I18N.Type.NONE, "String Lights")
+            val desc = StringLightsDescriptor(name, Eln.obj.getObj("Christmas_Lights"))
+            if (Eln.config.getBooleanOrElse("gameplay.seasonal.enableFestiveItems", true)) {
+                transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+            } else {
+                transparentNodeItem.addWithoutRegistry(subId + (id shl 6), desc)
+            }
+        }
     }
 }

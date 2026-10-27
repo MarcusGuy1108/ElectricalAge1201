@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-27T10:25:44.637791	Recipes
+// 1.20.1	2026-10-27T10:41:41.408822056	Recipes
 5f826e94a1265cd03a8575f16d2c1a027c47921d data/eln/advancements/recipes/misc/100a_electrical_breaker.json
 7f28d2a5311bc783e994d258e1f42b12dd709496 data/eln/advancements/recipes/misc/100a_switch.json
 17cf0958baf47a85de3d95c712c68a1909013eb3 data/eln/advancements/recipes/misc/10a_diode.json
@@ -134,6 +134,7 @@ f062d4b92c8d16cb1965f2d49fbd2a396ebbb671 data/eln/advancements/recipes/misc/casi
 a704e550e6678fe2f227265ca2ff4d8f2ac9b8c7 data/eln/advancements/recipes/misc/cheap_chip.json
 5fdcc547a7768b625a7499c3ff51d07a63c793e0 data/eln/advancements/recipes/misc/cheap_electrical_drill.json
 688ad192d5771195d0c06e8cc174969ba2cd3ed2 data/eln/advancements/recipes/misc/cheap_ferromagnetic_core.json
+5885db8da6c039e81950c9d35d71dc524e1bbacd data/eln/advancements/recipes/misc/christmas_tree.json
 82f63c33a8762cfc43a42fbb4b44a4ca5be566f0 data/eln/advancements/recipes/misc/classic_lamp_socket.json
 a2c877daa4ae84ebfb1fa4c7af5f281d927a3e59 data/eln/advancements/recipes/misc/clutch.json
 490ab6560f61b69bb4c1c0be0020eec83e714b24 data/eln/advancements/recipes/misc/clutch_pin.json
@@ -210,6 +211,7 @@ ab3217ad6b0d1f8d847f49b168a84565c1021cb0 data/eln/advancements/recipes/misc/high
 7dc78603deb8fa5d46502109803eb1375300777d data/eln/advancements/recipes/misc/high_voltage_cable.json
 281db75ba36dd2747b04a5ce487935dfb95d262b data/eln/advancements/recipes/misc/high_voltage_relay.json
 ddd2c31b6d07c15fbc868c669f22892c97659350 data/eln/advancements/recipes/misc/high_voltage_switch.json
+a0d80a5ffb4641f0a2fbcdf24451b47dc5d4ecee data/eln/advancements/recipes/misc/holiday_candle.json
 c954d5ddf158da860ebe129cbc1463d98b549197 data/eln/advancements/recipes/misc/hub.json
 ede6f611717ac94ef4b9d4bed2fe478ee0906c4d data/eln/advancements/recipes/misc/humidity_sensor.json
 d5f6805da15783963576c0e1d6ead288c9adac19 data/eln/advancements/recipes/misc/improved_flashlight.json
@@ -358,6 +360,7 @@ db9aa523fe49f5a5761f246734e4fb11a5e5a96f data/eln/advancements/recipes/misc/stan
 ff67a8e7fa6e252bdde57c46ff39754c98928ba7 data/eln/advancements/recipes/misc/steel_turbine_blade.json
 697a46bd791169db10c56ce1f011fd73da627903 data/eln/advancements/recipes/misc/stone_heat_furnace.json
 ce10882ea7704883ab5066ac2a4056251667d11f data/eln/advancements/recipes/misc/streetlight.json
+7777f9d3dc32a4e44fbc325630da97374b0a77de data/eln/advancements/recipes/misc/string_lights.json
 881dcf797ccc147a1d51db9dfacbfd5efd2cde73 data/eln/advancements/recipes/misc/suspended_lamp_socket.json
 d2f114a9220050345fe9f07f89365f6bebeff28b data/eln/advancements/recipes/misc/suspended_lamp_socket_no_swing.json
 1f31ed0dfd74934261f093f994de26e96018bc8f data/eln/advancements/recipes/misc/tachometer.json
@@ -552,6 +555,7 @@ b278e534d20571e68d10fde8d63cf76f0f530305 data/eln/recipes/brown_brush.json
 1390df2b37b68e8b09438d4892720a552f81cb28 data/eln/recipes/cheap_chip.json
 c9542394e49efdb5edc0b3890dcc7b4b030dc2bf data/eln/recipes/cheap_electrical_drill.json
 a912eed8ebe5a902f0a4b03db5a4e02611a1631e data/eln/recipes/cheap_ferromagnetic_core.json
+3fc8c457eea6633b14ed11de71319273865b0f63 data/eln/recipes/christmas_tree.json
 b27f48cb3af0c86574d36b5aec8cde29be910b60 data/eln/recipes/classic_lamp_socket.json
 69393fc33b9f14841f57d547acd9ad36c492f14f data/eln/recipes/clutch.json
 34968e6da0fcacb7e2a840e62f64714e43a586a2 data/eln/recipes/clutch_pin.json
@@ -628,6 +632,7 @@ e55e56cf02bde6860d81686203170b5162f1008d data/eln/recipes/high_power_transmitter
 e88f455b4ce1da5a44b1bc3b7d8e272df5362b17 data/eln/recipes/high_voltage_cable.json
 52bdfa144a6967e6d4745155f9ceb998e5db6acf data/eln/recipes/high_voltage_relay.json
 6d9baeb58e7bd129e8b528cfc8e24c8b6168f0d4 data/eln/recipes/high_voltage_switch.json
+9db240900709bc57e420f6c5b912b4d6f9841f29 data/eln/recipes/holiday_candle.json
 c19cc67b5febd1f33745825971abc623de49a722 data/eln/recipes/hub.json
 efa476432d9d18b9267998ceed5e3c3db3ac2e82 data/eln/recipes/humidity_sensor.json
 d508de2434aa5684593111fcae713c00805b0361 data/eln/recipes/improved_flashlight.json
@@ -776,6 +781,7 @@ d9f184fdbbf3cd82423f10db96aa2f70350d669e data/eln/recipes/steam_turbine.json
 9f5fc8ed30d95bdf729fe454fa57c04bb602114d data/eln/recipes/steel_turbine_blade.json
 856ff36387096ecd7c5ff5ef377007fc1b9916be data/eln/recipes/stone_heat_furnace.json
 0809805b310ce6beb2fea0cc2eb5b00cebd27376 data/eln/recipes/streetlight.json
+4f46b4cf0f8449bbbfb8edab75d003a83f23c972 data/eln/recipes/string_lights.json
 8e2ad9ce2f96a453f46762c197fed0262ac01e06 data/eln/recipes/suspended_lamp_socket.json
 b334e4e1cb4dd911648862394bcb1f1e95bb31cf data/eln/recipes/suspended_lamp_socket_no_swing.json
 b299b2fc8d25370fadacec15d2d155791a265db8 data/eln/recipes/tachometer.json

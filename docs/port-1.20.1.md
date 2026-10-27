@@ -138,6 +138,8 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      `forge:ores` as ore and fills a chest at its output (double chests included); a GameTest powers one and checks
      the chest. Its screen shows the log but not the X-ray ore picture. The experimental transporter (teleporter) is
      ported; the thermal heat exchanger (it converts modded fluids such as steam, which vanilla 1.20.1 lacks) is not.
+     The festive Christmas tree, holiday candle and string lights are ported; 1.7.10 only added their recipes in
+     December, the port's generated recipes are there all year.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,

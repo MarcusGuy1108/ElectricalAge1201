@@ -270,7 +270,9 @@ object CraftingRecipes {
         recipeGridDevices()
         recipeMaceratorModOres()
         craftBrush()
-        // PORT: the December-only Christmas recipes return with the festive items (data recipes cannot check the date).
+        // shortcut: 1.7.10 added these in December only; generated recipe data cannot check the date, so they are
+        // craftable all year. A custom recipe condition would restore the season.
+        recipeChristmas()
     }
 
 
@@ -2763,6 +2765,15 @@ object CraftingRecipes {
 
 
 
+
+    private fun recipeChristmas() {
+        addShapelessRecipe(Eln.findItemStack("Christmas Tree", 1), findItemStack("String Lights"), ItemStack(Blocks.SPRUCE_SAPLING), findItemStack("String Lights"))
+        addRecipe(
+            Eln.findItemStack("Holiday Candle", 1), " g ", "gbg", " i ", 'g', ItemStack(Blocks.GLASS_PANE), 'b',
+            findItemStack("120V LED Light Bulb"), 'i', "ingotIron"
+        )
+        addShapelessRecipe(Eln.findItemStack("String Lights", 2), findItemStack("120V LED Light Bulb"), "materialString")
+    }
 
     private fun recipeArmor() {
         addRecipe(ItemStack(CopperGear.get("copper_helmet")), "CCC", "C C", 'C', "ingotCopper")
