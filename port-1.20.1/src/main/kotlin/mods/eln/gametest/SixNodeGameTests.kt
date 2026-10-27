@@ -277,4 +277,28 @@ object SixNodeGameTests {
         helper.assertTrue(helper.level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity::class.java, net.minecraft.world.phys.AABB(at).inflate(3.0)).isEmpty(), "items dropped")
         helper.succeed()
     }
+
+    // /eln is registered with Brigadier: "ls" lists the subcommands and "zonedestroy" removes nodes around an operator.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun elnCommandRuns(helper: GameTestHelper) {
+        placeOnFloor(helper, BlockPos(1, 1, 1), Eln.lowVoltageCableDescriptor!!.newItemStack())
+        val output = ArrayList<String>()
+        val sink = object : net.minecraft.commands.CommandSource {
+            override fun sendSystemMessage(component: net.minecraft.network.chat.Component) { output.add(component.string) }
+            override fun acceptsSuccess() = true
+            override fun acceptsFailure() = true
+            override fun shouldInformAdmins() = false
+        }
+        val player = FakePlayerFactory.get(helper.level, com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "eln_console"))
+        val at = helper.absolutePos(BlockPos(1, 1, 1))
+        player.setPos(at.x + 0.5, at.y.toDouble(), at.z + 0.5)
+        val source = player.createCommandSourceStack().withSource(sink).withPermission(4)
+        val commands = helper.level.server.commands
+        commands.performPrefixedCommand(source, "eln ls")
+        helper.assertTrue(output.any { "zonedestroy" in it }, "ls listed: $output")
+        commands.performPrefixedCommand(source, "eln zonedestroy 1")
+        helper.assertBlockNotPresent(Eln.sixNodeBlock, BlockPos(1, 1, 1))
+        helper.succeed()
+    }
 }

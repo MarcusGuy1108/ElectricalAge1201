@@ -152,6 +152,11 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      clamped, as 1.7.10 did.
    * [x] The fabricator (creative only, as in 1.7.10: it has no recipe), the portable NaN and the Nope wand (removes
      Eln nodes within 10 blocks; a creative player gets no drops). GameTest for the wand.
+   * [x] The `/eln` admin console (ls, man, config, about, newWind, matrix, debug, sim-snapshot, watchdog, icons,
+     poleMap, stop-shaft, resetAmbientTemps, resetLampLives, wailaEasyMode, zonedump/zoneclean/zoneremove/
+     zonedestroy), as one Brigadier command with tab completion. Operators and singleplayer owners may run the
+     operator commands, as in 1.7.10. `poleMap` takes a dimension id such as `minecraft:overworld`. A GameTest runs
+     `ls` and `zonedestroy` through the command dispatcher.
 7. [ ] Recipes, world generation, language files, jar-in-jar for libraries, first release.
    * [x] Ores and world generation: copper, lead, tungsten and cinnabar ore are separate blocks (`eln:<name>_ore`)
      that drop themselves and sit in `forge:ores/<name>`. World generation is data (`ElnWorldGen` writes configured

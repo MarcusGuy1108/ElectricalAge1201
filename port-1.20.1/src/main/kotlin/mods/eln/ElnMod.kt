@@ -5,6 +5,7 @@ import mods.eln.craft.CraftingRecipes
 import mods.eln.ore.ElnOre
 import mods.eln.item.CopperGear
 import mods.eln.debug.SmokeCommands
+import mods.eln.server.console.ElnConsoleCommands
 import mods.eln.item.electricalitem.ElectricalArmor
 import net.minecraftforge.event.entity.living.LivingHurtEvent
 import mods.eln.block.ArcBlock
@@ -85,6 +86,7 @@ object ElnMod {
         val bus = MinecraftForge.EVENT_BUS
         bus.addListener { event: LivingHurtEvent -> ElectricalArmor.absorbDamage(event) }
         if (!FMLEnvironment.production) bus.addListener(SmokeCommands::registerServer)
+        bus.addListener(ElnConsoleCommands::register)
         bus.addListener { _: ServerAboutToStartEvent ->
             LightBlockEntity.observers.clear()
             WirelessSignalTxElement.channelMap.clear()
