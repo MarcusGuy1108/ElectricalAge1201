@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.transparentnode.EnergyExporterDescriptor
 import mods.eln.railroad.OverheadLinesDescriptor
 import mods.eln.transparentnode.festive.ChristmasTreeDescriptor
 import mods.eln.transparentnode.festive.HolidayCandleDescriptor
@@ -1505,6 +1506,14 @@ object TransparentNodeRegistration {
             g.addRectangle(-3, -3, 0, 1, -1, -1)
             g.addRectangle(-3, -3, 0, 1, 1, 1)
             desc.ghostGroup = g
+            transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        if (Eln.config.getBooleanOrElse("integrations.energyExporter.enabled", true)) {
+            // 1.7.10 had it as its own block (tile.eln.EnergyConverter); here it is a machine node.
+            subId = 4
+            name = TR_NAME(I18N.Type.NONE, "Energy Exporter")
+            val desc = EnergyExporterDescriptor(name, 120_000.0) // 1.7.10 ELN_CONVERTER_MAX_POWER
+            desc.setDefaultIcon("elntoic2lvu_side")
             transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
         // PORT: the thermal heat exchanger (subId 2) returns with its fluid pairs (ThermalRegistry); its default pairs

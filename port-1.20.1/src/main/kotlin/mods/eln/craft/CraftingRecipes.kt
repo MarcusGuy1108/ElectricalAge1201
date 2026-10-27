@@ -179,11 +179,22 @@ object CraftingRecipes {
         override fun getAdvancementId(): ResourceLocation? = inner.advancementId
     }
 
-    // PORT: the replicator and electric minecart entity registrations return with those entities.
+    private fun recipeEnergyConverter() {
+        if (Eln.config.getBooleanOrElse("integrations.energyExporter.enabled", true)) {
+            addRecipe(
+                findItemStack("Energy Exporter"), "III", "cCR", "III", 'C', Eln.config.getStringOrElse("runtime.dictionary.advancedChip", "circuitElnAdvanced"), 'c',
+                findItemStack("High Voltage Cable"), 'I', findItemStack("Iron Cable"), 'R',
+                ItemStack(Items.GOLD_INGOT)
+            )
+        }
+    }
+
+    // PORT: the replicator entity registration returns with that entity.
     private fun itemCrafting() {
 
         //
-        // PORT: recipeEnergyConverter and recipeComputerProbe return with the energy converter and the ComputerCraft probe.
+        recipeEnergyConverter()
+        // PORT: recipeComputerProbe returns with the ComputerCraft probe.
         recipeArmor()
         recipeTool()
 

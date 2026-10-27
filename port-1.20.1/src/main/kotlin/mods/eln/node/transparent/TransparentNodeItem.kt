@@ -26,6 +26,8 @@ class TransparentNodeItem(override val descriptor: TransparentNodeDescriptor) : 
     override fun getDescriptionId(stack: ItemStack): String = descriptor.name.replace(Regex("\\s+"), "_") + ".name"
 
     override fun getDescriptionId(): String = descriptor.name.replace(Regex("\\s+"), "_") + ".name"
+    // Items new in the port have no 1.7.10 lang entry; they show their descriptor name.
+    override fun getName(stack: ItemStack): Component = Component.translatableWithFallback(getDescriptionId(stack), descriptor.name)
 
     override fun appendHoverText(stack: ItemStack, level: Level?, tooltip: MutableList<Component>, flag: TooltipFlag) {
         val lines = ArrayList<String>()

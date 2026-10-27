@@ -1,5 +1,6 @@
 package mods.eln.node.transparent
 
+import net.minecraftforge.energy.IEnergyStorage
 import net.minecraftforge.common.util.LazyOptional
 import net.minecraftforge.fluids.capability.IFluidHandler
 import net.minecraftforge.items.IItemHandler
@@ -33,12 +34,17 @@ open class TransparentNodeEntity(pos: BlockPos, state: BlockState) :
     // the block entity, so pipes holding on to them let go when the machine is broken.
     private var fluidCapability: LazyOptional<IFluidHandler>? = null
     private val itemCapabilities = arrayOfNulls<LazyOptional<IItemHandler>>(6)
+    private var energyCapability: LazyOptional<IEnergyStorage>? = null
 
     override fun <T> getCapability(cap: Capability<T>, side: net.minecraft.core.Direction?): LazyOptional<T> {
         val node = node as? TransparentNode
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
             val handler = node?.fluidHandler
             if (handler != null) return (fluidCapability ?: LazyOptional.of { handler }.also { fluidCapability = it }).cast()
+        }
+        if (cap == ForgeCapabilities.ENERGY) {
+            val storage = node?.element as? IEnergyStorage
+            if (storage != null) return (energyCapability ?: LazyOptional.of { storage }.also { energyCapability = it }).cast()
         }
         if (cap == ForgeCapabilities.ITEM_HANDLER && side != null) {
             val inventory = node?.getInventory(null) as? WorldlyContainer
@@ -54,6 +60,7 @@ open class TransparentNodeEntity(pos: BlockPos, state: BlockState) :
     override fun invalidateCaps() {
         super.invalidateCaps()
         fluidCapability?.invalidate()
+        energyCapability?.invalidate()
         itemCapabilities.forEach { it?.invalidate() }
     }
 

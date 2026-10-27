@@ -24,6 +24,8 @@ open class GenericItem @JvmOverloads constructor(val descriptor: GenericItemUsin
 
     override fun getDescriptionId(stack: ItemStack): String = legacyKey
     override fun getDescriptionId(): String = legacyKey
+    // Items new in the port have no 1.7.10 lang entry; they show their descriptor name.
+    override fun getName(stack: ItemStack): Component = Component.translatableWithFallback(getDescriptionId(stack), descriptor.name)
 
     override fun appendHoverText(stack: ItemStack, level: Level?, tooltip: MutableList<Component>, flag: TooltipFlag) {
         val lines = ArrayList<String>()

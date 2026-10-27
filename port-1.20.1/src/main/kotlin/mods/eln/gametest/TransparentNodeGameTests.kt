@@ -8,6 +8,7 @@ import mods.eln.mechanical.GasTurbineDescriptor
 import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.ghost.GhostBlock
 import mods.eln.Eln
+import mods.eln.transparentnode.EnergyExporterElement
 import mods.eln.railroad.EntityElectricMinecart
 import mods.eln.railroad.OverheadLinesElement
 import net.minecraft.world.entity.EntityType
@@ -261,6 +262,27 @@ object TransparentNodeGameTests {
             helper.assertTrue(cart.energyBufferJoules > 0.0, "cart has ${cart.energyBufferJoules} J, lines at ${lines.electricalLoad.voltage} V")
             Eln.simulator.removeElectricalComponent(source)
             cart.discard()
+        }
+    }
+
+    // A powered energy exporter fills its buffer and hands it out as Forge Energy.
+    @GameTest(template = "empty3x3x3", timeoutTicks = 200)
+    @JvmStatic
+    fun energyExporterGivesForgeEnergy(helper: GameTestHelper) {
+        val pos = BlockPos(1, 1, 1)
+        helper.setBlock(pos.below(), Blocks.STONE)
+        val stack = Eln.findItemStack("Energy Exporter", 1)
+        helper.assertTrue((stack.item as TransparentNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(pos), Direction.YP), "exporter not placed")
+        val entity = helper.level.getBlockEntity(helper.absolutePos(pos)) as TransparentNodeEntity
+        val exporter = (entity.node as TransparentNode).element as EnergyExporterElement
+        exporter.selectedOhms = 100.0
+        val source = VoltageSource("source", exporter.load, null).setVoltage(200.0)
+        Eln.simulator.addElectricalComponent(source)
+        val energy = entity.getCapability(ForgeCapabilities.ENERGY, null).resolve().get()
+        helper.succeedWhen {
+            // 200 V over 100 ohms is 400 W; a few ticks give a few hundred FE at the 4/3 FE per joule default.
+            helper.assertTrue(energy.extractEnergy(1000, false) > 0, "no FE, buffer ${exporter.energyBuffer} J at ${exporter.load.voltage} V")
+            Eln.simulator.removeElectricalComponent(source)
         }
     }
 }

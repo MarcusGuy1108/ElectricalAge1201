@@ -150,6 +150,12 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      renderer draws the hiding block like a moving piston block; a `cached` block state blocks light, since the
      server's light engine cannot see block entities. Breaking it first drops the block and leaves the cables. A
      GameTest hides a cable and breaks the block off again.
+   * [x] Energy exporter (1.7.10's Eln-to-other energy converter): a machine node that draws power through the
+     resistance set in its screen and turns it into Forge Energy at the 1.7.10 RF ratio
+     (`balance.integrationConversion.wattsToRf`), pushed into the machines on all six sides or pulled by them. IC2
+     and OpenComputers outputs are gone with those mods; 1.7.10 had it as its own block, the port as a machine node.
+     A GameTest pulls FE from a powered exporter. Items new in the port, which have no 1.7.10 lang entry, show their
+     descriptor name.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,
