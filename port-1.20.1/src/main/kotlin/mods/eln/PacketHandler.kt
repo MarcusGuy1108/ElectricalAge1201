@@ -1,5 +1,8 @@
 package mods.eln
 
+import mods.eln.generic.GenericItem
+import mods.eln.item.FalstadImportPacketHandler
+import mods.eln.item.FalstadImportToolDescriptor
 import mods.eln.misc.Direction
 import mods.eln.gui.ElnMenus
 import mods.eln.misc.Coordinate
@@ -32,13 +35,28 @@ object PacketHandler {
                 Eln.packetPublishForNode -> packetForNode(stream, player)
                 Eln.packetForClientNode -> packetForClientNode(stream, player)
                 Eln.packetOpenLocalGui -> packetOpenLocalGui(stream, player)
+                Eln.packetFalstadImport -> packetFalstadImport(stream, player)
                 // PORT: packetPlayerKey, packetPlaySound, packetDestroyUuid,
-                // packetClientToServerConnection, packetServerToClientInfo and packetFalstadImport return with
-                // the key handler, GUIs, sounds, client UUID manager, shared config and Falstad import.
+                // packetClientToServerConnection and packetServerToClientInfo return with
+                // the key handler, GUIs, sounds, client UUID manager and shared config.
             }
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+    // Server: a Falstad netlist the player pasted with the import tool, which they must be holding.
+    private fun packetFalstadImport(stream: DataInputStream, player: Player) {
+        if (player !is ServerPlayer) return
+        val size = stream.readInt()
+        if (size <= 0 || size > 32000) return
+        val holding = listOf(player.mainHandItem, player.offhandItem).any {
+            (it.item as? GenericItem)?.descriptor is FalstadImportToolDescriptor
+        }
+        if (!holding) return
+        val bytes = ByteArray(size)
+        stream.readFully(bytes)
+        FalstadImportPacketHandler.handle(player, bytes)
     }
 
     // Client: the server asked to open a GUI without a container (1.7.10 GuiHandler.nodeBaseOpen + side).

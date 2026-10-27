@@ -181,6 +181,11 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      Descriptors implementing `ICustomItemRender` are drawn by `ElnItemRenderer` (a Forge custom item renderer that
      runs the 1.7.10 GL code) in hand, on the ground and in frames, and keep their icon in the GUI. Only the local
      player's own scan is computed, so another player's scanner shows a dark screen.
+   * [x] Falstad import tool: right-click opens a screen that sends the clipboard's Falstad netlist to the server,
+     which plans the layout off the server thread and builds it on flat ground near the player. The server only
+     accepts the netlist from a player holding the tool, up to 32 kB. The ground search now reaches below y = 0.
+     The 1.7.10 parser tests run with the port's unit tests (they read `docs/examples`), and a GameTest builds the
+     RC charging example.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,

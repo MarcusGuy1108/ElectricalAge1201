@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.item.FalstadImportToolDescriptor
 import mods.eln.item.electricalitem.PortableOreScannerItem
 import mods.eln.railroad.ElectricMinecartItem
 import mods.eln.item.NopeWandDescriptor
@@ -838,7 +839,13 @@ object ItemRegistration {
             Eln.sharedItem.addElement(completId, element)
             Eln.configCopyToolElement = element
         }
-        // PORT: Falstad Import Tool returns with FalstadImportToolDescriptor.
+        run {
+            subId = 17
+            completId = subId + (id shl 6)
+            element = FalstadImportToolDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Falstad Import Tool"))
+            element.creativeTab = Eln.creativeTabToolsArmor
+            Eln.sharedItem.addElement(completId, element)
+        }
     }
 
     private fun registerTreeResinAndRubber(id: Int) {

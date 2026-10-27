@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-27T12:09:48.411345548	Item Models: eln
+// 1.20.1	2026-10-27T17:03:18.245845785	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -350,6 +350,7 @@ d04f067ade578b576a8d6ee73a60214ae9324ec0 assets/eln/models/item/electrical_probe
 747503cf6d57ffdfcf37ae189795402167608d3b assets/eln/models/item/experimental_battery.json
 7204a431672ed96f1ef5abc0050d67ad7726ca40 assets/eln/models/item/experimental_transporter.json
 d3c4e920877835907e95280a83aceb1cf65f369c assets/eln/models/item/fabricator.json
+6cbabb8768e1e1b262c23bd54ed3b1421ece334d assets/eln/models/item/falstad_import_tool.json
 cbe25243f6276ccec689438109ec97ac0d3dc301 assets/eln/models/item/fast_electrical_drill.json
 72ee6520f271c506d176d32c67ebcaf97f7e1f28 assets/eln/models/item/ferrite_ingot.json
 5553bb60d5b4db7df23e6ba5ae7d2c83b9f23715 assets/eln/models/item/fixed_shaft.json

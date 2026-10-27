@@ -1,5 +1,6 @@
 package mods.eln.gametest
 
+import mods.eln.falstad.FalstadImporter
 import mods.eln.environment.RoomThermalManager
 import mods.eln.sixnode.electricalbreaker.ElectricalBreakerElement
 import mods.eln.sixnode.logicgate.LogicGateElement
@@ -305,6 +306,31 @@ object SixNodeGameTests {
         }
     }
 
+    // The Falstad import tool builds the RC charging example from docs/examples on flat ground next to the player.
+    // Own batch: the build spreads well past the test's template.
+    @GameTest(template = "empty3x3x3", batch = "falstad")
+    @JvmStatic
+    fun falstadImportBuildsCircuit(helper: GameTestHelper) {
+        for (x in -4..16) for (z in -4..16) {
+            helper.setBlock(BlockPos(x, 0, z), Blocks.STONE)
+            for (y in 1..3) helper.setBlock(BlockPos(x, y, z), Blocks.AIR)
+        }
+        // The importer reports through chat; keep its messages for the failure text.
+        val messages = ArrayList<String>()
+        val player = object : net.minecraftforge.common.util.FakePlayer(helper.level, com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "eln_falstad")) {
+            override fun sendSystemMessage(component: net.minecraft.network.chat.Component) {
+                messages.add(component.string)
+            }
+        }
+        val at = helper.absolutePos(BlockPos(6, 1, 6))
+        player.setPos(at.x + 0.5, at.y.toDouble(), at.z + 0.5)
+        FalstadImporter.importNow(player, RC_CHARGING_NETLIST)
+        val nodes = BlockPos.betweenClosed(helper.absolutePos(BlockPos(-4, 1, -4)), helper.absolutePos(BlockPos(16, 2, 16)))
+            .count { helper.level.getBlockEntity(it) is SixNodeEntity }
+        helper.assertTrue(nodes >= 6, "only $nodes six-node blocks placed: ${messages.joinToString(" | ")}")
+        helper.succeed()
+    }
+
     // The Nope Wand removes Eln nodes around a creative player without drops. Own batch: its 10-block reach would clear
     // the neighbouring tests' nodes too.
     @GameTest(template = "empty3x3x3", batch = "nope")
@@ -346,4 +372,19 @@ object SixNodeGameTests {
         helper.assertBlockNotPresent(Eln.sixNodeBlock, BlockPos(1, 1, 1))
         helper.succeed()
     }
+
+    private val RC_CHARGING_NETLIST = """
+        ${'$'} 1 5.0E-6 10 50 5
+        v 0 192 0 128 0 0 0 3.0 0
+        w 0 128 64 128 0
+        s 64 128 128 128 0 1
+        r 128 128 256 128 0 20
+        c 256 128 256 192 0 0.25 0
+        w 256 128 320 128 0
+        r 320 128 320 192 0 200
+        w 320 192 256 192 0
+        w 256 192 0 192 0
+        g 0 192 0 192 0
+        O 256 128 256 64 2
+    """.trimIndent()
 }
