@@ -102,6 +102,11 @@ repositories {
         url = 'https://api.modrinth.com/maven'
         content { includeGroup 'maven.modrinth' }
     }
+    maven {
+        name = 'JEI'
+        url = 'https://maven.blamejared.com/'
+        content { includeGroup 'mezz.jei' }
+    }
 }
 
 // The release jar is build/libs/eln-<version>-all.jar: the mod plus the libraries it needs at run time.
@@ -119,6 +124,10 @@ dependencies {
     // Optional Jade tooltips (mods.eln.compat.jade); Jade itself only runs in development.
     compileOnly fg.deobf("maven.modrinth:jade:${jade_version}")
     runtimeOnly fg.deobf("maven.modrinth:jade:${jade_version}")
+    // Optional JEI pages for the machine recipes (mods.eln.compat.jei); JEI itself only runs in development.
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.apache.commons:commons-math3:3.6.1'

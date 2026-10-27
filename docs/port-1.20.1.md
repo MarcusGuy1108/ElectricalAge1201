@@ -162,6 +162,11 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      entity. Jade is a compile-only dependency from the Modrinth maven and runs in the dev client; the release jar
      works without it. The dev runs remap mixin refmaps so mods like Jade load there. Port-only translations (Jade's
      config entry) live in `src/main/lang/<language>.json` and are merged into the converted 1.7.10 lang files.
+   * [x] JEI: an optional plugin (`mods.eln.compat.jei`) adds macerator, compressor, plate machine, magnetizer and
+     arc furnace pages with each recipe's energy, and the machines as their catalysts. Crafting and smelting
+     recipes are data, so JEI lists those without help. A client on a dedicated server fills the machine lists
+     itself, since they are otherwise filled at server start. JEI is a compile-only dependency from the BlameJared
+     maven and runs in the dev client.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,
