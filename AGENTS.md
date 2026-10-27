@@ -27,4 +27,4 @@ If you learn things about making the Gradle build work in the sandbox, document 
 
 # 1.20.1 port
 
-* The Forge 1.20.1 port is a separate Gradle project in `port-1.20.1/`. See `docs/port-1.20.1.md` for layout, conventions and milestones. Its build files are ours, not upstream's, so they may be changed.
+* The Forge 1.20.1 port is a separate Gradle project in `port-1.20.1/`. Its lang files are converted from the 1.7.10 `.lang` files at build time; strings that only exist in the port go in `port-1.20.1/src/main/lang/en_us.json`. See `docs/port-1.20.1.md` for layout, conventions and milestones. Its build files are ours, not upstream's, so they may be changed.

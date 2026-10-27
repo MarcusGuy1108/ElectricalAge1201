@@ -26,6 +26,9 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            // Mods with mixins (Jade) in the dev runs need their refmaps remapped to these mappings.
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 "${mod_id}" {
@@ -66,6 +69,7 @@ def generatedLang = layout.buildDirectory.dir('generated/lang')
 // 1.20.1 reads JSON lang files; convert the 1.7.10 key=value files, keeping their legacy keys.
 tasks.register('convertLegacyLang') {
     inputs.dir(new File(legacyAssets, 'eln/lang'))
+    inputs.dir('src/main/lang')
     outputs.dir(generatedLang)
     doLast {
         def outDir = generatedLang.get().dir('assets/eln/lang').asFile
@@ -77,8 +81,12 @@ tasks.register('convertLegacyLang') {
                 if (line.startsWith('#') || split <= 0) return
                 entries[line.substring(0, split)] = line.substring(split + 1)
             }
+            def jsonName = file.name.replace('.lang', '.json').toLowerCase()
+            // Strings new in the port (such as Jade's config entry) live in src/main/lang, by language.
+            def portLang = project.file("src/main/lang/${jsonName}")
+            if (portLang.exists()) entries.putAll(new groovy.json.JsonSlurper().parse(portLang, 'UTF-8') as Map)
             def json = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(entries))
-            new File(outDir, file.name.replace('.lang', '.json').toLowerCase()).setText(json, 'UTF-8')
+            new File(outDir, jsonName).setText(json, 'UTF-8')
         }
     }
 }
@@ -88,6 +96,11 @@ repositories {
         name = 'Kotlin for Forge'
         url = 'https://thedarkcolour.github.io/KotlinForForge/'
         content { includeGroup 'thedarkcolour' }
+    }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
     }
 }
 
@@ -102,6 +115,10 @@ dependencies {
     jarJar(group: 'org.apache.commons', name: 'commons-numbers-core', version: '[1.2,2.0)') {
         jarJar.pin(it, '1.2')
     }
+
+    // Optional Jade tooltips (mods.eln.compat.jade); Jade itself only runs in development.
+    compileOnly fg.deobf("maven.modrinth:jade:${jade_version}")
+    runtimeOnly fg.deobf("maven.modrinth:jade:${jade_version}")
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.apache.commons:commons-math3:3.6.1'
