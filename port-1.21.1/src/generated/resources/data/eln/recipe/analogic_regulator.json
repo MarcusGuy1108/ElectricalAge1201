@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_basic"
+    },
+    "I": {
+      "item": "eln:iron_cable"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "R R",
+    " C ",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "eln:analogic_regulator"
+  }
+}

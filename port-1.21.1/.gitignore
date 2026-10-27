@@ -1,0 +1,14 @@
+# gradle
+build
+.gradle
+.kotlin
+
+# idea
+out
+.idea
+*.iml
+
+# runs
+run
+run-data
+logs

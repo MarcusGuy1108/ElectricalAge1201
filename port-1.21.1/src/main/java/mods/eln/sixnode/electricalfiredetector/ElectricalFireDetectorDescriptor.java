@@ -1,0 +1,81 @@
+package mods.eln.sixnode.electricalfiredetector;
+
+import mods.eln.misc.*;
+import mods.eln.misc.Obj3D.Obj3DPart;
+import mods.eln.node.six.SixNodeDescriptor;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import mods.eln.client.GL11;
+
+import java.util.Collections;
+import java.util.List;
+
+import static mods.eln.i18n.I18N.tr;
+
+public class ElectricalFireDetectorDescriptor extends SixNodeDescriptor {
+    // PORT: IItemRenderer drawing is replaced by the generated item model.
+
+    private Obj3DPart detector;
+    private Obj3DPart led;
+    boolean batteryPowered;
+    double maxRange;
+    public float[] pinDistance;
+    final double updateInterval = 0.5;
+    static final double PowerComsumption = 20000.0 / (3600 * 40);
+
+    public ElectricalFireDetectorDescriptor(String name, Obj3D obj, double maxRange, boolean batteryPowered) {
+        super(name, ElectricalFireDetectorElement.class, ElectricalFireDetectorRender.class);
+        this.batteryPowered = batteryPowered;
+        this.maxRange = maxRange;
+        if (obj != null) {
+            detector = obj.getPart("Detector");
+            led = obj.getPart("Led");
+
+            pinDistance = Utils.getSixNodePinDistance(detector);
+        }
+
+        if (batteryPowered) {
+            voltageLevelColor = VoltageLevelColor.Neutral;
+        } else {
+            voltageLevelColor = VoltageLevelColor.SignalVoltage;
+        }
+    }
+
+    @Override
+    public void setParent(Item item, int damage) {
+        super.setParent(item, damage);
+    }
+
+    void draw(boolean firePresent) {
+        if (detector != null) detector.draw();
+        if (led != null) {
+            if (firePresent) {
+                UtilsClient.drawLight(led);
+            } else {
+                GL11.glColor3f(0.5f, 0.5f, 0.5f);
+                led.draw();
+                GL11.glColor3f(1, 1, 1);
+            }
+        }
+    }
+
+    @Override
+    public void addInformation(ItemStack itemStack, Player entityPlayer, List<String> list, boolean par4) {
+        super.addInformation(itemStack, entityPlayer, list, par4);
+        if (batteryPowered) {
+            Collections.addAll(list, tr("Battery powered buzzer \nactivated in presence of fire.").split("\n"));
+        } else {
+            Collections.addAll(list, tr("Output voltage increases\nif a fire has been detected.").split("\n"));
+        }
+        list.add(tr("Range: %1$ blocks", (int) maxRange));
+    }
+
+    @Nullable
+    @Override
+    public LRDU getFrontFromPlace(@NotNull Direction side, @NotNull Player player) {
+        return super.getFrontFromPlace(side, player).right();
+    }
+}

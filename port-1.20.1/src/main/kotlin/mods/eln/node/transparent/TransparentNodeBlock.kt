@@ -42,8 +42,8 @@ class TransparentNodeBlock : NodeBlock(
     // The shape comes from the machine: the server reads it from the node, the client from the element render.
     override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape {
         val entity = level.getBlockEntity(pos) as? TransparentNodeEntity ?: return Shapes.block()
-        val descriptor = (entity.node as? TransparentNode)?.element?.transparentNodeDescriptor
-            ?: entity.elementRender?.transparentNodeDescriptor
+        val descriptor = if (entity.level?.isClientSide != false) entity.elementRender?.transparentNodeDescriptor
+            else (entity.node as? TransparentNode)?.element?.transparentNodeDescriptor
         return descriptor?.getShape() ?: Shapes.block()
     }
 

@@ -2,6 +2,7 @@
 
 The Forge 1.20.1 port lives in [`port-1.20.1/`](../port-1.20.1), a standalone Gradle project next to the
 1.7.10 build. The 1.7.10 code at the repository root stays untouched and is the reference for every ported feature.
+A NeoForge 1.21.1 copy of this port lives in `port-1.21.1/`; see [port-1.21.1.md](port-1.21.1.md).
 
 * Minecraft 1.20.1, Forge 47.4.x, Kotlin for Forge 4.12 (Kotlin 2.2), Java 17, official Mojang mappings.
 * Mod id is `eln` (1.20.1 requires lowercase ids), asset namespace stays `eln`.

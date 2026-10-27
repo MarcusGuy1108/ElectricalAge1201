@@ -1,0 +1,29 @@
+package mods.eln.node.six
+
+import mods.eln.Eln
+import mods.eln.gui.ISlotSkin.SlotSkin
+import mods.eln.gui.SlotWithSkinAndComment
+import net.minecraft.world.Container
+import net.minecraft.world.item.ItemStack
+
+open class SixNodeItemSlot(
+    inventory: Container, slot: Int,
+    x: Int, y: Int,
+    var stackLimit: Int,
+    var descriptorClassList: Array<Class<*>>, skin: SlotSkin, comment: Array<String>
+) : SlotWithSkinAndComment(inventory, slot, x, y, skin, comment) {
+    /**
+     * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
+     */
+    override fun isItemValid(itemStack: ItemStack): Boolean {
+        val descriptor = (itemStack.item as? SixNodeItem)?.descriptor ?: return false
+        for (classFilter in descriptorClassList) {
+            if (descriptor.javaClass == classFilter) return true
+        }
+        return false
+    }
+
+    override fun getSlotStackLimit(): Int {
+        return stackLimit
+    }
+}

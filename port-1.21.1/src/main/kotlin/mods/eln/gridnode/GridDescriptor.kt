@@ -1,0 +1,68 @@
+package mods.eln.gridnode
+
+import mods.eln.compat.*
+import mods.eln.misc.Direction
+import mods.eln.misc.Obj3D
+import mods.eln.misc.preserveMatrix
+import mods.eln.node.transparent.TransparentNodeDescriptor
+import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.phys.Vec3
+
+import java.util.ArrayList
+
+import mods.eln.client.GL11.glRotatef
+import mods.eln.client.GL11.glTranslated
+
+open class GridDescriptor(name: String, protected val obj: Obj3D, ElementClass: Class<*>, RenderClass: Class<*>, val cableTexture: String, val cableDescriptor: ElectricalCableDescriptor, val connectRange: Int) : TransparentNodeDescriptor(name, ElementClass, RenderClass) {
+    // PORT: IItemRenderer drawing is replaced by the generated item model.
+    val plus = ArrayList<Obj3D.Obj3DPart>()
+    val gnd = ArrayList<Obj3D.Obj3DPart>()
+
+    var renderOffset: Vec3 = Vec3.ZERO
+
+    protected var static_parts = ArrayList<Obj3D.Obj3DPart>()
+    protected var rotating_parts = ArrayList<Obj3D.Obj3DPart>()
+
+    init {
+        rotating_parts.add(obj.getPart("main"))
+        var i = 0
+        while (true) {
+            val plus = obj.getPart("p" + i)
+            val gnd = obj.getPart("g" + i)
+            if (plus == null || gnd == null) break
+            rotating_parts.add(plus)
+            rotating_parts.add(gnd)
+            this.plus.add(plus)
+            this.gnd.add(gnd)
+            i++
+        }
+    }
+
+    fun draw(idealRenderingAngle: Float) {
+        preserveMatrix {
+            glTranslated(
+                renderOffset.xCoord, renderOffset.yCoord, renderOffset.zCoord
+            )
+            preserveMatrix {
+                glRotatef(idealRenderingAngle, 0f, 1f, 0f)
+                for (part in rotating_parts) {
+                    part.draw()
+                }
+            }
+            for (part in static_parts) {
+                part.draw()
+            }
+        }
+    }
+
+    open fun hasCustomIcon() = false
+
+    open fun acceptsGridCable(cable: ElectricalCableDescriptor): Boolean {
+        return cable == cableDescriptor
+    }
+
+    open fun rotationIsFixed(): Boolean {
+        return false
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "eln:dc_dc_converter"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "D",
+    "R"
+  ],
+  "result": {
+    "count": 1,
+    "id": "eln:one_way_dc_dc_converter"
+  }
+}

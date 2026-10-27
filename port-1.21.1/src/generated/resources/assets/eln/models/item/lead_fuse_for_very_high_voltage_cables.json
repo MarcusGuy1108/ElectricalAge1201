@@ -1,0 +1,18 @@
+{
+  "base": {
+    "parent": "minecraft:item/generated",
+    "textures": {
+      "layer0": "eln:items/electricalfuse"
+    }
+  },
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "eln:voltages/veryhigh",
+        "layer1": "eln:items/electricalfuse"
+      }
+    }
+  }
+}

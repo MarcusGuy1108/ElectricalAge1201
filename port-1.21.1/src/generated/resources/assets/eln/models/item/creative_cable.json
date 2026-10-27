@@ -1,0 +1,18 @@
+{
+  "base": {
+    "parent": "minecraft:item/generated",
+    "textures": {
+      "layer0": "eln:blocks/creativecable"
+    }
+  },
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "eln:voltages/grid",
+        "layer1": "eln:blocks/creativecable"
+      }
+    }
+  }
+}

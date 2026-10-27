@@ -28,3 +28,9 @@ If you learn things about making the Gradle build work in the sandbox, document 
 # 1.20.1 port
 
 * The Forge 1.20.1 port is a separate Gradle project in `port-1.20.1/`. Its lang files are converted from the 1.7.10 `.lang` files at build time; strings that only exist in the port go in `port-1.20.1/src/main/lang/en_us.json`. See `docs/port-1.20.1.md` for layout, conventions and milestones. Its build files are ours, not upstream's, so they may be changed.
+
+# 1.21.1 port
+
+* The NeoForge 1.21.1 port is a separate Gradle project in `port-1.21.1/`, started as a copy of `port-1.20.1/`. The two `src` trees are maintained separately: apply fixes to both. See `docs/port-1.21.1.md` for the API differences. Its build files are ours too.
+* It needs Java 21. To look up a 1.21.1 signature, run `javap -cp port-1.21.1/build/moddev/artifacts/neoforge-<version>-merged.jar <class>`.
+* To boot the release jar on a real server, use the Kotlin for Forge `-all` jar from Modrinth; the `kotlinforforge-neoforge` Maven artifact lacks the language loader.

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "eln:string_lights"
+    },
+    {
+      "item": "minecraft:spruce_sapling"
+    },
+    {
+      "item": "eln:string_lights"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "eln:christmas_tree"
+  }
+}

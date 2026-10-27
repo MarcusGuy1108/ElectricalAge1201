@@ -1,0 +1,97 @@
+package mods.eln.sixnode.lampsupply;
+
+import mods.eln.misc.*;
+import mods.eln.misc.Obj3D.Obj3DPart;
+import mods.eln.node.six.SixNodeDescriptor;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.List;
+
+import static mods.eln.i18n.I18N.tr;
+
+public class LampSupplyDescriptor extends SixNodeDescriptor {
+    // PORT: IItemRenderer drawing is replaced by the generated item model.
+
+    private Obj3D obj;
+    Obj3DPart base;
+    private Obj3DPart window;
+    private float windowOpenAngle;
+    public boolean isWireless;
+    public int range;
+    public int channelCount = 3;
+    public double nominalVoltage;
+
+    public LampSupplyDescriptor(String name, Obj3D obj, int range) {
+        this(name, obj, range, NominalVoltage.V120);
+    }
+
+    public LampSupplyDescriptor(String name, Obj3D obj, int range, double nominalVoltage) {
+        super(name, LampSupplyElement.class, LampSupplyRender.class);
+        this.isWireless = isWireless;
+        this.range = range;
+        this.nominalVoltage = nominalVoltage;
+        setDefaultIcon("lampsupply");
+        this.obj = obj;
+        if (obj != null) {
+            base = obj.getPart("base");
+            window = obj.getPart("window");
+        }
+        if (window != null) {
+            windowOpenAngle = window.getFloat("windowOpenAngle");
+        }
+
+        voltageLevelColor = VoltageLevelColor.Neutral;
+    }
+
+    @Override
+    public void setParent(Item item, int damage) {
+        super.setParent(item, damage);
+    }
+
+    public void draw(float openFactor) {
+        if (base != null) base.draw();
+        //UtilsClient.drawLight(led);
+        UtilsClient.disableCulling();
+        //UtilsClient.disableDepthTest();
+        UtilsClient.enableBlend();
+        obj.bindTexture("Glass.png");
+        float rotYaw = Minecraft.getInstance().player.getYRot() / 360.f;
+        float rotPitch = Minecraft.getInstance().player.getXRot() / 180.f;
+        float pos = (((float) Minecraft.getInstance().player.getX()) + ((float) Minecraft.getInstance().player.getZ())) / 64.f;
+        if (window != null)
+            window.draw((1f - openFactor) * windowOpenAngle, 0f, 0f, 1f, rotYaw + pos + (openFactor * 0.5f), rotPitch * 0.65f);
+        UtilsClient.disableBlend();
+        //UtilsClient.enableDepthTest();
+        UtilsClient.enableCulling();
+    }
+
+    @Override
+    public void addInformation(ItemStack itemStack, Player entityPlayer, List<String> list, boolean par4) {
+        super.addInformation(itemStack, entityPlayer, list, par4);
+        list.add(tr("Supplies power to nearby lamps."));
+        list.add(tr("Nominal mains class: %1$V", Utils.plotValue(nominalVoltage)));
+        list.add(tr("Capable of operating 3 light channels."));
+        Collections.addAll(list,tr("Supports control from a wireless signal\nchannel for each lighting channel.").split("\n"));
+    }
+
+    @Override
+    public RealisticEnum addRealismContext(List<String> list) {
+        super.addRealismContext(list);
+        list.add(tr("Most homes have a circuit breaker panel for lights"));
+        list.add(tr("The wireless power aspect is pretending there are wires in the walls"));
+        list.add(tr("Wireless control signals are totally possible"));
+        return RealisticEnum.REALISTIC;
+    }
+
+    @Nullable
+    @Override
+    public LRDU getFrontFromPlace(@NotNull Direction side, @NotNull Player player) {
+        return super.getFrontFromPlace(side, player).inverse();
+    }
+}

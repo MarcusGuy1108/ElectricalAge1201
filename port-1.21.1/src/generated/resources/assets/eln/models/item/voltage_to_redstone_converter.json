@@ -1,0 +1,18 @@
+{
+  "base": {
+    "parent": "minecraft:item/generated",
+    "textures": {
+      "layer0": "eln:blocks/voltage-to-redstoneconverter"
+    }
+  },
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "eln:voltages/signal",
+        "layer1": "eln:blocks/voltage-to-redstoneconverter"
+      }
+    }
+  }
+}

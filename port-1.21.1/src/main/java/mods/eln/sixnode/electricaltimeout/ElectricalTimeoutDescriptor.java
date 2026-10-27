@@ -1,0 +1,77 @@
+package mods.eln.sixnode.electricaltimeout;
+
+import mods.eln.misc.*;
+import mods.eln.misc.Obj3D.Obj3DPart;
+import mods.eln.node.six.SixNodeDescriptor;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import mods.eln.client.GL11;
+
+import java.util.Collections;
+import java.util.List;
+
+import static mods.eln.i18n.I18N.tr;
+
+public class ElectricalTimeoutDescriptor extends SixNodeDescriptor {
+    // PORT: IItemRenderer drawing is replaced by the generated item model.
+
+    Obj3D obj;
+    Obj3DPart main, rot, led;
+    float rotStart, rotEnd;
+
+    String tickSound = null;
+    float tickVolume = 0f;
+
+    public ElectricalTimeoutDescriptor(String name, Obj3D obj) {
+        super(name, ElectricalTimeoutElement.class, ElectricalTimeoutRender.class);
+        if (obj != null) {
+            main = obj.getPart("main");
+            rot = obj.getPart("rot");
+            if (rot != null) {
+                rotStart = rot.getFloat("rotStart");
+                rotEnd = rot.getFloat("rotEnd");
+            }
+            led = obj.getPart("led");
+        }
+
+        voltageLevelColor = VoltageLevelColor.SignalVoltage;
+    }
+
+    @Override
+    public void addInformation(ItemStack itemStack, Player entityPlayer, List<String> list, boolean par4) {
+        super.addInformation(itemStack, entityPlayer, list, par4);
+        Collections.addAll(list, tr("Upon application of a high signal,\nthe timer maintains the output high for\na configurable interval. Can be re-triggered.").split("\n"));
+    }
+
+    @Override
+    public void setParent(Item item, int damage) {
+        super.setParent(item, damage);
+    }
+
+    void draw(float left) {
+        if (main != null) main.draw();
+        if (rot != null) {
+            rot.draw(rotEnd + (rotStart - rotEnd) * left, 1f, 0f, 0f);
+        }
+        if (led != null) {
+            UtilsClient.ledOnOffColor(left != 0f);
+            UtilsClient.drawLight(led);
+            GL11.glColor3f(1f, 1f, 1f);
+        }
+    }
+
+    public ElectricalTimeoutDescriptor setTickSound(String tickSound, float tickVolume) {
+        this.tickSound = tickSound;
+        this.tickVolume = tickVolume;
+        return this;
+    }
+
+    @Nullable
+    @Override
+    public LRDU getFrontFromPlace(@NotNull Direction side, @NotNull Player player) {
+        return super.getFrontFromPlace(side, player).right();
+    }
+}
