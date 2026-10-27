@@ -7,6 +7,9 @@ import net.minecraftforge.client.event.RenderGuiEvent
 import mods.eln.node.transparent.TransparentNodeRender
 import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.gui.ElnMenus
+import mods.eln.railroad.EntityElectricMinecart
+import net.minecraft.client.model.geom.ModelLayers
+import net.minecraft.client.renderer.entity.MinecartRenderer
 import mods.eln.node.NodeBlockEntity
 import net.minecraft.client.gui.screens.MenuScreens
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
@@ -40,6 +43,7 @@ object ElnClient {
     private fun registerRenderers(event: EntityRenderersEvent.RegisterRenderers) {
         event.registerBlockEntityRenderer(SixNodeBlockRegistration.ENTITY.get()) { SixNodeRender() }
         event.registerBlockEntityRenderer(TransparentNodeBlock.ENTITY.get()) { TransparentNodeRender() }
+        event.registerEntityRenderer(EntityElectricMinecart.TYPE.get()) { MinecartRenderer(it, ModelLayers.MINECART) }
     }
 
     private fun clientSetup(event: FMLClientSetupEvent) {

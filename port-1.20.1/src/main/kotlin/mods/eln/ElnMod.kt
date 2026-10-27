@@ -36,6 +36,9 @@ import mods.eln.node.six.SixNode
 import mods.eln.node.six.SixNodeBlockRegistration
 import mods.eln.registration.SixNodeRegistration
 import mods.eln.registry.ElnRegistries
+import mods.eln.railroad.ElectricMinecartChargeReporter
+import mods.eln.railroad.EntityElectricMinecart
+import mods.eln.railroad.PoweredMinecartSimulationSingleton
 import mods.eln.node.NodeManager
 import mods.eln.node.NodeServer
 import mods.eln.server.ServerEventListener
@@ -65,6 +68,7 @@ object ElnMod {
         Eln.sharedItemStackOne = GenericItemUsingDamage { GenericItem(it, Item.Properties().stacksTo(1)) }
         LightBlock.BLOCK
         GhostBlock.BLOCK
+        EntityElectricMinecart.TYPE
         ElnOre.register(MOD_BUS)
         CopperGear.register()
         ElectricalArmor.register()
@@ -87,6 +91,7 @@ object ElnMod {
         bus.addListener { event: LivingHurtEvent -> ElectricalArmor.absorbDamage(event) }
         if (!FMLEnvironment.production) bus.addListener(SmokeCommands::registerServer)
         bus.addListener(ElnConsoleCommands::register)
+        bus.addListener(ElectricMinecartChargeReporter::onRightClickItem)
         bus.addListener { _: ServerAboutToStartEvent ->
             LightBlockEntity.observers.clear()
             WirelessSignalTxElement.channelMap.clear()
@@ -99,6 +104,7 @@ object ElnMod {
             // Charges and drains the electrical items players carry (portable batteries, tools, flashlights).
             Eln.itemEnergyInventoryProcess = ItemEnergyInventoryProcess()
             Eln.simulator.addSlowProcess(Eln.itemEnergyInventoryProcess)
+            PoweredMinecartSimulationSingleton.reset()
         }
         bus.addListener { event: TickEvent.ServerTickEvent ->
             Eln.simulator.tick(event)

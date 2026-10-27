@@ -8,6 +8,8 @@ import mods.eln.mechanical.GasTurbineDescriptor
 import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.ghost.GhostBlock
 import mods.eln.Eln
+import mods.eln.railroad.EntityElectricMinecart
+import mods.eln.railroad.OverheadLinesElement
 import net.minecraft.world.entity.EntityType
 import mods.eln.transparentnode.turret.TurretElement
 import mods.eln.transparentnode.turret.TurretContainer
@@ -237,5 +239,28 @@ object TransparentNodeGameTests {
         val top = helper.level.getBlockState(abs).getCollisionShape(helper.level, abs).max(net.minecraft.core.Direction.Axis.Y)
         helper.assertTrue(top == 0.5, "collision top at $top")
         helper.succeed()
+    }
+
+    // An electric minecart on a rail under powered overhead lines charges its energy buffer from them.
+    @GameTest(template = "empty3x3x3", timeoutTicks = 200)
+    @JvmStatic
+    fun electricMinecartChargesUnderOverheadLines(helper: GameTestHelper) {
+        val rail = BlockPos(1, 1, 1)
+        helper.setBlock(rail.below(), Blocks.STONE)
+        helper.setBlock(rail, Blocks.RAIL)
+        val linesPos = rail.above(2)
+        val stack = Eln.findItemStack("Overhead Lines", 1)
+        helper.assertTrue((stack.item as TransparentNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(linesPos), Direction.YP), "overhead lines not placed")
+        val lines = ((helper.level.getBlockEntity(helper.absolutePos(linesPos)) as TransparentNodeEntity).node as TransparentNode).element as OverheadLinesElement
+        val source = VoltageSource("source", lines.electricalLoad, null).setVoltage(1000.0)
+        Eln.simulator.addElectricalComponent(source)
+        val railAbs = helper.absolutePos(rail)
+        val cart = EntityElectricMinecart(helper.level, railAbs.x + 0.5, railAbs.y + 0.0625, railAbs.z + 0.5)
+        helper.level.addFreshEntity(cart)
+        helper.succeedWhen {
+            helper.assertTrue(cart.energyBufferJoules > 0.0, "cart has ${cart.energyBufferJoules} J, lines at ${lines.electricalLoad.voltage} V")
+            Eln.simulator.removeElectricalComponent(source)
+            cart.discard()
+        }
     }
 }

@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.railroad.OverheadLinesDescriptor
 import mods.eln.transparentnode.festive.ChristmasTreeDescriptor
 import mods.eln.transparentnode.festive.HolidayCandleDescriptor
 import mods.eln.transparentnode.festive.StringLightsDescriptor
@@ -151,7 +152,7 @@ object TransparentNodeRegistration {
         registerFloodlight(68)
         registerFestive(69)
         registerFab(70)
-        // PORT: registerRailroad(71)
+        registerRailroad(71)
         // PORT: registerWireProcessingMachines(72)
         registerLargeRheostat() // 96, but from the wrong side.
         registerNixieTube() // 117, but from the wrong side.
@@ -1508,6 +1509,14 @@ object TransparentNodeRegistration {
         }
         // PORT: the thermal heat exchanger (subId 2) returns with its fluid pairs (ThermalRegistry); its default pairs
         // are all modded fluids (steam, coolants), which vanilla 1.20.1 lacks.
+    }
+
+    private fun registerRailroad(id: Int) {
+        val subId = 0
+        val name = TR_NAME(I18N.Type.NONE, "Overhead Lines")
+        val desc = OverheadLinesDescriptor(name, Eln.obj.getObj("OverheadGantry"))
+        transparentNodeItem.addDescriptor(subId + (id shl 6), desc)
+        // Under track power (subId 1) is commented out in 1.7.10 too.
     }
 
     private fun registerFestive(id: Int) {

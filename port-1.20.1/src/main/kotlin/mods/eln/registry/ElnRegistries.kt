@@ -11,6 +11,7 @@ object ElnRegistries {
     @JvmField val BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Eln.MODID)
     @JvmField val ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Eln.MODID)
     @JvmField val BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Eln.MODID)
+    @JvmField val ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Eln.MODID)
     @JvmField val CREATIVE_TABS: DeferredRegister<CreativeModeTab> = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Eln.MODID)
 
     private val usedItemNames = HashSet<String>()
@@ -19,6 +20,7 @@ object ElnRegistries {
         BLOCKS.register(bus)
         ITEMS.register(bus)
         BLOCK_ENTITY_TYPES.register(bus)
+        ENTITY_TYPES.register(bus)
         CREATIVE_TABS.register(bus)
     }
 

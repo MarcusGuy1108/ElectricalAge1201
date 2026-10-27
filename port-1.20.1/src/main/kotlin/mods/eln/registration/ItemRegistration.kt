@@ -1,5 +1,6 @@
 package mods.eln.registration
 
+import mods.eln.railroad.ElectricMinecartItem
 import mods.eln.item.NopeWandDescriptor
 import mods.eln.item.electricalitem.ElectricalAxe
 import mods.eln.item.electricalitem.BatteryItem
@@ -104,7 +105,7 @@ object ItemRegistration {
         registerFuelBurnerItem(124)
         registerTurbineBladeItems(18)
         registerBasicItems(126)
-        // PORT: registerElectricMinecartItems(127)
+        registerElectricMinecartItems(127)
         // PORT: registerWireToolItems(123)
         // PORT: registerWireMachineItems(118)
         // Copper armor and tools are registered by CopperGear, the E-coal armor by ElectricalArmor, the ores by ElnOre.
@@ -1602,6 +1603,12 @@ object ItemRegistration {
             ).inOresAndMaterialsTab()
             Eln.sharedItem.addElement(subId + (id shl 6), desc)
         }
+    }
+
+    private fun registerElectricMinecartItems(id: Int) {
+        val subId = 0
+        val name = TR_NAME(I18N.Type.NONE, "Electric Minecart")
+        Eln.sharedItem.addElement(subId + (id shl 6), ElectricMinecartItem(name))
     }
 
     private fun registerBasicItems(id: Int) {

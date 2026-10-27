@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-27T10:41:41.426056988	Item Models: eln
+// 1.20.1	2026-10-27T10:50:11.523668991	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -330,6 +330,7 @@ ec9cf9b931d087c246435de25233386841313928 assets/eln/models/item/direct_utility_p
 d36421b1145920b8803fffc1ba1a2b411260fec5 assets/eln/models/item/e_coal_chestplate.json
 b9fee515bd6212e9189c6c7745a74bc8cf8a5774 assets/eln/models/item/e_coal_helmet.json
 ae1f276cb9db200ab75ba9b8623fd3d56d03b68f assets/eln/models/item/e_coal_leggings.json
+e3c160d8996f205794fce647f1b79865110378a8 assets/eln/models/item/electric_minecart.json
 29de2018795a4615e5d114e26bc724a42d9e7e84 assets/eln/models/item/electrical_anemometer_sensor.json
 1f3194728634947e67fac7632176816241ae5489 assets/eln/models/item/electrical_daylight_sensor.json
 08c9852e9013e9ca35433d7596bb5fbc82968c55 assets/eln/models/item/electrical_entity_sensor.json
@@ -459,6 +460,7 @@ ca800194c602c1a382dfc946c34fd18bf8ab7aa2 assets/eln/models/item/or_chip.json
 e59e2192146d25123b3133223da7b9fc9dbc2bd4 assets/eln/models/item/orange_brush.json
 8fb06f6c418ac85a6080f513380f3677d5eecf83 assets/eln/models/item/ore_scanner.json
 07d469589c7e0604b0d8c3fe1574a4f0207f31a2 assets/eln/models/item/oscillator_chip.json
+c4cbae9a9e44b74a05887c518a43a33fe7fa5028 assets/eln/models/item/overhead_lines.json
 00b852b7f534bf34630b8b7bb20e7f199740f7cc assets/eln/models/item/overheating_protection.json
 20e0d7b151c9646307ce9731410913cb752d494c assets/eln/models/item/overvoltage_protection.json
 bfa587bc1ebf00a0d08fc0f5a7e7623d27fb77d9 assets/eln/models/item/pal_chip.json

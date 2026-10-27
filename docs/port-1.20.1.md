@@ -140,6 +140,11 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      ported; the thermal heat exchanger (it converts modded fluids such as steam, which vanilla 1.20.1 lacks) is not.
      The festive Christmas tree, holiday candle and string lights are ported; 1.7.10 only added their recipes in
      December, the port's generated recipes are there all year.
+   * [x] Railroad: overhead lines and the electric minecart (creative only, as in 1.7.10: neither has a recipe). A
+     cart on a rail with powered overhead lines (at least 700 V) up to three blocks above charges a 10 kJ buffer and
+     spends it pushing itself along; a multimeter used while riding reports the stored energy. The cart drops itself
+     (1.7.10 dropped a plain minecart). Under track power is commented out in 1.7.10 and is not registered. A
+     GameTest charges a cart.
    * [x] Grid devices: utility poles (plain, with DC-DC converter, direct), transmission towers, the grid DC-DC
      converter and the grid switch, linked by right-clicking two of them with very high voltage cable; the cables
      hang as catenaries. The arc clay and arc metal blocks are back as `forge:storage_blocks/aluminum` and `/steel`,
