@@ -14,6 +14,10 @@ import java.io.ByteArrayOutputStream
 import java.io.ByteArrayInputStream
 import net.minecraft.world.item.ItemStack
 import mods.eln.sixnode.lampsocket.LampSocketRender
+import mods.eln.sixnode.lampsocket.LampSocketDescriptor
+import mods.eln.item.lampitem.LampItemSlot
+import mods.eln.misc.Utils
+import net.minecraft.world.SimpleContainer
 import mods.eln.sixnode.lampsocket.LampSocketElement
 import mods.eln.sixnode.lampsocket.LampSocketContainer
 import mods.eln.sixnode.electricalsource.ElectricalSourceElement
@@ -387,4 +391,17 @@ object SixNodeGameTests {
         g 0 192 0 192 0
         O 256 128 256 64 2
     """.trimIndent()
+
+    // Fluorescent (energy saving) bulbs fit every lamp socket's bulb slot, not only the flat and fluorescent ones.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun fluorescentBulbFitsEveryLampSocket(helper: GameTestHelper) {
+        val bulb = Eln.findItemStack("120V Fluorescent Light Bulb", 1)
+        for (name in listOf("Classic", "Spot", "Robust", "Flat", "Simple", "Fluorescent", "Sconce", "Suspended", "Long Suspended")) {
+            val socket = Utils.getItemObject(Eln.findItemStack("$name Lamp Socket", 1)) as LampSocketDescriptor
+            val slot = LampItemSlot(SimpleContainer(1), 0, 0, 0, 1, socket.acceptedLampTypes)
+            helper.assertTrue(slot.mayPlace(bulb), "$name Lamp Socket refuses a fluorescent bulb")
+        }
+        helper.succeed()
+    }
 }

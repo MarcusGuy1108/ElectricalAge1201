@@ -787,6 +787,7 @@ object SixNodeRegistration {
                 arrayOf(
                     LampLists.getLampData("incandescent")!!,
                     LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
                     LampLists.getLampData("farming")!!,
                     LampLists.getLampData("led")!!
                 )
@@ -804,6 +805,7 @@ object SixNodeRegistration {
                 arrayOf(
                     LampLists.getLampData("incandescent")!!,
                     LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
                     LampLists.getLampData("farming")!!,
                     LampLists.getLampData("led")!!
                 )
@@ -822,6 +824,7 @@ object SixNodeRegistration {
                 arrayOf(
                     LampLists.getLampData("incandescent")!!,
                     LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
                     LampLists.getLampData("farming")!!,
                     LampLists.getLampData("led")!!
                 )
@@ -855,6 +858,7 @@ object SixNodeRegistration {
                 arrayOf(
                     LampLists.getLampData("incandescent")!!,
                     LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
                     LampLists.getLampData("farming")!!,
                     LampLists.getLampData("led")!!
                 )
@@ -888,6 +892,7 @@ object SixNodeRegistration {
                 arrayOf(
                     LampLists.getLampData("incandescent")!!,
                     LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
                     LampLists.getLampData("farming")!!,
                     LampLists.getLampData("led")!!
                 )
@@ -907,6 +912,7 @@ object SixNodeRegistration {
                 arrayOf(
                     LampLists.getLampData("incandescent")!!,
                     LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
                     LampLists.getLampData("farming")!!,
                     LampLists.getLampData("led")!!
                 )
@@ -925,6 +931,7 @@ object SixNodeRegistration {
                 arrayOf(
                     LampLists.getLampData("incandescent")!!,
                     LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
                     LampLists.getLampData("farming")!!,
                     LampLists.getLampData("led")!!
                 )
@@ -943,6 +950,7 @@ object SixNodeRegistration {
                 arrayOf(
                     LampLists.getLampData("incandescent")!!,
                     LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
                     LampLists.getLampData("farming")!!,
                     LampLists.getLampData("led")!!
                 )
@@ -961,6 +969,7 @@ object SixNodeRegistration {
                 arrayOf(
                     LampLists.getLampData("incandescent")!!,
                     LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
                     LampLists.getLampData("farming")!!,
                     LampLists.getLampData("led")!!
                 )
@@ -982,6 +991,7 @@ object SixNodeRegistration {
                 arrayOf(
                     LampLists.getLampData("incandescent")!!,
                     LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
                     LampLists.getLampData("farming")!!,
                     LampLists.getLampData("led")!!
                 )

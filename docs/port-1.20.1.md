@@ -161,6 +161,8 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      through a 0.1 ohm output resistance, paying each joule from the buffer at the same FE per joule ratio. It cuts
      out while the buffer is empty. Mods with other units (EU, Mekanism joules) reach it through FE, which they expose
      or convert to. A GameTest feeds it FE and checks it holds 200 V across a 100 ohm load.
+   * [x] Fluorescent (energy saving) bulbs fit every lamp socket, as in older Eln releases; this repository's
+     1.7.10 code had limited them to the flat and fluorescent sockets. A GameTest checks each socket's bulb slot.
    * [x] Jade tooltips (1.20.1's WAILA): an optional plugin (`mods.eln.compat.jade`) shows each node's 1.7.10
      WAILA lines, for the six-node element looked at or the machine, and uses the element's own name and icon. Ghost
      blocks (the outer parts of large machines) show nothing: Jade only asks the server about blocks with a block
