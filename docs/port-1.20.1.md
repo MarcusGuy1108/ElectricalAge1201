@@ -156,6 +156,11 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      and OpenComputers outputs are gone with those mods; 1.7.10 had it as its own block, the port as a machine node.
      A GameTest pulls FE from a powered exporter. Items new in the port, which have no 1.7.10 lang entry, show their
      descriptor name.
+   * [x] Energy importer (new in the port, misc subId 5): the reverse of the exporter. It takes Forge Energy from
+     any side into a buffer and drives its Eln side at the voltage set in its screen (0 to 3200 V, off by default)
+     through a 0.1 ohm output resistance, paying each joule from the buffer at the same FE per joule ratio. It cuts
+     out while the buffer is empty. Mods with other units (EU, Mekanism joules) reach it through FE, which they expose
+     or convert to. A GameTest feeds it FE and checks it holds 200 V across a 100 ohm load.
    * [x] Jade tooltips (1.20.1's WAILA): an optional plugin (`mods.eln.compat.jade`) shows each node's 1.7.10
      WAILA lines, for the six-node element looked at or the machine, and uses the element's own name and icon. Ghost
      blocks (the outer parts of large machines) show nothing: Jade only asks the server about blocks with a block

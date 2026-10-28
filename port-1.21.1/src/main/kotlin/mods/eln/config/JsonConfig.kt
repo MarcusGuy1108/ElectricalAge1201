@@ -86,6 +86,7 @@ class JsonConfig @JvmOverloads constructor(
         spec(path = "integrations.mqtt.simMetrics.publishIntervalTicks", defaultValue = 20, comment = "Simulator ticks to aggregate before MQTT publish. Higher values reduce overhead."),
         spec(path = "integrations.computerProbe.enabled", defaultValue = true, comment = "Enable the OC/CC to Eln computer probe."),
         spec(path = "integrations.energyExporter.enabled", defaultValue = true, comment = "Enable the Eln energy exporter."),
+        spec(path = "integrations.energyImporter.enabled", defaultValue = true, comment = "Enable the Forge Energy to Eln energy importer."),
         spec(path = "integrations.oredict.tungstenEnabled", defaultValue = false, comment = "Use shared ore dictionary entries for tungsten."),
         spec(path = "integrations.oredict.chipsEnabled", defaultValue = true, comment = "Use shared ore dictionary entries for chips."),
         spec(path = "debug.logging.enabled", defaultValue = false, comment = "Enable debug printing spam."),

@@ -187,6 +187,14 @@ object CraftingRecipes {
                 ItemStack(Items.GOLD_INGOT)
             )
         }
+        if (Eln.config.getBooleanOrElse("integrations.energyImporter.enabled", true)) {
+            // The exporter's recipe with redstone for the gold, so neither shape (nor its mirror) matches the other.
+            addRecipe(
+                findItemStack("Energy Importer"), "III", "cCR", "III", 'C', Eln.config.getStringOrElse("runtime.dictionary.advancedChip", "circuitElnAdvanced"), 'c',
+                findItemStack("High Voltage Cable"), 'I', findItemStack("Iron Cable"), 'R',
+                ItemStack(Items.REDSTONE_BLOCK)
+            )
+        }
     }
 
     // PORT: the replicator entity registration returns with that entity.

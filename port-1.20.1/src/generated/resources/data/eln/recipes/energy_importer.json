@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_advanced"
+    },
+    "I": {
+      "item": "eln:iron_cable"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    },
+    "c": {
+      "item": "eln:high_voltage_cable"
+    }
+  },
+  "pattern": [
+    "III",
+    "cCR",
+    "III"
+  ],
+  "result": {
+    "item": "eln:energy_importer"
+  },
+  "show_notification": true
+}

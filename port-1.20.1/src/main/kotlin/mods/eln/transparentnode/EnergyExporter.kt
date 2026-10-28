@@ -170,19 +170,8 @@ class EnergyExporterRender(entity: TransparentNodeEntity, descriptor: Transparen
     var power = 0.0
     var hasChanges = false
 
-    override fun draw() {
-        // 1.7.10 drew a plain block with this texture on every face.
-        UtilsClient.bindTexture(TEXTURE)
-        GL11.glBegin(GL11.GL_QUADS)
-        for (face in CUBE_FACES) {
-            GL11.glNormal3f(face[0][0], face[0][1], face[0][2])
-            for ((i, corner) in face.drop(1).withIndex()) {
-                GL11.glTexCoord2f(if (i == 1 || i == 2) 1f else 0f, if (i >= 2) 1f else 0f)
-                GL11.glVertex3f(corner[0], corner[1], corner[2])
-            }
-        }
-        GL11.glEnd()
-    }
+    // 1.7.10 drew a plain block with this texture on every face.
+    override fun draw() = drawTexturedCube(TEXTURE)
 
     override fun networkUnserialize(stream: DataInputStream) {
         super.networkUnserialize(stream)
@@ -195,17 +184,32 @@ class EnergyExporterRender(entity: TransparentNodeEntity, descriptor: Transparen
 
     companion object {
         private val TEXTURE = ResourceLocation("eln", "textures/blocks/elntoic2lvu_side.png")
-
-        // Normal, then the corners counter-clockwise from the outside, around the block centre the render sits at.
-        private val CUBE_FACES = arrayOf(
-            arrayOf(floatArrayOf(0f, 1f, 0f), floatArrayOf(-.5f, .5f, -.5f), floatArrayOf(-.5f, .5f, .5f), floatArrayOf(.5f, .5f, .5f), floatArrayOf(.5f, .5f, -.5f)),
-            arrayOf(floatArrayOf(0f, -1f, 0f), floatArrayOf(-.5f, -.5f, .5f), floatArrayOf(-.5f, -.5f, -.5f), floatArrayOf(.5f, -.5f, -.5f), floatArrayOf(.5f, -.5f, .5f)),
-            arrayOf(floatArrayOf(0f, 0f, -1f), floatArrayOf(.5f, .5f, -.5f), floatArrayOf(.5f, -.5f, -.5f), floatArrayOf(-.5f, -.5f, -.5f), floatArrayOf(-.5f, .5f, -.5f)),
-            arrayOf(floatArrayOf(0f, 0f, 1f), floatArrayOf(-.5f, .5f, .5f), floatArrayOf(-.5f, -.5f, .5f), floatArrayOf(.5f, -.5f, .5f), floatArrayOf(.5f, .5f, .5f)),
-            arrayOf(floatArrayOf(-1f, 0f, 0f), floatArrayOf(-.5f, .5f, -.5f), floatArrayOf(-.5f, -.5f, -.5f), floatArrayOf(-.5f, -.5f, .5f), floatArrayOf(-.5f, .5f, .5f)),
-            arrayOf(floatArrayOf(1f, 0f, 0f), floatArrayOf(.5f, .5f, .5f), floatArrayOf(.5f, -.5f, .5f), floatArrayOf(.5f, -.5f, -.5f), floatArrayOf(.5f, .5f, -.5f))
-        )
     }
+}
+
+// Normal, then the corners counter-clockwise from the outside, around the block centre the render sits at.
+private val CUBE_FACES = arrayOf(
+    arrayOf(floatArrayOf(0f, 1f, 0f), floatArrayOf(-.5f, .5f, -.5f), floatArrayOf(-.5f, .5f, .5f), floatArrayOf(.5f, .5f, .5f), floatArrayOf(.5f, .5f, -.5f)),
+    arrayOf(floatArrayOf(0f, -1f, 0f), floatArrayOf(-.5f, -.5f, .5f), floatArrayOf(-.5f, -.5f, -.5f), floatArrayOf(.5f, -.5f, -.5f), floatArrayOf(.5f, -.5f, .5f)),
+    arrayOf(floatArrayOf(0f, 0f, -1f), floatArrayOf(.5f, .5f, -.5f), floatArrayOf(.5f, -.5f, -.5f), floatArrayOf(-.5f, -.5f, -.5f), floatArrayOf(-.5f, .5f, -.5f)),
+    arrayOf(floatArrayOf(0f, 0f, 1f), floatArrayOf(-.5f, .5f, .5f), floatArrayOf(-.5f, -.5f, .5f), floatArrayOf(.5f, -.5f, .5f), floatArrayOf(.5f, .5f, .5f)),
+    arrayOf(floatArrayOf(-1f, 0f, 0f), floatArrayOf(-.5f, .5f, -.5f), floatArrayOf(-.5f, -.5f, -.5f), floatArrayOf(-.5f, -.5f, .5f), floatArrayOf(-.5f, .5f, .5f)),
+    arrayOf(floatArrayOf(1f, 0f, 0f), floatArrayOf(.5f, .5f, .5f), floatArrayOf(.5f, -.5f, .5f), floatArrayOf(.5f, -.5f, -.5f), floatArrayOf(.5f, .5f, -.5f))
+)
+
+
+/** A unit cube around the block centre the render sits at, with [texture] on every face. */
+fun drawTexturedCube(texture: ResourceLocation) {
+    UtilsClient.bindTexture(texture)
+    GL11.glBegin(GL11.GL_QUADS)
+    for (face in CUBE_FACES) {
+        GL11.glNormal3f(face[0][0], face[0][1], face[0][2])
+        for ((i, corner) in face.drop(1).withIndex()) {
+            GL11.glTexCoord2f(if (i == 1 || i == 2) 1f else 0f, if (i >= 2) 1f else 0f)
+            GL11.glVertex3f(corner[0], corner[1], corner[2])
+        }
+    }
+    GL11.glEnd()
 }
 
 class EnergyExporterGui(private val render: EnergyExporterRender) : GuiScreenEln() {

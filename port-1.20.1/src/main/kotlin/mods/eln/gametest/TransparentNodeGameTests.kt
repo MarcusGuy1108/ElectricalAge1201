@@ -9,6 +9,8 @@ import mods.eln.node.transparent.TransparentNodeBlock
 import mods.eln.ghost.GhostBlock
 import mods.eln.Eln
 import mods.eln.transparentnode.EnergyExporterElement
+import mods.eln.transparentnode.EnergyImporterElement
+import mods.eln.sim.mna.component.Resistor
 import mods.eln.railroad.EntityElectricMinecart
 import mods.eln.railroad.OverheadLinesElement
 import net.minecraft.world.entity.EntityType
@@ -283,6 +285,30 @@ object TransparentNodeGameTests {
             // 200 V over 100 ohms is 400 W; a few ticks give a few hundred FE at the 4/3 FE per joule default.
             helper.assertTrue(energy.extractEnergy(1000, false) > 0, "no FE, buffer ${exporter.energyBuffer} J at ${exporter.load.voltage} V")
             Eln.simulator.removeElectricalComponent(source)
+        }
+    }
+
+    // Forge Energy pushed into an importer holds its output at the set voltage and pays for the load from the buffer.
+    @GameTest(template = "empty3x3x3", timeoutTicks = 200)
+    @JvmStatic
+    fun energyImporterSuppliesSetVoltage(helper: GameTestHelper) {
+        val pos = BlockPos(1, 1, 1)
+        helper.setBlock(pos.below(), Blocks.STONE)
+        val stack = Eln.findItemStack("Energy Importer", 1)
+        helper.assertTrue((stack.item as TransparentNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, helper.absolutePos(pos), Direction.YP), "importer not placed")
+        val entity = helper.level.getBlockEntity(helper.absolutePos(pos)) as TransparentNodeEntity
+        val importer = (entity.node as TransparentNode).element as EnergyImporterElement
+        importer.selectedVoltage = 200.0
+        val energy = entity.getCapability(ForgeCapabilities.ENERGY, null).resolve().get()
+        helper.assertTrue(energy.receiveEnergy(100_000, false) == 100_000, "FE refused")
+        val startBuffer = importer.energyBuffer
+        // 200 V into 100 ohms is 400 W.
+        val lamp = Resistor(importer.load, null).setResistance(100.0)
+        Eln.simulator.addElectricalComponent(lamp)
+        helper.succeedWhen {
+            helper.assertTrue(importer.load.voltage in 195.0..201.0, "output ${importer.load.voltage} V")
+            helper.assertTrue(importer.energyBuffer < startBuffer, "buffer not drawn: ${importer.energyBuffer} J")
+            Eln.simulator.removeElectricalComponent(lamp)
         }
     }
 }

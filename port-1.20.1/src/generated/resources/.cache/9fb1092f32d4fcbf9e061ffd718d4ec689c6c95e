@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-27T12:09:48.400863088	Recipes
+// 1.20.1	2026-10-28T10:24:55.960297752	Recipes
 5f826e94a1265cd03a8575f16d2c1a027c47921d data/eln/advancements/recipes/misc/100a_electrical_breaker.json
 7f28d2a5311bc783e994d258e1f42b12dd709496 data/eln/advancements/recipes/misc/100a_switch.json
 17cf0958baf47a85de3d95c712c68a1909013eb3 data/eln/advancements/recipes/misc/10a_diode.json
@@ -184,6 +184,7 @@ a1f61c444bd9ac1201f901e16945dbc362b35762 data/eln/advancements/recipes/misc/elec
 c08452038d13b1204d37784f5a34b0d501ce4adc data/eln/advancements/recipes/misc/electrical_probe_chip.json
 fd0a118f0a26d85e6ce9263c30b7eca31d3bf746 data/eln/advancements/recipes/misc/electrical_timer.json
 26d0bdd711fe85b0b100db6dd0ea86fc4610ddba data/eln/advancements/recipes/misc/energy_exporter.json
+83c570407cafc4252635c43820bf15a8d890185f data/eln/advancements/recipes/misc/energy_importer.json
 0a0daa8811f72668a4b78eca2c4a82bd25026a51 data/eln/advancements/recipes/misc/energy_meter.json
 e872a9cef0728da62a26952c9218f0c3da297a11 data/eln/advancements/recipes/misc/experimental_battery.json
 2d0fb71019487c4ccfb059dfe8a7a3db1fb5d20a data/eln/advancements/recipes/misc/experimental_transporter.json
@@ -608,6 +609,7 @@ c885333b619c310b7a1ff14b6c49ca91b8dba4cd data/eln/recipes/electrical_motor.json
 32ccd77aed19a55526a5372342dfa1f534208e62 data/eln/recipes/electrical_probe_chip.json
 d9ed0644fe7211cf20f57a37e2d277f044b22c8c data/eln/recipes/electrical_timer.json
 4d2c01da61b9f71cfa58c14da7ac9ce3fd45c5f6 data/eln/recipes/energy_exporter.json
+e88fb41062bae91dba4dfb3a748da40e18a706b6 data/eln/recipes/energy_importer.json
 2b0bc59ccfce5a0c02098bb9e0fe0771e8e0d6d1 data/eln/recipes/energy_meter.json
 15dcffe5aedda7a761f77e148f20b37ae0310fb5 data/eln/recipes/experimental_battery.json
 db30b411347e72c954ef8b1f6d6e9da944ad36a9 data/eln/recipes/experimental_transporter.json
