@@ -291,8 +291,8 @@ object TransparentNodeGameTests {
         }
     }
 
-    // Forge Energy pushed into an importer holds its output at the set voltage and pays for the load from the buffer.
-    @GameTest(template = "empty3x3x3", timeoutTicks = 200)
+    // An importer fed Forge Energy holds its output at the set voltage, and stops within seconds once the FE stops.
+    @GameTest(template = "empty3x3x3", timeoutTicks = 400)
     @JvmStatic
     fun energyImporterSuppliesSetVoltage(helper: GameTestHelper) {
         val pos = BlockPos(1, 1, 1)
@@ -303,15 +303,18 @@ object TransparentNodeGameTests {
         val importer = (entity.node as TransparentNode).element as EnergyImporterElement
         importer.selectedVoltage = 200.0
         val energy = helper.level.getCapability(Capabilities.EnergyStorage.BLOCK, entity.blockPos, null)!!
-        helper.assertTrue(energy.receiveEnergy(100_000, false) == 100_000, "FE refused")
-        val startBuffer = importer.energyBuffer
+        var feeding = true
+        // A supply pushing more FE than needed every tick, as another mod's cable would.
+        helper.onEachTick { if (feeding) energy.receiveEnergy(10_000, false) }
         // 200 V into 100 ohms is 400 W.
         val lamp = Resistor(importer.load, null).setResistance(100.0)
         Eln.simulator.addElectricalComponent(lamp)
-        helper.succeedWhen {
-            helper.assertTrue(importer.load.voltage in 195.0..201.0, "output ${importer.load.voltage} V")
-            helper.assertTrue(importer.energyBuffer < startBuffer, "buffer not drawn: ${importer.energyBuffer} J")
-            Eln.simulator.removeElectricalComponent(lamp)
-        }
+        helper.startSequence()
+            .thenWaitUntil { helper.assertTrue(importer.load.voltage in 195.0..201.0, "output ${importer.load.voltage} V") }
+            .thenExecute { feeding = false }
+            // With the supply cut, the few seconds of reserve run out and the output drops.
+            .thenWaitUntil { helper.assertTrue(importer.load.voltage < 1.0, "still ${importer.load.voltage} V with ${importer.energyBuffer} J left") }
+            .thenExecute { Eln.simulator.removeElectricalComponent(lamp) }
+            .thenSucceed()
     }
 }

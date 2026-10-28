@@ -65,7 +65,10 @@ class EnergyImporterElement(node: TransparentNode, descriptor: TransparentNodeDe
     private val output = NbtResistor("output", inner, load)
     var energyBuffer = 0.0
     var selectedVoltage = 0.0
-    private val maxBuffer get() = desc.maxPower * 2
+    private var averagePower = 0.0
+    // A reserve of about two seconds of the current load: FE is pulled as it is used, so cutting the supply stops the
+    // output within seconds. The floor lets it start from idle.
+    private val maxBuffer get() = (averagePower * RESERVE_SECONDS).coerceIn(MIN_BUFFER, desc.maxPower * RESERVE_SECONDS)
 
     /** Watts going out into the cables; negative when another supply pushes back in, which is wasted. */
     val power get() = source.voltage * source.current
@@ -83,7 +86,8 @@ class EnergyImporterElement(node: TransparentNode, descriptor: TransparentNodeDe
         electricalProcessList.add(IProcess { time ->
             if (power.isFinite()) energyBuffer -= max(0.0, power) * time
         })
-        slowProcessList.add(IProcess { _ ->
+        slowProcessList.add(IProcess { time ->
+            if (power.isFinite()) averagePower += (max(0.0, power) - averagePower) * min(1.0, time)
             // Switching per tick, not per sim step: the buffer may dip below zero for one tick, which the next FE repays.
             val on = selectedVoltage > 0.0 && energyBuffer > 0.0
             source.setVoltage(if (on) selectedVoltage else 0.0)
@@ -134,7 +138,8 @@ class EnergyImporterElement(node: TransparentNode, descriptor: TransparentNodeDe
 
     override fun readFromNBT(nbt: CompoundTag) {
         super.readFromNBT(nbt)
-        energyBuffer = nbt.getDouble("energyBuffer")
+        // Importers saved with the old 240 kJ reserve would otherwise keep running long after their supply is cut.
+        energyBuffer = min(nbt.getDouble("energyBuffer"), MIN_BUFFER)
         selectedVoltage = nbt.getDouble("selectedVoltage")
     }
 
@@ -156,6 +161,8 @@ class EnergyImporterElement(node: TransparentNode, descriptor: TransparentNodeDe
 
     companion object {
         const val SET_VOLTAGE: Byte = 1
+        const val RESERVE_SECONDS = 2.0
+        const val MIN_BUFFER = 500.0
     }
 }
 
