@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "eln:circuit_basic"
+    },
+    "Q": {
+      "item": "minecraft:quartz"
+    },
+    "a": {
+      "item": "eln:signal_antenna"
+    },
+    "r": {
+      "tag": "eln:item_rubber"
+    }
+  },
+  "pattern": [
+    " a ",
+    "rCr",
+    " Q "
+  ],
+  "result": {
+    "count": 3,
+    "id": "eln:uk_light_switch"
+  }
+}

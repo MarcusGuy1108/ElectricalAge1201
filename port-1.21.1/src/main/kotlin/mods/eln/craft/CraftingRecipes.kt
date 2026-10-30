@@ -462,6 +462,11 @@ object CraftingRecipes {
                         " Plate"
             ), 'A', findItemStack("Alloy Plate"), 'C', findItemStack("Medium Voltage Cable")
         )
+        // Quartz for the white faceplate keeps it apart from the Type J recipe.
+        addRecipe(
+            findItemStack("240V Type G Socket", 16), "RUR", "ACA", " Q ", 'R', "itemRubber", 'U', findItemStack("Copper Plate"),
+            'A', findItemStack("Alloy Plate"), 'C', findItemStack("Low Voltage Cable"), 'Q', ItemStack(Items.QUARTZ)
+        )
     }
 
     private fun recipePassiveComponent() {
@@ -2604,6 +2609,9 @@ object CraftingRecipes {
             findItemStack("50A Lead Fuse", 4), "rcr", 'r', findItemStack("itemRubber"), 'c',
             findItemStack("Copper 6 AWG Cable 600V")
         )
+        // UK plug fuses have a ceramic body: quartz instead of rubber.
+        addRecipe(findItemStack("3A UK Plug Fuse", 4), "qcq", 'q', ItemStack(Items.QUARTZ), 'c', findItemStack("Copper 20 AWG Cable 300V"))
+        addRecipe(findItemStack("13A UK Plug Fuse", 4), "qcq", 'q', ItemStack(Items.QUARTZ), 'c', findItemStack("Copper 16 AWG Cable 300V"))
         addRecipe(
             findItemStack("Lead Fuse for low voltage cables", 4), "rcr", 'r', findItemStack("itemRubber"), 'c',
             findItemStack("Low Voltage Cable")
@@ -2657,6 +2665,10 @@ object CraftingRecipes {
             findItemStack("Iron Cable"),
             'R',
             ItemStack(Items.REDSTONE)
+        )
+        addRecipe(
+            findItemStack("UK Light Switch", 3), " a ", "rCr", " Q ", 'C', Eln.config.getStringOrElse("runtime.dictionary.cheapChip", "circuitElnBasic"),
+            'a', findItemStack("Signal Antenna"), 'r', "itemRubber", 'Q', ItemStack(Items.QUARTZ)
         )
         addRecipe(
             findItemStack("Wireless Button", 3),

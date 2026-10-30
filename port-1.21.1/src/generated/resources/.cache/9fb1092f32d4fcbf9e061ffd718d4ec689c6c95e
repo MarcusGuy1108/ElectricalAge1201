@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-28T10:27:27.399851937	Recipes
+// 1.21.1	2026-10-30T09:40:53.739134652	Recipes
 1853b48c76256eb4a64d345a8db1dc0f77fdb5fd data/eln/advancement/recipes/misc/100a_electrical_breaker.json
 4e458038b1bac206784f02c09d0d900bbdf17566 data/eln/advancement/recipes/misc/100a_switch.json
 7021a7c05019953bb73edb0dbf67131e2f407f91 data/eln/advancement/recipes/misc/10a_diode.json
@@ -28,6 +28,7 @@ ea2e5c4eaf608034d158e1a1696c2ab7e6c9a4c1 data/eln/advancement/recipes/misc/12v_f
 44ce548276f6b0de67f73c3d6e6ade137af04dd2 data/eln/advancement/recipes/misc/12v_incandescent_light_bulb.json
 b739b8a5b524c5e3e3ee14dd9fbba02a2b2319b9 data/eln/advancement/recipes/misc/12v_ldo_regulator_chip.json
 1bd5f089f1e1aaa57e8df8e155a030b85c3f11e2 data/eln/advancement/recipes/misc/12v_led_light_bulb.json
+6e2f0f6a280141be5afecb1a640dedc9c0f789c0 data/eln/advancement/recipes/misc/13a_uk_plug_fuse.json
 c47163b549f1ba0b87db486943b9de9ed4ffdb09 data/eln/advancement/recipes/misc/15a_electrical_breaker.json
 c3ad96667fb53fa0bec14a63a09c36e9fdab083a data/eln/advancement/recipes/misc/15a_lead_fuse.json
 1c3ad1b90308fedde3bc1ed1e8ad2fa2ad3619b9 data/eln/advancement/recipes/misc/200a_electrical_breaker.json
@@ -56,6 +57,7 @@ d66b9cd41f39ef6650e35e46a67b59e30936c774 data/eln/advancement/recipes/misc/240v_
 3efa136844d5566aa1952d91260d72a1c9d70dd6 data/eln/advancement/recipes/misc/240v_tungsten_heating_element.json
 694894b7ca85522606c6694a9496cbe6e34ecd1a data/eln/advancement/recipes/misc/240v_turbine.json
 cb2eaccb9d8803a859a39e2387c512917e7c908f data/eln/advancement/recipes/misc/240v_type_e_socket.json
+d3fceb475d3be51d0fccf08ff8d10f941d5b099c data/eln/advancement/recipes/misc/240v_type_g_socket.json
 88178eadded85808a4b9a4effb6b9f241651db63 data/eln/advancement/recipes/misc/240v_type_j_socket.json
 4710790ad1a0894cfa6a6c25e6ee670d7b3a54c2 data/eln/advancement/recipes/misc/24v_egg_incubator.json
 1046aa173a537bbbe61cdb662d0ee9383201bd88 data/eln/advancement/recipes/misc/24v_small_active_thermal_dissipator.json
@@ -74,6 +76,7 @@ a4d68ebb80865af21dd359d85acdc20f50a97695 data/eln/advancement/recipes/misc/2x_gr
 e1689d52a6da2a7f9395ca4bec5ce38236a9d97b data/eln/advancement/recipes/misc/30a_lead_fuse.json
 400d674a3fd74d629414e1950264ceb97c836441 data/eln/advancement/recipes/misc/3_3v_boost_regulator_chip.json
 c5c34e7bf043b2adb5669fa698aa479e50694b4b data/eln/advancement/recipes/misc/3_3v_ldo_regulator_chip.json
+154e16b7ba051ba22518de2988a643709e0bee93 data/eln/advancement/recipes/misc/3a_uk_plug_fuse.json
 4cf1a09c2a5be4660f55b713452520d241785a82 data/eln/advancement/recipes/misc/3x_graphite_rods.json
 26f83f9944899eb1dd33678767033551038b0923 data/eln/advancement/recipes/misc/3x_graphite_rods_2.json
 7802ad703da441d6e24bff601e2d7f1c5468dedb data/eln/advancement/recipes/misc/400a_electrical_breaker.json
@@ -381,6 +384,7 @@ e179d8ca13a052717fd60fe4331a89f2a8bdfaaf data/eln/advancement/recipes/misc/therm
 865e8f9e15e80d305568063c5800416c3a7f25bc data/eln/advancement/recipes/misc/tungsten_turbine_blade.json
 ef2bd6cba0772f7893e6c378bb6256c8b0774a1c data/eln/advancement/recipes/misc/turbine_blade_set.json
 5f8ff232517af38b15c519fc193c177b791f2b26 data/eln/advancement/recipes/misc/turbo_electrical_drill.json
+f435c5c336deee8506b4e59c21f6ba1ef60cc25f data/eln/advancement/recipes/misc/uk_light_switch.json
 f8c5f705f65c4a7d4481afa18f3b7294fd124394 data/eln/advancement/recipes/misc/utility_pole.json
 4f41ad3f8583fa5c3c2664b3d8b7d8668f24a0d8 data/eln/advancement/recipes/misc/utility_pole_w_dc_dc_converter.json
 c945094877bb103e71563316f59a45c007b78608 data/eln/advancement/recipes/misc/variable_dc_dc_converter.json
@@ -453,6 +457,7 @@ ab686deb0bf21244b242c5c29eb7df8291c80794 data/eln/recipe/12v_farming_light_bulb.
 f7c03d0c494dfd52671e7a464ec4dc18f74795b0 data/eln/recipe/12v_incandescent_light_bulb.json
 77339fe0f275390d4fb57c6264d19056e100e178 data/eln/recipe/12v_ldo_regulator_chip.json
 89c725631b002972c6e68299f704f1caedbfb953 data/eln/recipe/12v_led_light_bulb.json
+d5b2a52d2b7af8e11ccf7ed6fa760cd8e7c30b63 data/eln/recipe/13a_uk_plug_fuse.json
 c11219e87382f6d15a6c21997cfa47b4633441af data/eln/recipe/15a_electrical_breaker.json
 3581cd8691576f6e666e995451030963dfdfb12d data/eln/recipe/15a_lead_fuse.json
 258f157973599ce0048560298173094370f6ce7a data/eln/recipe/200a_electrical_breaker.json
@@ -481,6 +486,7 @@ adcb0e968208bdbea7d03feb0ef8541e8c74a619 data/eln/recipe/240v_motorized_floodlig
 440fac8c28005a14e6134bbca48f86de2dc254ae data/eln/recipe/240v_tungsten_heating_element.json
 2cd2f2891669de1ce912be2364ca6f8ac72c2337 data/eln/recipe/240v_turbine.json
 b85afcd93d5db6dcdcf2b9cd6ddd1eb5fc4c9a3a data/eln/recipe/240v_type_e_socket.json
+27a94bf063751c4b98c5481ea4584c77a7bdc274 data/eln/recipe/240v_type_g_socket.json
 11eee468c84f1d84bcc376bc18305086865c0e4e data/eln/recipe/240v_type_j_socket.json
 fd2bd6dd248b977ba14337a8ad86ee801735efc2 data/eln/recipe/24v_egg_incubator.json
 8fa77e639bb108e674473c1924533847a78bd45c data/eln/recipe/24v_small_active_thermal_dissipator.json
@@ -499,6 +505,7 @@ ec36b57b40719741b8f2d2fef8e34b148af668c1 data/eln/recipe/30a_electrical_breaker.
 36db457c8067b38149523912411a75251ed2ce0e data/eln/recipe/30a_lead_fuse.json
 b2c3abe89894e0c1661567b552163c6ed7e7fba1 data/eln/recipe/3_3v_boost_regulator_chip.json
 dfb7cf7326a8dc9008f88e4ff3c99e3c2e42a335 data/eln/recipe/3_3v_ldo_regulator_chip.json
+35c7b2a74309626fd9afbea83bc2791f2e9542d7 data/eln/recipe/3a_uk_plug_fuse.json
 3f2caed738a904f876b783ec48516816c2b55a76 data/eln/recipe/3x_graphite_rods.json
 af42392c2c294631576476ca23f2d1dacd749713 data/eln/recipe/3x_graphite_rods_2.json
 596c620570a5ddff2be0a13a6835d5758d0917bc data/eln/recipe/400a_electrical_breaker.json
@@ -806,6 +813,7 @@ dc621205691493e7efb92408570ebf0cec74d249 data/eln/recipe/transmission_tower.json
 aeab20f34cee0f0a49213938d0ba81ca1acb3ae7 data/eln/recipe/tungsten_turbine_blade.json
 9cc4f0d74e5ae2498ff37e774dec205c2376cd13 data/eln/recipe/turbine_blade_set.json
 0ec257b37bf397a06790ef7d2e13d9c5e2630e2c data/eln/recipe/turbo_electrical_drill.json
+3c1a50194647bd62815bf57983cbd83d5a0b252a data/eln/recipe/uk_light_switch.json
 2b1b37664931673a32db6a72b863d27c03c5f2e6 data/eln/recipe/utility_pole.json
 c55e92d2f06b522a343dd208f151453f23ae2ad5 data/eln/recipe/utility_pole_w_dc_dc_converter.json
 8781f63e6635413463cf6155705a773d6d86b46e data/eln/recipe/variable_dc_dc_converter.json

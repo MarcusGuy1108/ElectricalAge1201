@@ -165,6 +165,13 @@ turn (both dev-only, `mods.eln.debug`); the client log shows any failure.
      the FE and checks the output drops.
    * [x] Fluorescent (energy saving) bulbs fit every lamp socket, as in older Eln releases; this repository's
      1.7.10 code had limited them to the flat and fluorescent sockets. A GameTest checks each socket's bulb slot.
+   * [x] UK fittings (new in the port): the UK Light Switch (gate source subId 20), a wireless toggle on a white
+     rocker faceplate; the 240V Type G Socket (power socket subId 3), a BS 1363 face drawn white instead of in the
+     paint colour; and 3A / 13A UK Plug Fuses (BS 1362, fuse subIds 22 and 23) for the fuse holder. Their models and
+     icons live in each port's own `src/main/resources/assets/eln` (model/uklightswitch, model/uksocket,
+     textures/blocks), not in the shared 1.7.10 assets. The switch model uses a new `rocker` type in
+     ElectricalGateSourceRenderObj: its `rot` part tilts about the axis in its `.txt` (axisX/Y/Z). A GameTest clicks
+     the switch on and off and checks the 13 A fuse rating.
    * [x] Jade tooltips (1.20.1's WAILA): an optional plugin (`mods.eln.compat.jade`) shows each node's 1.7.10
      WAILA lines, for the six-node element looked at or the machine, and uses the element's own name and icon. Ghost
      blocks (the outer parts of large machines) show nothing: Jade only asks the server about blocks with a block

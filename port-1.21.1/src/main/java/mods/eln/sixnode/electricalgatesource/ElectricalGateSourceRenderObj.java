@@ -21,6 +21,7 @@ public class ElectricalGateSourceRenderObj {
     float leverTx;
 
     private float rotAlphaOn, rotAlphaOff;
+    private float rotAxisX, rotAxisY, rotAxisZ;
     public float speed;
 
     public ElectricalGateSourceRenderObj(Obj3D obj) {
@@ -35,6 +36,20 @@ public class ElectricalGateSourceRenderObj {
                     rotAlphaOff = rot.getFloat("alphaOff");
                     rotAlphaOn = rot.getFloat("alphaOn");
                     speed = rot.getFloat("speed");
+                }
+            }
+
+            // A rocker tilts its "rot" part about an axis in the face (axisX/Y/Z), where a pot turns it about the normal.
+            if (obj.getString("type").equals("rocker")) {
+                objType = ObjType.Rocker;
+                rot = obj.getPart("rot");
+                if (rot != null) {
+                    rotAlphaOff = rot.getFloat("alphaOff");
+                    rotAlphaOn = rot.getFloat("alphaOn");
+                    speed = rot.getFloat("speed");
+                    rotAxisX = rot.getFloat("axisX");
+                    rotAxisY = rot.getFloat("axisY");
+                    rotAxisZ = rot.getFloat("axisZ");
                 }
             }
 
@@ -81,6 +96,10 @@ public class ElectricalGateSourceRenderObj {
             case Pot:
                 if (main != null) main.draw();
                 if (rot != null) rot.draw(factor * (rotAlphaOn - rotAlphaOff) + rotAlphaOff, 1f, 0f, 0f);
+                break;
+            case Rocker:
+                if (main != null) main.draw();
+                if (rot != null) rot.draw(factor * (rotAlphaOn - rotAlphaOff) + rotAlphaOff, rotAxisX, rotAxisY, rotAxisZ);
                 break;
         }
     }

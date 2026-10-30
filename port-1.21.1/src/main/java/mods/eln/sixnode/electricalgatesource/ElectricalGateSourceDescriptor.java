@@ -27,7 +27,7 @@ public class ElectricalGateSourceDescriptor extends SixNodeDescriptor {
     // autoReset: if true, this button will press and release. Otherwise, it will act like a latch
     public boolean autoReset = false;
 
-    enum ObjType {Pot, Button}
+    enum ObjType {Pot, Button, Rocker}
 
     // objType is often null... IDEA flags leverTx as unused as well.
     ObjType objType;

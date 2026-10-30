@@ -15,6 +15,8 @@ class PowerSocketDescriptor(subID: Int, name: String, obj: Obj3D) :
     private var base: Obj3DPart? = null
     private var socket: Obj3DPart? = null
     private var nominalVoltage = NominalVoltage.V240
+    // The UK face is drawn white rather than in the paint colour, which defaults to a dark grey.
+    private var tinted = true
 
     init {
         base = obj.getPart("SocketBase")
@@ -32,6 +34,14 @@ class PowerSocketDescriptor(subID: Int, name: String, obj: Obj3D) :
                 voltageLevelColor = VoltageLevelColor.Neutral
                 setDefaultIcon("typeesocket")
             }
+
+            3 -> {
+                socket = obj.getPart("SocketTypeG") // Type G (UK, BS 1363) socket - 13 amps specification
+                nominalVoltage = NominalVoltage.V240
+                voltageLevelColor = VoltageLevelColor.Neutral
+                setDefaultIcon("typegsocket")
+                tinted = false
+            }
             else -> socket = null
         }
     }
@@ -44,7 +54,7 @@ class PowerSocketDescriptor(subID: Int, name: String, obj: Obj3D) :
     fun draw(color: Int = 0) {
         if (base != null) base!!.draw()
         if (socket != null) {
-            setGlColorFromDye(color, 0.7f, 0.3f)
+            if (tinted) setGlColorFromDye(color, 0.7f, 0.3f)
             socket!!.draw()
             GL11.glColor3f(1f, 1f, 1f)
         }

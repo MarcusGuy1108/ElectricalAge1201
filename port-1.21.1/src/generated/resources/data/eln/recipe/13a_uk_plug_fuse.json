@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "eln:copper_16_awg_cable_300v"
+    },
+    "q": {
+      "item": "minecraft:quartz"
+    }
+  },
+  "pattern": [
+    "qcq"
+  ],
+  "result": {
+    "count": 4,
+    "id": "eln:13a_uk_plug_fuse"
+  }
+}

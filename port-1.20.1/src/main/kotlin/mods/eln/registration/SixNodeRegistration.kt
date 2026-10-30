@@ -1461,6 +1461,17 @@ object SixNodeRegistration {
             )
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
+        run {
+            // New in the port: a wireless switch on a UK rocker faceplate.
+            subId = 20
+            name = I18N.TR_NAME(I18N.Type.NONE, "UK Light Switch")
+            val desc = WirelessSignalSourceDescriptor(
+                name, ElectricalGateSourceRenderObj(Eln.obj.getObj("UKLightSwitch")),
+                Eln.config.getIntOrElse("wireless.transmitter.maxRangeBlocks", 32), false
+            )
+            desc.setDefaultIcon("uklightswitch")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
     }
 
     private fun registerWirelessSignal(id: Int) {
@@ -2044,6 +2055,14 @@ object SixNodeRegistration {
             )
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
+        run {
+            // New in the port: the UK socket, with its own model (a BS 1363 face with the socket's switch).
+            subId = 3
+            val name = I18N.TR_NAME(I18N.Type.NONE, "240V Type G Socket")
+            desc = PowerSocketDescriptor(subId, name, Eln.obj.getObj("UKSocket")).power()
+            desc.setPlaceDirection(arrayOf(Direction.XP, Direction.XN, Direction.ZP, Direction.ZN))
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
     }
 
     private fun registerElectricalManager(id: Int) {
@@ -2208,6 +2227,21 @@ object SixNodeRegistration {
             subId = 21
             name = I18N.TR_NAME(I18N.Type.NONE, "50A Lead Fuse")
             val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"), 50.0)
+            desc.creativeTab = Eln.creativeTabPowerElectronics
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        // New in the port: BS 1362 fuses, the cartridge fuses in UK plugs.
+        run {
+            subId = 22
+            name = I18N.TR_NAME(I18N.Type.NONE, "3A UK Plug Fuse")
+            val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"), 3.0)
+            desc.creativeTab = Eln.creativeTabPowerElectronics
+            Eln.sharedItem.addElement(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 23
+            name = I18N.TR_NAME(I18N.Type.NONE, "13A UK Plug Fuse")
+            val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"), 13.0)
             desc.creativeTab = Eln.creativeTabPowerElectronics
             Eln.sharedItem.addElement(subId + (id shl 6), desc)
         }

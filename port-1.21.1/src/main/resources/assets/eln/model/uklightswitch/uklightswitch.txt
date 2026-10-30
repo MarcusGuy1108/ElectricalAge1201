@@ -1,0 +1,11 @@
+s type rocker
+o rot
+f originX 0.03
+f originY 0.0
+f originZ 0.0
+f axisX 0.0
+f axisY 0.0
+f axisZ 1.0
+f alphaOff 9.0
+f alphaOn -9.0
+f speed 0.05

@@ -14,6 +14,8 @@ import java.io.ByteArrayOutputStream
 import java.io.ByteArrayInputStream
 import net.minecraft.world.item.ItemStack
 import mods.eln.sixnode.lampsocket.LampSocketRender
+import mods.eln.sixnode.wirelesssignal.source.WirelessSignalSourceElement
+import mods.eln.item.ElectricalFuseDescriptor
 import mods.eln.sixnode.lampsocket.LampSocketDescriptor
 import mods.eln.item.lampitem.LampItemSlot
 import mods.eln.misc.Utils
@@ -402,6 +404,27 @@ object SixNodeGameTests {
             val slot = LampItemSlot(SimpleContainer(1), 0, 0, 0, 1, socket.acceptedLampTypes)
             helper.assertTrue(slot.mayPlace(bulb), "$name Lamp Socket refuses a fluorescent bulb")
         }
+        helper.succeed()
+    }
+
+    // The UK light switch is a wireless toggle: each click flips what it sends on its channel. The 13A UK plug fuse
+    // settles exactly at its warm limit when 13 A flows.
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun ukLightSwitchTogglesAndPlugFuseIsRated(helper: GameTestHelper) {
+        val node = placeOnFloor(helper, BlockPos(1, 1, 1), Eln.findItemStack("UK Light Switch", 1))
+        val switch = node.getElement(Direction.YN) as WirelessSignalSourceElement
+        val player = FakePlayerFactory.getMinecraft(helper.level)
+        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY)
+        helper.assertTrue(switch.value < 0.5, "placed switched on")
+        switch.onBlockActivated(player, Direction.YN, 0f, 0f, 0f)
+        helper.assertTrue(switch.value > 0.5, "first click did not switch it on")
+        switch.onBlockActivated(player, Direction.YN, 0f, 0f, 0f)
+        helper.assertTrue(switch.value < 0.5, "second click did not switch it off")
+        val fuse = Utils.getItemObject(Eln.findItemStack("13A UK Plug Fuse", 1)) as ElectricalFuseDescriptor
+        val steadyCelsius = 13.0 * 13.0 * fuse.resistanceOhms() * fuse.thermalRp()
+        helper.assertTrue(abs(steadyCelsius - fuse.warmLimitCelsius()) < 1e-6, "13 A settles at $steadyCelsius, limit ${fuse.warmLimitCelsius()}")
+        helper.assertTrue(!Eln.findItemStack("240V Type G Socket", 1).isEmpty, "no Type G socket")
         helper.succeed()
     }
 }

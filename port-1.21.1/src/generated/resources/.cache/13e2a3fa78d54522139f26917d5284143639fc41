@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-28T10:27:27.408669162	Item Models: eln
+// 1.21.1	2026-10-30T09:40:53.754681216	Item Models: eln
 8dd7da26c99e7355199c7e2f0119e498eb534dfb assets/eln/models/item/100a_electrical_breaker.json
 f26d3d4adaf2ffed58067680336db69218838d3d assets/eln/models/item/100a_switch.json
 855ff416eae6953c7036a8cac9665a9167a15480 assets/eln/models/item/10a_diode.json
@@ -26,6 +26,7 @@ b386df5ee6fa8d5bc73b80f0a261b5183a7dfb72 assets/eln/models/item/12v_fluorescent_
 9cc24cfbe7b3ede1b00b0d24b05b33037634d7b0 assets/eln/models/item/12v_incandescent_light_bulb.json
 b198acf2dbba0ad82b09f286aa845f0c7c211cd1 assets/eln/models/item/12v_ldo_regulator_chip.json
 a5af5ee3c152bfe2d419843ff9311f9b5a57076e assets/eln/models/item/12v_led_light_bulb.json
+545dc1ad8561074077d4e11ed76e1d2a30d05598 assets/eln/models/item/13a_uk_plug_fuse.json
 8dd7da26c99e7355199c7e2f0119e498eb534dfb assets/eln/models/item/15a_electrical_breaker.json
 545dc1ad8561074077d4e11ed76e1d2a30d05598 assets/eln/models/item/15a_lead_fuse.json
 8dd7da26c99e7355199c7e2f0119e498eb534dfb assets/eln/models/item/200a_electrical_breaker.json
@@ -53,6 +54,7 @@ d5dc7b4851a911aa1250867fbe0c0d6695d0644b assets/eln/models/item/240v_plate_machi
 69c66c3d5d16e2cfa16090fdf217b92f38c380f8 assets/eln/models/item/240v_tungsten_heating_element.json
 af163035f6cfec23248aaa3a9a51080a57520af3 assets/eln/models/item/240v_turbine.json
 ca67a5439accd2ba4516eb4cf3d5862c760acb8f assets/eln/models/item/240v_type_e_socket.json
+466acd8325cc753604e4cd26bb542f260e39cfbe assets/eln/models/item/240v_type_g_socket.json
 46cac11ac499066aa41133e5e81e98303708d265 assets/eln/models/item/240v_type_j_socket.json
 6822931394efeb47f97ea533fc850c56611ccd9e assets/eln/models/item/24v_egg_incubator.json
 64446d00ce0a091319e1af971469a7b2e7c0d407 assets/eln/models/item/24v_small_active_thermal_dissipator.json
@@ -64,6 +66,7 @@ a73c757e49cb6719abe9e8ddcca2fd677baccc3a assets/eln/models/item/2x3_solar_panel.
 545dc1ad8561074077d4e11ed76e1d2a30d05598 assets/eln/models/item/30a_lead_fuse.json
 68fa10e0c0af1af295ce14d14ba7ca70edf68508 assets/eln/models/item/3_3v_boost_regulator_chip.json
 8ed4ca9fd8aa54a34ce196908b1a37cc13a93a9f assets/eln/models/item/3_3v_ldo_regulator_chip.json
+545dc1ad8561074077d4e11ed76e1d2a30d05598 assets/eln/models/item/3a_uk_plug_fuse.json
 7ead31e554acaf868cd943766ec50dba88b56735 assets/eln/models/item/3x_graphite_rods.json
 8dd7da26c99e7355199c7e2f0119e498eb534dfb assets/eln/models/item/400a_electrical_breaker.json
 8dd7da26c99e7355199c7e2f0119e498eb534dfb assets/eln/models/item/40a_electrical_breaker.json
@@ -567,6 +570,7 @@ fba8fc3e18467337e77a4b67be77b87aefc08451 assets/eln/models/item/tungsten_turbine
 0f62ebbb96e3989998b16fa85c621630dc9e7a68 assets/eln/models/item/turbine_blade_set.json
 6b150e7c724199c75b12ee4344fb0f82195f734d assets/eln/models/item/turbo_electrical_drill.json
 7e2e1227a6f3dc55d43700dc4b70373e1ef2b91e assets/eln/models/item/tutorial_sign.json
+f8b9838ce63542ad85e0809d0f04b1e2d2b483e7 assets/eln/models/item/uk_light_switch.json
 4eb0d0401c45ffec7c6ee2e4778539bd9c2f8f18 assets/eln/models/item/unreleasedium.json
 ec9cf9b931d087c246435de25233386841313928 assets/eln/models/item/utility_pole.json
 b466131575d356dbf2b82fcbbe035a3df280f1c6 assets/eln/models/item/utility_pole_w_dc_dc_converter.json
