@@ -14,6 +14,10 @@ class PowerSocketDescriptor(subID: Int, name: String, obj: Obj3D) :
     SixNodeDescriptor(name, PowerSocketElement::class.java, PowerSocketRender::class.java) {
     private var base: Obj3DPart? = null
     private var socket: Obj3DPart? = null
+    // The Type G socket's own switch: a rocker, and the red flag it shows when on.
+    private var socketSwitch: Obj3DPart? = null
+    private var onMark: Obj3DPart? = null
+    val hasSwitch get() = socketSwitch != null
     private var nominalVoltage = NominalVoltage.V240
     // The UK face is drawn white rather than in the paint colour, which defaults to a dark grey.
     private var tinted = true
@@ -41,6 +45,8 @@ class PowerSocketDescriptor(subID: Int, name: String, obj: Obj3D) :
                 voltageLevelColor = VoltageLevelColor.Neutral
                 setDefaultIcon("typegsocket")
                 tinted = false
+                socketSwitch = obj.getPart("SocketSwitch")
+                onMark = obj.getPart("SocketOnMark")
             }
             else -> socket = null
         }
@@ -51,12 +57,18 @@ class PowerSocketDescriptor(subID: Int, name: String, obj: Obj3D) :
     }
 
     @JvmOverloads
-    fun draw(color: Int = 0) {
+    fun draw(color: Int = 0, switchOn: Float = 1f) {
         if (base != null) base!!.draw()
         if (socket != null) {
             if (tinted) setGlColorFromDye(color, 0.7f, 0.3f)
             socket!!.draw()
             GL11.glColor3f(1f, 1f, 1f)
+        }
+        socketSwitch?.let { rocker ->
+            val off = rocker.getFloat("alphaOff")
+            val angle = switchOn * (rocker.getFloat("alphaOn") - off) + off
+            rocker.draw(angle, 0f, 0f, 1f)
+            if (switchOn > 0.5f) onMark?.draw(angle, 0f, 0f, 1f)
         }
     }
 

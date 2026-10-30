@@ -6,7 +6,9 @@ import mods.eln.item.BrushDescriptor
 import mods.eln.item.IConfigurable
 import mods.eln.misc.Direction
 import mods.eln.misc.LRDU
+import mods.eln.misc.Utils
 import mods.eln.misc.Utils.plotUIP
+import mods.eln.sixnode.ukfittings.wallHitRight
 import mods.eln.node.NodeBase
 import mods.eln.node.six.SixNode
 import mods.eln.node.six.SixNodeDescriptor
@@ -37,6 +39,8 @@ class PowerSocketElement(sixNode: SixNode?, side: Direction?, descriptor: SixNod
     private var powerSocketSlowProcess: IProcess = PowerSocketSlowProcess()
     var channel = "Default channel"
     var paintColor = 0
+    // Only the Type G socket has a switch; the others stay on.
+    var switchOn = true
     var voltageWatchdog = VoltageStateWatchDog(outputLoad)
 
     init {
@@ -67,7 +71,7 @@ class PowerSocketElement(sixNode: SixNode?, side: Direction?, descriptor: SixNod
             }
             loadResistor.breakConnection()
             loadResistor.highImpedance()
-            if (handle != null && handle.element.getChannelState(handle.id)) {
+            if (switchOn && handle != null && handle.element.getChannelState(handle.id)) {
                 loadResistor.connectTo(handle.element.powerLoad, outputLoad)
                 loadResistor.resistance = 0.1
             }
@@ -109,12 +113,14 @@ class PowerSocketElement(sixNode: SixNode?, side: Direction?, descriptor: SixNod
         super.writeToNBT(nbt)
         nbt.putString("channel", channel)
         nbt.putInt("color", paintColor)
+        nbt.putBoolean("switchOn", switchOn)
     }
 
     override fun readFromNBT(nbt: CompoundTag) {
         super.readFromNBT(nbt)
         channel = nbt.getString("channel")
         paintColor = nbt.getInt("color")
+        switchOn = !nbt.contains("switchOn") || nbt.getBoolean("switchOn")
     }
 
     override fun networkUnserialize(stream: DataInputStream) {
@@ -140,6 +146,7 @@ class PowerSocketElement(sixNode: SixNode?, side: Direction?, descriptor: SixNod
         try {
             stream.writeUTF(channel)
             stream.writeInt(paintColor)
+            stream.writeBoolean(switchOn)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -163,6 +170,12 @@ class PowerSocketElement(sixNode: SixNode?, side: Direction?, descriptor: SixNod
                 }
                 return true
             }
+        }
+        // Clicking the switch, at the right of the face, flips it; anywhere else opens the screen.
+        if (descriptor!!.hasSwitch && !Utils.isPlayerUsingWrench(entityPlayer) && wallHitRight(this.side, vx, vy, vz) > 0.03) {
+            switchOn = !switchOn
+            needPublish()
+            return true
         }
         return false
     }

@@ -1,4 +1,4 @@
-// 1.21.1	2026-10-30T09:40:53.739134652	Recipes
+// 1.21.1	2026-10-30T10:17:47.759920436	Recipes
 1853b48c76256eb4a64d345a8db1dc0f77fdb5fd data/eln/advancement/recipes/misc/100a_electrical_breaker.json
 4e458038b1bac206784f02c09d0d900bbdf17566 data/eln/advancement/recipes/misc/100a_switch.json
 7021a7c05019953bb73edb0dbf67131e2f407f91 data/eln/advancement/recipes/misc/10a_diode.json
@@ -384,7 +384,11 @@ e179d8ca13a052717fd60fe4331a89f2a8bdfaaf data/eln/advancement/recipes/misc/therm
 865e8f9e15e80d305568063c5800416c3a7f25bc data/eln/advancement/recipes/misc/tungsten_turbine_blade.json
 ef2bd6cba0772f7893e6c378bb6256c8b0774a1c data/eln/advancement/recipes/misc/turbine_blade_set.json
 5f8ff232517af38b15c519fc193c177b791f2b26 data/eln/advancement/recipes/misc/turbo_electrical_drill.json
+85ae27fc521686703cb0de211d329b05b9b85c2b data/eln/advancement/recipes/misc/uk_13a_switched_fused_spur.json
+0f1af446f7c2bb1b101721a2dfdfb9e56d55df47 data/eln/advancement/recipes/misc/uk_ceiling_rose.json
+d283f9a57a184ad3f559ccd72812766a7f22a404 data/eln/advancement/recipes/misc/uk_double_light_switch.json
 f435c5c336deee8506b4e59c21f6ba1ef60cc25f data/eln/advancement/recipes/misc/uk_light_switch.json
+699b1da38842b7bb53973a442ccb5a161c1e63aa data/eln/advancement/recipes/misc/uk_pull_cord_switch.json
 f8c5f705f65c4a7d4481afa18f3b7294fd124394 data/eln/advancement/recipes/misc/utility_pole.json
 4f41ad3f8583fa5c3c2664b3d8b7d8668f24a0d8 data/eln/advancement/recipes/misc/utility_pole_w_dc_dc_converter.json
 c945094877bb103e71563316f59a45c007b78608 data/eln/advancement/recipes/misc/variable_dc_dc_converter.json
@@ -813,7 +817,11 @@ dc621205691493e7efb92408570ebf0cec74d249 data/eln/recipe/transmission_tower.json
 aeab20f34cee0f0a49213938d0ba81ca1acb3ae7 data/eln/recipe/tungsten_turbine_blade.json
 9cc4f0d74e5ae2498ff37e774dec205c2376cd13 data/eln/recipe/turbine_blade_set.json
 0ec257b37bf397a06790ef7d2e13d9c5e2630e2c data/eln/recipe/turbo_electrical_drill.json
+20430cd05815a6fab29db6c25af902602fec312c data/eln/recipe/uk_13a_switched_fused_spur.json
+116f6af3434edb00c750b38216881d3df80adaaf data/eln/recipe/uk_ceiling_rose.json
+d2f560c53493b54fc5da26ca547381d67f89c362 data/eln/recipe/uk_double_light_switch.json
 3c1a50194647bd62815bf57983cbd83d5a0b252a data/eln/recipe/uk_light_switch.json
+73bb2cc4cfb20e76dae6baa7153fc85645ae310b data/eln/recipe/uk_pull_cord_switch.json
 2b1b37664931673a32db6a72b863d27c03c5f2e6 data/eln/recipe/utility_pole.json
 c55e92d2f06b522a343dd208f151453f23ae2ad5 data/eln/recipe/utility_pole_w_dc_dc_converter.json
 8781f63e6635413463cf6155705a773d6d86b46e data/eln/recipe/variable_dc_dc_converter.json

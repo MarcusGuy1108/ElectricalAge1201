@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "Q": {
+      "item": "minecraft:quartz"
+    },
+    "s": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    " Q ",
+    " s ",
+    " I "
+  ],
+  "result": {
+    "count": 2,
+    "item": "eln:uk_ceiling_rose"
+  },
+  "show_notification": true
+}

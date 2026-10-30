@@ -5,6 +5,7 @@ import mods.eln.cable.CableRenderDescriptor
 import mods.eln.misc.Coordinate
 import mods.eln.misc.Direction
 import mods.eln.misc.LRDU
+import mods.eln.misc.RcInterpolator
 import mods.eln.misc.Utils.setGlColorFromDye
 import mods.eln.node.six.SixNodeDescriptor
 import mods.eln.node.six.SixNodeElementInventory
@@ -26,6 +27,8 @@ class PowerSocketRender(tileEntity: SixNodeEntity?, side: Direction?, descriptor
     var cableRender: CableRenderDescriptor? = null
     override var inventory = SixNodeElementInventory(1, 64, this)
     var paintColor = 15
+    var switchOn = true
+    private val switchInterpolator = RcInterpolator(0.05f).also { it.setValue(1f) }
 
     init {
         this.descriptor = descriptor as PowerSocketDescriptor
@@ -40,10 +43,13 @@ class PowerSocketRender(tileEntity: SixNodeEntity?, side: Direction?, descriptor
 
     override fun draw() {
         super.draw()
-        descriptor.draw(paintColor)
+        descriptor.draw(paintColor, switchInterpolator.get())
     }
 
-    override fun refresh(deltaT: Float) {}
+    override fun refresh(deltaT: Float) {
+        switchInterpolator.target = if (switchOn) 1f else 0f
+        switchInterpolator.step(deltaT)
+    }
     override fun getCableRender(lrdu: LRDU): CableRenderDescriptor? {
         return Eln.instance.lowCurrentCableRender
     }
@@ -57,6 +63,7 @@ class PowerSocketRender(tileEntity: SixNodeEntity?, side: Direction?, descriptor
         try {
             channel = stream.readUTF()
             paintColor = stream.readInt()
+            switchOn = stream.readBoolean()
         } catch (e: IOException) {
             e.printStackTrace()
         }

@@ -405,6 +405,10 @@ object CraftingRecipes {
             'G', ItemStack(Blocks.GLASS_PANE), 'I', findItemStack("Iron Cable")
         )
         addRecipe(
+            findItemStack("UK Ceiling Rose", 2), " Q ", " s ", " I ", 'Q', ItemStack(Items.QUARTZ), 's', ItemStack(Items.STRING),
+            'I', ItemStack(Items.IRON_INGOT)
+        )
+        addRecipe(
             findItemStack("Simple Lamp Socket", 3), " I ", "GGG",
             'G', ItemStack(Blocks.GLASS_PANE), 'I', ItemStack(Items.IRON_INGOT)
         )
@@ -542,6 +546,7 @@ object CraftingRecipes {
             findItemStack("20A Switch"), "  I", " I ", "CAC", 'A', "itemRubber", 'I', findItemStack("Copper Cable"), 'C',
             findItemStack("Copper 12 AWG Cable 600V")
         )
+        addRecipe(findItemStack("UK 13A Switched Fused Spur"), "QSF", 'Q', ItemStack(Items.QUARTZ), 'S', findItemStack("20A Switch"), 'F', findItemStack("13A UK Plug Fuse"))
         addRecipe(
             findItemStack("50A Switch"), "AAI", "AIA", "CAC", 'A', "itemRubber", 'I', findItemStack("Copper Cable"), 'C',
             findItemStack("Copper 6 AWG Cable 600V")
@@ -2687,6 +2692,11 @@ object CraftingRecipes {
         addRecipe(
             findItemStack("UK Light Switch", 3), " a ", "rCr", " Q ", 'C', Eln.config.getStringOrElse("runtime.dictionary.cheapChip", "circuitElnBasic"),
             'a', findItemStack("Signal Antenna"), 'r', "itemRubber", 'Q', ItemStack(Items.QUARTZ)
+        )
+        addRecipe(findItemStack("UK Double Light Switch", 1), "SS", 'S', findItemStack("UK Light Switch"))
+        addRecipe(
+            findItemStack("UK Pull Cord Switch", 2), " a ", "rCr", " s ", 'C', Eln.config.getStringOrElse("runtime.dictionary.cheapChip", "circuitElnBasic"),
+            'a', findItemStack("Signal Antenna"), 'r', "itemRubber", 's', ItemStack(Items.STRING)
         )
         addRecipe(
             findItemStack("Wireless Button", 3),

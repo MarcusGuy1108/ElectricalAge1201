@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-30T09:39:20.796928628	Item Models: eln
+// 1.20.1	2026-10-30T10:14:51.24321643	Item Models: eln
 43aa093f2437d5cd628b3ca72d1c751fd664845b assets/eln/models/item/100a_electrical_breaker.json
 1c3d1faecd4dc2baa5659c186af3a11e8084b0a8 assets/eln/models/item/100a_switch.json
 4b9c9e4a5fabb6d17508b138e0e2d968af1d26c7 assets/eln/models/item/10a_diode.json
@@ -570,7 +570,11 @@ fba8fc3e18467337e77a4b67be77b87aefc08451 assets/eln/models/item/tungsten_turbine
 0f62ebbb96e3989998b16fa85c621630dc9e7a68 assets/eln/models/item/turbine_blade_set.json
 6b150e7c724199c75b12ee4344fb0f82195f734d assets/eln/models/item/turbo_electrical_drill.json
 a4279b17bd35430ac22cbc426264da085f874eb4 assets/eln/models/item/tutorial_sign.json
+6e13bcc25838f5fde755b72c8e8a0abc5504da0e assets/eln/models/item/uk_13a_switched_fused_spur.json
+814962feab3fdca80a8eb21d1f4eec990aac1292 assets/eln/models/item/uk_ceiling_rose.json
+65de8cd3bb51e3ff134e49840a34c656537a5dbf assets/eln/models/item/uk_double_light_switch.json
 76c448b71d90b0a1fdbd958965ac597aa5fb67a1 assets/eln/models/item/uk_light_switch.json
+807d638e49f58fc6f769fcd0e58ec5f46a0fed6c assets/eln/models/item/uk_pull_cord_switch.json
 4eb0d0401c45ffec7c6ee2e4778539bd9c2f8f18 assets/eln/models/item/unreleasedium.json
 ec9cf9b931d087c246435de25233386841313928 assets/eln/models/item/utility_pole.json
 b466131575d356dbf2b82fcbbe035a3df280f1c6 assets/eln/models/item/utility_pole_w_dc_dc_converter.json

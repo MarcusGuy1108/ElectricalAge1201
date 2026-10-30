@@ -50,6 +50,7 @@ import mods.eln.misc.SeriesFunction.Companion.newE12
 import mods.eln.sixnode.*
 import mods.eln.sixnode.wirelesssignal.tx.WirelessSignalTxDescriptor
 import mods.eln.sixnode.wirelesssignal.source.WirelessSignalSourceDescriptor
+import mods.eln.sixnode.ukfittings.UkDoubleSwitchDescriptor
 import mods.eln.sixnode.wirelesssignal.rx.WirelessSignalRxDescriptor
 import mods.eln.sixnode.wirelesssignal.repeater.WirelessSignalRepeaterDescriptor
 import mods.eln.sixnode.resistor.ResistorDescriptor
@@ -849,6 +850,26 @@ object SixNodeRegistration {
         }
 
         run {
+            // New in the port: a UK pendant, a bulb hanging on its flex from a ceiling rose.
+            subId = 20
+            completeId = subId + (id shl 6)
+            descriptor = LampSocketDescriptor(
+                I18N.TR_NAME(I18N.Type.NONE, "UK Ceiling Rose"),
+                LampSocketStandardObjRender(Eln.obj.getObj("UKCeilingRose"), true),
+                4,
+                arrayOf(
+                    LampLists.getLampData("incandescent")!!,
+                    LampLists.getLampData("carbon")!!,
+                    LampLists.getLampData("fluorescent")!!,
+                    LampLists.getLampData("led")!!
+                )
+            )
+            descriptor.setPlaceDirection(Direction.YP)
+            descriptor.setDefaultIcon("ukceilingrose")
+            Eln.sixNodeItem.addDescriptor(completeId, descriptor)
+        }
+
+        run {
             subId = 6
             completeId = subId + (id shl 6)
             descriptor = LampSocketDescriptor(
@@ -1085,6 +1106,17 @@ object SixNodeRegistration {
                 600.0 * 50.0, 0.005, 600.0, 600.0 * 50.0, Eln.cableThermalLoadInitializer.copy(), false
             ).power()
             desc.setDefaultIcon("switch")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            // New in the port: a 13A switched fused spur (FCU). It burns out like a fuse above 13 A.
+            subId = 12
+            name = I18N.TR_NAME(I18N.Type.NONE, "UK 13A Switched Fused Spur")
+            desc = ElectricalSwitchDescriptor(
+                name, Eln.instance.stdCableRender200V, Eln.obj.getObj("UKFusedSpur"), 240.0,
+                240.0 * 13.0, 0.01, 300.0, 240.0 * 13.0, Eln.cableThermalLoadInitializer.copy(), false
+            ).power()
+            desc.setDefaultIcon("ukfusedspur")
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
         run {
@@ -1470,6 +1502,26 @@ object SixNodeRegistration {
                 Eln.config.getIntOrElse("wireless.transmitter.maxRangeBlocks", 32), false
             )
             desc.setDefaultIcon("uklightswitch")
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            subId = 24
+            name = I18N.TR_NAME(I18N.Type.NONE, "UK Double Light Switch")
+            val desc = UkDoubleSwitchDescriptor(
+                name!!, Eln.obj.getObj("UKDoubleSwitch"), Eln.config.getIntOrElse("wireless.transmitter.maxRangeBlocks", 32)
+            )
+            Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
+        }
+        run {
+            // A bathroom pull cord on the ceiling: a wireless toggle whose cord hangs lower while it is on.
+            subId = 28
+            name = I18N.TR_NAME(I18N.Type.NONE, "UK Pull Cord Switch")
+            val desc = WirelessSignalSourceDescriptor(
+                name, ElectricalGateSourceRenderObj(Eln.obj.getObj("UKPullCord")),
+                Eln.config.getIntOrElse("wireless.transmitter.maxRangeBlocks", 32), false
+            )
+            desc.setDefaultIcon("ukpullcord")
+            desc.setPlaceDirection(Direction.YP)
             Eln.sixNodeItem.addDescriptor(subId + (id shl 6), desc)
         }
     }

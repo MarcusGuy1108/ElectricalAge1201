@@ -1,0 +1,9 @@
+newmtl Body
+Kd 0.8 0.8 0.8
+map_Kd ukceilingrose.png
+newmtl BulbOff
+Kd 0.8 0.8 0.8
+map_Kd ukceilingrose_bulb_off.png
+newmtl BulbOn
+Kd 0.8 0.8 0.8
+map_Kd ukceilingrose_bulb_on.png

@@ -14,6 +14,8 @@ import java.io.ByteArrayOutputStream
 import java.io.ByteArrayInputStream
 import net.minecraft.world.item.ItemStack
 import mods.eln.sixnode.lampsocket.LampSocketRender
+import mods.eln.sixnode.ukfittings.UkDoubleSwitchElement
+import mods.eln.sixnode.powersocket.PowerSocketElement
 import mods.eln.sixnode.wirelesssignal.source.WirelessSignalSourceElement
 import mods.eln.item.ElectricalFuseDescriptor
 import mods.eln.sixnode.lampsocket.LampSocketDescriptor
@@ -425,6 +427,37 @@ object SixNodeGameTests {
         val steadyCelsius = 13.0 * 13.0 * fuse.resistanceOhms() * fuse.thermalRp()
         helper.assertTrue(abs(steadyCelsius - fuse.warmLimitCelsius()) < 1e-6, "13 A settles at $steadyCelsius, limit ${fuse.warmLimitCelsius()}")
         helper.assertTrue(!Eln.findItemStack("240V Type G Socket", 1).isEmpty, "no Type G socket")
+        helper.succeed()
+    }
+
+    // UK wall fittings respond to where they are clicked: the double switch's left and right rockers are separate
+    // gangs, and the Type G socket's switch sits at the right of its face (elsewhere opens its screen).
+    @GameTest(template = "empty3x3x3")
+    @JvmStatic
+    fun ukWallFittingsRespondToWhereTheyAreClicked(helper: GameTestHelper) {
+        val player = FakePlayerFactory.getMinecraft(helper.level)
+        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY)
+        fun placeOnWestWall(relative: BlockPos, name: String): SixNode {
+            helper.setBlock(relative.west(), Blocks.STONE)
+            val stack = Eln.findItemStack(name, 1)
+            val pos = helper.absolutePos(relative)
+            helper.assertTrue((stack.item as SixNodeItem).placeBlockAt(stack, helper.makeMockPlayer(), helper.level, pos, Direction.XN), "$name not placed")
+            return (helper.level.getBlockEntity(pos) as SixNodeEntity).node as SixNode
+        }
+        // On the west wall a player faces west, so their right is north (low z).
+        val double = placeOnWestWall(BlockPos(1, 1, 0), "UK Double Light Switch").getElement(Direction.XN) as UkDoubleSwitchElement
+        helper.assertTrue(double.onBlockActivated(player, Direction.XN, 0.01f, 0.5f, 0.3f), "right rocker click not handled")
+        helper.assertTrue(double.gangs[1].on && !double.gangs[0].on, "right click switched ${double.gangs.map { it.on }}")
+        double.onBlockActivated(player, Direction.XN, 0.01f, 0.5f, 0.7f)
+        helper.assertTrue(double.gangs[0].on && double.gangs[1].on, "left click switched ${double.gangs.map { it.on }}")
+        val socket = placeOnWestWall(BlockPos(1, 1, 2), "240V Type G Socket").getElement(Direction.XN) as PowerSocketElement
+        helper.assertTrue(socket.switchOn, "socket placed switched off")
+        helper.assertTrue(socket.onBlockActivated(player, Direction.XN, 0.01f, 0.5f, 0.35f), "socket switch click not handled")
+        helper.assertTrue(!socket.switchOn, "socket switch did not turn off")
+        helper.assertTrue(!socket.onBlockActivated(player, Direction.XN, 0.01f, 0.5f, 0.6f), "a click on the slots should open the screen")
+        for (name in listOf("UK Pull Cord Switch", "UK Ceiling Rose", "UK 13A Switched Fused Spur")) {
+            helper.assertTrue(!Eln.findItemStack(name, 1).isEmpty, "no $name")
+        }
         helper.succeed()
     }
 }

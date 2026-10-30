@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "eln:13a_uk_plug_fuse"
+    },
+    "Q": {
+      "item": "minecraft:quartz"
+    },
+    "S": {
+      "item": "eln:20a_switch"
+    }
+  },
+  "pattern": [
+    "QSF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "eln:uk_13a_switched_fused_spur"
+  }
+}

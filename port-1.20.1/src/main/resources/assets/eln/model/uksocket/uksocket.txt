@@ -1,0 +1,14 @@
+o SocketSwitch
+f originX 0.0285
+f originY 0.0
+f originZ -0.095
+f axisX 0.0
+f axisY 0.0
+f axisZ 1.0
+f alphaOff 8.0
+f alphaOn -8.0
+f speed 0.05
+o SocketOnMark
+f originX 0.0285
+f originY 0.0
+f originZ -0.095
